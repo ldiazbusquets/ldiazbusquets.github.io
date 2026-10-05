@@ -1,9 +1,588 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Luis Diaz Busquets</title>
-  </head>
-  <body>
-    <h1>Hello, this is my site.</h1>
-  </body>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luis Diaz Busquets | Finance and wealth management</title>
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Luis Diaz Busquets is a finance student at Bryant University and a wealth management intern at ATON Financial who builds investing tools. Based in San Juan, Puerto Rico.">
+<meta property="og:title" content="Luis Diaz Busquets">
+<meta property="og:description" content="Finance student at Bryant University, wealth management intern, and builder of investing tools.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000000'/%3E%3Cpath d='M8 50 C24 48 36 40 56 14' stroke='%235B9FE0' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #000000;
+    --navy-2: #0C0C0C;
+    --mist: #000000;
+    --white: #FFFFFF;
+    --ink: #F4F4F4;
+    --ink-soft: #A3A3A3;
+    --brass: #5B9FE0;     /* steel blue accent */
+    --brass-deep: #5B9FE0;
+    --sea: #1F5F85;
+    --line: rgba(255,255,255,.13);
+    --g: clamp(20px, 5vw, 72px);
+    --max: 1180px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--mist); color: var(--ink);
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--g); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; background: var(--navy); color: var(--white);
+    min-height: max(100svh, 640px); display: flex; flex-direction: column; overflow: hidden;
+  }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero > *:not(canvas) { position: relative; z-index: 1; }
+  .hero > .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    background: rgba(0,0,0,.55); -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px var(--g); font-size: .95rem;
+  }
+  .nav-links { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 32px); }
+  .nav-links a { text-decoration: none; opacity: .82; }
+  .nav-links a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
+  .mark { font-stretch: 125%; font-weight: 800; letter-spacing: .02em; text-decoration: none; }
+  .lang { display: inline-flex; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 2px; }
+  .lang button {
+    font: inherit; font-size: .85rem; font-weight: 600; color: var(--white); background: none;
+    border: 0; border-radius: 999px; padding: 4px 12px; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { background: var(--white); color: var(--navy); }
+  .hero-head { padding: calc(64px + clamp(24px, 6vh, 72px)) var(--g) 0; }
+  h1 {
+    margin: 0; font-stretch: 125%; font-weight: 800; line-height: .92; letter-spacing: -.02em;
+    font-size: clamp(2.5rem, 9.4vw, 9rem);
+  }
+  .lede { max-width: 34ch; margin: clamp(18px, 3vh, 30px) 0 0; font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.4; color: #CFCFCF; }
+  .origin { position: absolute; z-index: 1; font-size: .8rem; color: var(--brass); font-variant-numeric: tabular-nums; pointer-events: none; }
+  .sim {
+    margin: auto var(--g) 22px; padding: 16px 20px 16px 22px; border-radius: 20px;
+    background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.14);
+    -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.10);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 32px;
+  }
+  .hero > .tag {
+    position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; white-space: nowrap; will-change: transform;
+    font-size: 11px; font-weight: 500; line-height: 1; color: #fff; font-variant-numeric: tabular-nums;
+    padding: 5px 9px; border-radius: 999px;
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.18);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  }
+  .hero > .tag.me { color: #9CC6F0; border-color: rgba(91,159,224,.6); background: rgba(91,159,224,.12); }
+  .sim p { margin: 0; max-width: 62ch; font-size: .95rem; line-height: 1.5; color: #CFCFCF; }
+  .sim small { display: block; margin-top: 4px; font-size: .8rem; color: #8C8C8C; }
+  .sim strong { color: var(--white); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .btn {
+    display: inline-block; font: inherit; font-weight: 600; font-size: .95rem; cursor: pointer; text-decoration: none;
+    padding: 11px 20px; border-radius: 999px; border: 1.5px solid var(--brass); color: var(--brass); background: transparent;
+  }
+  .btn:hover { background: var(--brass); color: var(--navy); }
+  .btn.solid { background: var(--brass); color: var(--navy); }
+  .btn.solid:hover { background: var(--white); border-color: var(--white); }
+
+  /* ---------- Sections ---------- */
+  section { scroll-margin-top: 56px; border-top: 1px solid var(--line); }
+  #experience { border-top: 0; }
+  section { padding: clamp(64px, 10vw, 128px) 0; }
+  h2 {
+    margin: 0 0 clamp(28px, 4vw, 52px); font-stretch: 125%; font-weight: 800; letter-spacing: -.015em;
+    font-size: clamp(1.9rem, 4.6vw, 3.5rem); line-height: 1;
+  }
+  h3 { margin: 0; font-size: 1.2rem; font-weight: 700; line-height: 1.3; }
+  .about { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(28px, 6vw, 88px); align-items: center; }
+  .portrait { position: relative; margin: 0; aspect-ratio: 1; max-width: 420px; }
+  .portrait::before {
+    content: ""; position: absolute; inset: -6% -10% 4%; z-index: 0;
+    background: radial-gradient(closest-side, rgba(91,159,224,.30), rgba(91,159,224,.10) 55%, rgba(0,0,0,0) 100%);
+  }
+  .portrait img {
+    position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover;
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(to bottom, #000 72%, rgba(0,0,0,0) 100%);
+  }
+  .about .side { margin-top: 26px; }
+  .about .big { margin: 0; font-size: clamp(1.3rem, 2.3vw, 1.75rem); line-height: 1.4; font-weight: 400; max-width: 30em; }
+  .about .side p { margin: 0 0 1em; color: var(--ink-soft); }
+  .about .side p:last-child { margin: 0; color: var(--ink); font-weight: 600; }
+
+  .row { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 8px 40px; padding: 26px 0; border-top: 1px solid var(--line); }
+  .row:last-child { border-bottom: 1px solid var(--line); }
+  .when { font-variant-numeric: tabular-nums; color: var(--brass-deep); font-weight: 600; font-size: .95rem; padding-top: 3px; }
+  .org { color: var(--ink-soft); margin: 2px 0 0; }
+  .row p.desc { margin: 10px 0 0; max-width: 64ch; }
+
+  .work { background: #000; }
+  .feature {
+    background: linear-gradient(140deg, #161616, #060606 70%); border: 1px solid var(--line); color: var(--white); border-radius: 24px; padding: clamp(26px, 4.5vw, 56px);
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px);
+  }
+  .feature h3 { font-stretch: 125%; font-weight: 800; font-size: clamp(1.7rem, 3.6vw, 2.75rem); line-height: 1; letter-spacing: -.01em; }
+  .feature p { margin: 16px 0 0; color: #CFCFCF; max-width: 46ch; }
+  .feature ul { margin: 0; padding: 0; list-style: none; }
+  .feature li { padding: 11px 0; border-top: 1px solid rgba(255,255,255,.16); font-size: .98rem; }
+  .feature li:last-child { border-bottom: 1px solid rgba(255,255,255,.16); }
+  .feature li b { color: var(--brass); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+  .project { padding: clamp(22px, 3vw, 34px); border: 1px solid var(--line); border-radius: 24px; background: rgba(255,255,255,.03); transition: border-color .2s, background .2s; }
+  .project:hover { border-color: rgba(91,159,224,.55); background: rgba(255,255,255,.05); }
+  .project p { margin: 8px 0 0; max-width: 52ch; }
+  .project .built { color: var(--ink-soft); font-size: .92rem; }
+
+  .edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 6vw, 88px); }
+  .edu p { margin: 6px 0 0; }
+  .edu .muted { color: var(--ink-soft); }
+  .plain { margin: 14px 0 0; padding: 0; list-style: none; }
+  .plain li { padding: 9px 0; border-top: 1px solid var(--line); }
+  .plain li:last-child { border-bottom: 1px solid var(--line); }
+  .edu h3 + h3, .edu .gap { margin-top: 34px; }
+
+  .contact { background: var(--navy); color: var(--white); }
+  .contact h2 { font-size: clamp(2.6rem, 8vw, 7rem); margin-bottom: 20px; }
+  .contact p { margin: 0; max-width: 46ch; color: #CFCFCF; font-size: 1.15rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  footer { background: var(--navy); color: #8C8C8C; font-size: .85rem; padding: 0 0 34px; }
+  footer .wrap { padding-top: 22px; border-top: 1px solid rgba(255,255,255,.14); }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 820px) {
+    .about, .feature, .edu, .projects { grid-template-columns: minmax(0, 1fr); }
+    .row { grid-template-columns: minmax(0, 1fr); }
+    .nav-links a { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <canvas id="fan" aria-hidden="true"></canvas>
+  <span class="origin" id="origin">$10,000</span>
+
+  <nav class="nav" aria-label="Main">
+    <a class="mark" href="#top">LDB</a>
+    <div class="nav-links">
+      <a href="#about" data-es="Sobre mí">About</a>
+      <a href="#experience" data-es="Experiencia">Experience</a>
+      <a href="#work" data-es="Proyectos">Projects</a>
+      <a href="#education" data-es="Educación">Education</a>
+      <a href="#contact" data-es="Contacto">Contact</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="es" aria-pressed="false">ES</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero-head">
+    <h1>Luis Diaz<br>Busquets</h1>
+    <p class="lede" data-es="Estudiante de finanzas en Bryant University, practicante de gestión patrimonial y creador de herramientas de inversión. De San Juan, Puerto Rico.">Finance student at Bryant University, wealth management intern, and builder of investing tools. From San Juan, Puerto Rico.</p>
+  </div>
+
+  <div class="sim">
+    <p>
+      <span id="simText"></span>
+      <small data-es="Ilustrativo: rendimiento anual promedio de 7%, volatilidad de 15%. No es un pronóstico. Es el mismo método que usa ARGUS, una herramienta que construí.">Illustrative: 7% average annual return, 15% volatility. Not a forecast. It's the same method behind ARGUS, a tool I built.</small>
+    </p>
+    <button class="btn" id="rerun" type="button" data-es="Simular de nuevo">Run it again</button>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <h2 data-es="Sobre mí">About</h2>
+      <div class="about">
+        <figure class="portrait"><img src="portrait.webp" alt="Portrait of Luis Diaz Busquets" width="1200" height="1200" onerror="this.parentNode.hidden=true"></figure>
+        <div>
+        <p class="big" data-es="Estudio finanzas en Bryant University, con concentraciones menores en Inteligencia Artificial Aplicada y Derecho, y me gradúo en la primavera de 2027. Crecí en San Juan y trabajo tanto en español como en inglés.">I study finance at Bryant University, with minors in Applied AI and Law, and I graduate in spring 2027. I grew up in San Juan and work in both English and Spanish.</p>
+        <div class="side">
+          <p data-es="Durante los últimos dos veranos he sido practicante en ATON Financial, un asesor de inversiones registrado ante la SEC en Puerto Rico, apoyando servicio al cliente, cumplimiento y operaciones.">For the past two summers I've interned at ATON Financial, an SEC-registered investment adviser in Puerto Rico, supporting client services, compliance, and operations.</p>
+          <p data-es="Fuera del salón de clases construyo las herramientas que me gustaría tener: análisis de portafolios, agentes de investigación y sistemas de trading.">Outside the classroom I build the tools I wish I had: portfolio analytics, research agents, and trading systems.</p>
+          <p data-es="Busco un puesto a tiempo completo en gestión patrimonial a partir de mayo de 2027.">I'm looking for a full-time wealth management role starting after May 2027.</p>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" style="padding-top:0">
+    <div class="wrap">
+      <h2 data-es="Experiencia">Experience</h2>
+
+      <div class="row">
+        <div class="when" data-es="Verano 2025 y mayo a sept. 2026">Summer 2025 and May to Sept 2026</div>
+        <div>
+          <h3 data-es="Practicante de gestión patrimonial">Wealth Management Intern</h3>
+          <p class="org">ATON Financial, San Juan</p>
+          <p class="desc" data-es="Apoyé servicio al cliente, cumplimiento y operaciones en un asesor de inversiones registrado ante la SEC. Redacté la guía bilingüe de operaciones de servicio al cliente de la firma, creé módulos de adiestramiento de eMoney para el personal, preparé investigación sobre la Ley de Asesores de Inversiones para el oficial de cumplimiento y trabajé en el CRM de Salesforce de la firma.">Supported client services, compliance, and operations at an SEC-registered investment adviser. Wrote the firm's bilingual Client Services Operations Guide, built eMoney training modules for staff, prepared Investment Advisers Act research for the compliance officer, and worked in the firm's Salesforce CRM.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="when" data-es="Verano 2025">Summer 2025</div>
+        <div>
+          <h3 data-es="Practicante de manejo de riesgos">Risk Management Intern</h3>
+          <p class="org">Risk Management Services LLC, San Juan</p>
+          <p class="desc" data-es="Apoyé el trabajo de manejo de riesgos y seguros de la firma.">Supported the firm's risk management and insurance work.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="when">2025</div>
+        <div>
+          <h3 data-es="Auditor de seguros">Insurance Auditor</h3>
+          <p class="org">Luciano Insurance</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="when">2024</div>
+        <div>
+          <h3 data-es="Asistente y observación profesional">Assistantship and job shadowing</h3>
+          <p class="org">Popular Securities</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="when">2022</div>
+        <div>
+          <h3 data-es="Observación de asesoría patrimonial">Wealth advising job shadowing</h3>
+          <p class="org">UBS</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="work">
+    <div class="wrap">
+      <h2 data-es="Proyectos">Projects</h2>
+
+      <div class="feature">
+        <div>
+          <h3>ARGUS Portfolio Planner</h3>
+          <p data-es="Una herramienta de análisis de portafolios que corre en el navegador. Toma las posiciones lote por lote y muestra cómo podría comportarse el portafolio, cómo se habría comportado y qué hay realmente dentro de cada ETF.">A portfolio analysis tool that runs in the browser. It takes holdings lot by lot and shows how the portfolio might behave, how it would have behaved, and what is really inside each ETF.</p>
+          <p class="built" style="color:#8C8C8C;font-size:.92rem" data-es="Hecho con React. Importa y exporta Excel.">Built with React. Imports and exports Excel.</p>
+        </div>
+        <ul>
+          <li data-es="Simulación Monte Carlo con <b>1,500</b> trayectorias">Monte Carlo simulation with <b>1,500</b> paths</li>
+          <li data-es="Prueba histórica con datos de <b>1928 a 2025</b>">Historical backtest on <b>1928 to 2025</b> data</li>
+          <li data-es="Frontera eficiente y estimación de beta (CAPM)">Efficient frontier and CAPM beta estimation</li>
+          <li data-es="Desglose interno de ETF">ETF look-through to underlying holdings</li>
+          <li data-es="<b>13</b> pestañas, con informes listos para imprimir"><b>13</b> tabs, with print-ready reports</li>
+        </ul>
+      </div>
+
+      <div class="projects">
+        <div class="project">
+          <h3>LADON &amp; HERETIC</h3>
+          <p data-es="Dos agentes de investigación. LADON vigila mis posiciones y mi lista de seguimiento en busca de catalizadores; HERETIC busca nuevas oportunidades y lee los informes regulatorios a fondo.">Two research agents. LADON watches my holdings and watchlist for catalysts; HERETIC looks for new opportunities and reads the filings in depth.</p>
+          <p class="built" data-es="Servidor MCP propio con 14 herramientas financieras, corriendo en modelos locales.">Custom MCP server with 14 finance tools, running on local models.</p>
+        </div>
+        <div class="project">
+          <h3 data-es="Bot de trading simulado">Paper trading bot</h3>
+          <p data-es="Un bot que opera estrategias de swing y day trading con dinero simulado, usando señales RSI, MACD y EMA y reglas de tamaño de posición.">A bot that trades swing and day strategies with simulated money, using RSI, MACD, and EMA signals and position sizing rules.</p>
+          <p class="built" data-es="Python y la API de paper trading de Alpaca.">Python and the Alpaca paper trading API.</p>
+        </div>
+        <div class="project">
+          <h3 data-es="Guía maestra de Excel">Excel Master Guide</h3>
+          <p data-es="Una referencia interactiva para profesionales de finanzas: más de 20 secciones, más de 60 razones financieras y una biblioteca de 80 fórmulas, con ejercicios y glosario.">An interactive reference for finance professionals: 20+ sections, 60+ financial ratios, and an 80-entry formula library, with exercises and a glossary.</p>
+          <p class="built" data-es="Aplicación HTML interactiva.">Interactive HTML application.</p>
+        </div>
+        <div class="project">
+          <h3 data-es="Análisis de acciones: Costco (COST)">Equity research: Costco (COST)</h3>
+          <p data-es="Mi cobertura dentro de un equipo de seis analistas del sector de minoristas de consumo básico. Recomendación de mantener, basada en un modelo de flujo de caja descontado.">My coverage on a six-analyst team studying consumer staples retail. A Hold recommendation based on a discounted cash flow model.</p>
+          <p class="built" data-es="Bryant University, FIN 370.">Bryant University, FIN 370.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <h2 data-es="Educación y certificaciones">Education and certifications</h2>
+      <div class="edu">
+        <div>
+          <h3>Bryant University</h3>
+          <p data-es="Finanzas, con concentraciones menores en Inteligencia Artificial Aplicada y Derecho">Finance, with minors in Applied AI and Law</p>
+          <p class="muted" data-es="Smithfield, Rhode Island. Graduación en la primavera de 2027.">Smithfield, Rhode Island. Graduating spring 2027.</p>
+          <h3 class="gap" data-es="Organizaciones estudiantiles">Student organizations</h3>
+          <ul class="plain">
+            <li>Wealth Management Association</li>
+            <li>Finance Association</li>
+            <li>AI Investment Club</li>
+            <li>Law Society</li>
+          </ul>
+        </div>
+        <div>
+          <h3 data-es="Certificaciones">Certifications</h3>
+          <ul class="plain">
+            <li>Bloomberg Market Concepts</li>
+            <li>Bloomberg Finance Fundamentals</li>
+            <li>Bloomberg Spreadsheet Analysis</li>
+            <li>Bloomberg ESG</li>
+            <li>eMoney Fundamentals</li>
+            <li>Envestnet Institute On Campus</li>
+            <li data-es="Certificaciones de FactSet (en curso)">FactSet certifications (in progress)</li>
+          </ul>
+          <h3 class="gap" data-es="Idiomas">Languages</h3>
+          <p data-es="Español e inglés, con fluidez en ambos">English and Spanish, fluent in both</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2 data-es="Hablemos">Let's talk</h2>
+      <p data-es="Estoy disponible para puestos a tiempo completo en gestión patrimonial a partir de mayo de 2027, y siempre con ganas de conversar sobre mercados o sobre lo que estoy construyendo.">I'm available for full-time wealth management roles starting after May 2027, and always glad to talk markets or what I'm building.</p>
+      <div class="actions">
+        <a class="btn solid" id="cEmail" hidden data-es="Escríbeme">Email me</a>
+        <a class="btn" id="cLinkedIn" hidden target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" id="cGitHub" hidden target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" id="cResume" hidden data-es="Descargar résumé">Download resume</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Luis Diaz Busquets. San Juan, Puerto Rico.</div>
+</footer>
+
+<script>
+/* ============================================================
+   EDIT THESE. Leave any of them as '' and its button stays hidden.
+   For the resume: upload resume.pdf to the repo, then set resume: 'resume.pdf'
+   ============================================================ */
+var CONTACT = {
+  email:    '',
+  linkedin: '',
+  github:   'https://github.com/ldiazbusquets',
+  resume:   ''
+};
+
+(function () {
+  /* ---------- Contact buttons ---------- */
+  function link(id, href) { var a = document.getElementById(id); if (href) { a.href = href; a.hidden = false; } }
+  link('cEmail', CONTACT.email ? 'mailto:' + CONTACT.email : '');
+  link('cLinkedIn', CONTACT.linkedin);
+  link('cGitHub', CONTACT.github);
+  link('cResume', CONTACT.resume);
+
+  /* ---------- Language toggle ---------- */
+  var lang = 'en';
+  var nodes = document.querySelectorAll('[data-es]');
+  nodes.forEach(function (n) { n.setAttribute('data-en', n.innerHTML); });
+  function setLang(next) {
+    lang = next === 'es' ? 'es' : 'en';
+    document.documentElement.lang = lang;
+    nodes.forEach(function (n) { n.innerHTML = n.getAttribute('data-' + lang); });
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+    });
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    writeCaption();
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.lang); });
+  });
+
+  /* ---------- Monte Carlo fan chart ---------- */
+  var N = 400, STEPS = 360, MU = 0.07, SIGMA = 0.15, START = 10000;
+  var LO = Math.log(4500), HI = Math.log(700000);
+  var hero = document.querySelector('.hero');
+  var canvas = document.getElementById('fan');
+  var ctx = canvas.getContext('2d');
+  var off = document.createElement('canvas');
+  var paths = [], bands = null, stats = null, raf = 0, geo = null, trackers = [], revealStart = 0, visible = true, looping = false, pointer = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function gauss() {
+    var u = 0, v = 0;
+    while (u === 0) u = Math.random();
+    while (v === 0) v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function pct(sorted, p) { return sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))]; }
+
+  function simulate() {
+    var dt = 1 / 12, drift = (MU - SIGMA * SIGMA / 2) * dt, vol = SIGMA * Math.sqrt(dt);
+    paths = [];
+    for (var i = 0; i < N; i++) {
+      var p = new Float32Array(STEPS + 1); p[0] = Math.log(START);
+      for (var s = 1; s <= STEPS; s++) p[s] = p[s - 1] + drift + vol * gauss();
+      paths.push(p);
+    }
+    bands = { p10: [], p50: [], p90: [], at: [] };
+    for (var k = 0; k <= STEPS; k += 6) {
+      var col = paths.map(function (p) { return p[k]; }).sort(function (a, b) { return a - b; });
+      bands.at.push(k); bands.p10.push(pct(col, .1)); bands.p50.push(pct(col, .5)); bands.p90.push(pct(col, .9));
+    }
+    var last = bands.at.length - 1;
+    stats = { median: Math.exp(bands.p50[last]), low: Math.exp(bands.p10[last]) };
+  }
+
+  function render() {
+    var w = hero.clientWidth, h = hero.clientHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    [canvas, off].forEach(function (c) { c.width = w * dpr; c.height = h * dpr; });
+    var o = off.getContext('2d');
+    o.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var x0 = parseFloat(getComputedStyle(document.querySelector('.hero-head')).paddingLeft) || 24;
+    var top = h * 0.24, k = (Math.log(START) - LO) / (HI - LO);
+    var bottom = Math.min(h - 24, (document.querySelector('.sim').offsetTop - 44 - k * top) / (1 - k));
+    geo = { x0: x0, w: w, top: top, bottom: bottom, dpr: dpr };
+    function X(s) { return x0 + (w - x0) * (s / STEPS); }
+    function Y(v) { return bottom - (v - LO) / (HI - LO) * (bottom - top); }
+
+    o.lineWidth = 1; o.strokeStyle = 'rgba(255, 255, 255, 0.075)';
+    for (var i = 0; i < paths.length; i++) {
+      o.beginPath(); o.moveTo(X(0), Y(paths[i][0]));
+      for (var s = 2; s <= STEPS; s += 2) o.lineTo(X(s), Y(paths[i][s]));
+      o.stroke();
+    }
+    o.beginPath();
+    bands.at.forEach(function (s, j) { j ? o.lineTo(X(s), Y(bands.p90[j])) : o.moveTo(X(s), Y(bands.p90[j])); });
+    for (var j = bands.at.length - 1; j >= 0; j--) o.lineTo(X(bands.at[j]), Y(bands.p10[j]));
+    o.closePath(); o.fillStyle = 'rgba(255, 255, 255, 0.045)'; o.fill();
+
+    o.beginPath();
+    bands.at.forEach(function (s, j) { j ? o.lineTo(X(s), Y(bands.p50[j])) : o.moveTo(X(s), Y(bands.p50[j])); });
+    o.lineWidth = 2.5; o.strokeStyle = '#5B9FE0'; o.lineJoin = 'round'; o.stroke();
+    o.beginPath(); o.arc(X(0), Y(Math.log(START)), 4.5, 0, Math.PI * 2); o.fillStyle = '#5B9FE0'; o.fill();
+
+    var tag = document.getElementById('origin');
+    tag.style.left = x0 + 'px'; tag.style.top = (Y(Math.log(START)) + 10) + 'px';
+  }
+
+  /* ---------- Blob-tracking overlay ---------- */
+  function gx(st) { return geo.x0 + (geo.w - geo.x0) * (st / STEPS); }
+  function gy(v) { return geo.bottom - (v - LO) / (HI - LO) * (geo.bottom - geo.top); }
+  var tags = [], meTag = null;
+  function makeTag(cls) {
+    var d = document.createElement('span'); d.className = 'tag' + (cls ? ' ' + cls : ''); d.setAttribute('aria-hidden', 'true');
+    canvas.insertAdjacentElement('afterend', d); return d;
+  }
+  function place(el, x, y) { el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }
+  function pickTrackers() {
+    trackers = [];
+    var count = geo.w < 700 ? 5 : 9;
+    for (var i = 0; i < count; i++) trackers.push({
+      p: Math.floor(Math.random() * N), id: 100 + Math.floor(Math.random() * 900),
+      size: 14 + Math.random() * 34, speed: 0.00012 + Math.random() * 0.00005,
+      phase: i / count * 6.283 + Math.random() * 0.6, lo: 0.10 + Math.random() * 0.22, hi: 0.58 + Math.random() * 0.40
+    });
+    while (tags.length < count) tags.push(makeTag());
+    while (tags.length > count) tags.pop().remove();
+    if (!meTag) { meTag = makeTag('me'); meTag.hidden = true; }
+  }
+  function draw(now) {
+    var t = reduce ? 1 : Math.min(1, (now - revealStart) / 1900);
+    var e = 1 - Math.pow(1 - t, 3);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var sw = Math.max(1, Math.floor(off.width * e));
+    ctx.drawImage(off, 0, 0, sw, off.height, 0, 0, sw, off.height);
+    ctx.setTransform(geo.dpr, 0, 0, geo.dpr, 0, 0);
+
+    var pts = trackers.map(function (tr) {
+      var u = reduce ? tr.hi : tr.lo + (tr.hi - tr.lo) * (0.5 + 0.5 * Math.sin(now * tr.speed + tr.phase));
+      var st = Math.min(u, e * 0.999) * STEPS, i = Math.floor(st), f = st - i, p = paths[tr.p];
+      var v = p[i] + (p[Math.min(STEPS, i + 1)] - p[i]) * f;
+      return { x: gx(st), y: gy(v), v: Math.exp(v), tr: tr };
+    }).sort(function (a, b) { return a.x - b.x; });
+
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.beginPath();
+    pts.forEach(function (p, i) { i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); });
+    ctx.stroke();
+
+    pts.forEach(function (p, i) {
+      var h = p.tr.size / 2;
+      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(255,255,255,0.92)';
+      ctx.strokeRect(Math.round(p.x - h) + 0.5, Math.round(p.y - h) + 0.5, Math.round(p.tr.size), Math.round(p.tr.size));
+      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      tags[i].textContent = '#' + p.tr.id + '  ' + money(p.v);
+      place(tags[i], p.x + h + 7, p.y - h - 1);
+    });
+
+    if (meTag) meTag.hidden = !(pointer && pointer.x >= geo.x0);
+    if (pointer && pointer.x >= geo.x0) {
+      var near = pts.slice().sort(function (a, b) {
+        return Math.hypot(a.x - pointer.x, a.y - pointer.y) - Math.hypot(b.x - pointer.x, b.y - pointer.y);
+      }).slice(0, 3);
+      ctx.strokeStyle = 'rgba(91,159,224,0.95)'; ctx.lineWidth = 1;
+      near.forEach(function (p) { ctx.beginPath(); ctx.moveTo(pointer.x, pointer.y); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+      ctx.strokeStyle = '#5B9FE0'; ctx.lineWidth = 1.25;
+      ctx.strokeRect(Math.round(pointer.x - 17) + 0.5, Math.round(pointer.y - 17) + 0.5, 34, 34);
+      var yr = Math.max(0, Math.min(30, (pointer.x - geo.x0) / (geo.w - geo.x0) * 30));
+      var val = Math.exp(LO + (geo.bottom - pointer.y) / (geo.bottom - geo.top) * (HI - LO));
+      meTag.textContent = (lang === 'es' ? 'Año ' : 'Year ') + yr.toFixed(1) + '  ' + money(val);
+      place(meTag, pointer.x + 24, pointer.y - 18);
+    }
+  }
+  function loop(now) {
+    if (!visible) { looping = false; return; }
+    draw(now); raf = requestAnimationFrame(loop);
+  }
+  function start() {
+    if (reduce) { draw(performance.now()); return; }
+    if (!looping) { looping = true; raf = requestAnimationFrame(loop); }
+  }
+  function reveal() { revealStart = performance.now(); pickTrackers(); start(); }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible && geo) start(); }).observe(hero);
+  }
+  hero.addEventListener('pointermove', function (ev) {
+    if (ev.pointerType === 'touch') return;
+    var r = hero.getBoundingClientRect();
+    pointer = { x: ev.clientX - r.left, y: ev.clientY - r.top };
+    if (reduce) draw(performance.now());
+  });
+  hero.addEventListener('pointerleave', function () { pointer = null; if (reduce) draw(performance.now()); });
+
+  function money(v) {
+    var r = v >= 100000 ? Math.round(v / 1000) * 1000 : Math.round(v / 100) * 100;
+    return '$' + r.toLocaleString('en-US');
+  }
+  function writeCaption() {
+    if (!stats) return;
+    document.getElementById('simText').innerHTML = lang === 'es'
+      ? N + ' trayectorias simuladas de $10,000 invertidos durante 30 años. La mitad terminó por encima de <strong>' + money(stats.median) + '</strong>; una de cada diez terminó por debajo de <strong>' + money(stats.low) + '</strong>.'
+      : N + ' simulated paths for $10,000 invested over 30 years. Half finished above <strong>' + money(stats.median) + '</strong>; one in ten finished below <strong>' + money(stats.low) + '</strong>.';
+  }
+  function run() { simulate(); writeCaption(); render(); reveal(); }
+
+  document.getElementById('rerun').addEventListener('click', run);
+  var timer;
+  window.addEventListener('resize', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () { render(); if (reduce) draw(performance.now()); }, 150);
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  simulate();
+  setLang(saved || 'en');
+  render(); reveal();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(); if (reduce) draw(performance.now()); });
+})();
+</script>
+</body>
 </html>
