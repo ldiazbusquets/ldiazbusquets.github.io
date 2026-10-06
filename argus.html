@@ -676,6 +676,12 @@
   @media (max-width: 1100px) { .nav-links a { display: none; } .menu-btn { display: block; } }
   @media (min-width: 821px) and (max-width: 1100px) { .mobile-menu { display: block; left: auto; width: 320px; } }
   html[data-theme="light"] .hero > .origin { color: #00C236; text-shadow: 0 0 10px rgba(0,255,65,.45); }
+
+  /* contour background: one drawing, moved smoothly by the browser */
+  #waves { opacity: .9; will-change: transform; animation: contourDrift 70s ease-in-out infinite alternate; }
+  @keyframes contourDrift { from { transform: translate3d(-50px, -40px, 0) scale(1.02); } to { transform: translate3d(50px, 40px, 0) scale(1.06); } }
+  @media (prefers-reduced-motion: reduce) { #waves { animation: none; } }
+  .hero.page { background: transparent; }
 </style>
 
 <style>
@@ -885,7 +891,12 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     var p10 = [], p50 = [], p90 = [];
     byYear.forEach(function (a) { var s = Array.prototype.slice.call(a).sort(function (x, y) { return x - y; }); p10.push(s[Math.floor(N * 0.1)]); p50.push(s[Math.floor(N * 0.5)]); p90.push(s[Math.floor(N * 0.9)]); });
     var end = byYear[years], hit = 0; for (var i = 0; i < N; i++) if (end[i] >= goal) hit++;
-    res = { years: years, p10: p10, p50: p50, p90: p90, goal: goal, start: start, add: add, paid: start + add * 12 * years, prob: hit / N };
+    function smooth(a) {                       /* remove sampling jitter so the bands read as smooth curves */
+      var b = a.slice();
+      for (var pass = 0; pass < 4; pass++) { var c = b.slice(); for (var i = 1; i < b.length; i++) { var nx = i + 1 < b.length ? b[i + 1] : 2 * b[i] - b[i - 1]; c[i] = (b[i - 1] + 2 * b[i] + nx) / 4; } b = c; }
+      return b;
+    }
+    res = { years: years, p10: p10, p50: p50, p90: p90, s10: smooth(p10), s50: smooth(p50), s90: smooth(p90), goal: goal, start: start, add: add, paid: start + add * 12 * years, prob: hit / N };
     $('planstate').textContent = N.toLocaleString('en-US') + ' paths simulated';
     var f = [[Math.round(res.prob * 100) + '%', 'Chance of reaching ' + money(goal)], [money(p50[years]), 'Median after ' + years + ' years'], [money(p10[years]), 'One run in ten ends below this'], [money(res.paid), 'Total money put in']];
     $('planfigs').innerHTML = f.map(function (q) { return '<div><b>' + q[0] + '</b><span>' + q[1] + '</span></div>'; }).join('');
@@ -894,17 +905,27 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
   function paint() {
     if (!res) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var Y = res.years, top = Math.max(res.p90[Y], res.goal * 1.08, 1), fg = FG(), acc = ACC();
+    var Y = res.years, top = Math.max(res.p90[Y] * 1.04, res.s90[Y] * 1.04, res.goal * 1.08, 1), fg = FG(), acc = ACC();
     function X(y) { return 6 + y / Y * (w - 84); } function Yv(v) { return 10 + (1 - Math.min(v, top) / top) * (h - 40); }
     cx.font = '500 10px Manrope, Arial, sans-serif'; cx.textBaseline = 'middle';
     for (var g = 0; g <= 4; g++) { var v = top * g / 4; cx.strokeStyle = 'rgba(' + fg + ',0.08)'; cx.beginPath(); cx.moveTo(0, Yv(v)); cx.lineTo(w - 74, Yv(v)); cx.stroke(); cx.fillStyle = 'rgba(' + fg + ',0.5)'; cx.fillText(money(v), w - 68, Yv(v)); }
-    cx.beginPath(); for (var y = 0; y <= Y; y++) y ? cx.lineTo(X(y), Yv(res.p90[y])) : cx.moveTo(X(y), Yv(res.p90[y]));
-    for (y = Y; y >= 0; y--) cx.lineTo(X(y), Yv(res.p10[y])); cx.closePath(); cx.fillStyle = 'rgba(' + fg + ',0.13)'; cx.fill();
+    var y;
+    function curve(arr, back) {                /* smooth curve through the yearly points */
+      var n = arr.length, i, pts = [];
+      for (i = 0; i < n; i++) pts.push([X(i), Yv(arr[i])]);
+      if (back) pts.reverse();
+      back ? cx.lineTo(pts[0][0], pts[0][1]) : cx.moveTo(pts[0][0], pts[0][1]);
+      for (i = 1; i < n - 1; i++) cx.quadraticCurveTo(pts[i][0], pts[i][1], (pts[i][0] + pts[i + 1][0]) / 2, (pts[i][1] + pts[i + 1][1]) / 2);
+      cx.lineTo(pts[n - 1][0], pts[n - 1][1]);
+    }
+    var band = cx.createLinearGradient(0, Yv(top), 0, Yv(0));
+    band.addColorStop(0, 'rgba(' + fg + ',0.20)'); band.addColorStop(1, 'rgba(' + fg + ',0.05)');
+    cx.beginPath(); curve(res.s90); curve(res.s10, true); cx.closePath(); cx.fillStyle = band; cx.fill();
     cx.strokeStyle = 'rgba(' + fg + ',0.55)'; cx.setLineDash([4, 5]); cx.lineWidth = 1.25; cx.beginPath();
     for (y = 0; y <= Y; y++) { var paid = res.start + res.add * 12 * y; y ? cx.lineTo(X(y), Yv(paid)) : cx.moveTo(X(y), Yv(paid)); } cx.stroke();
     if (res.goal > 0 && res.goal <= top) { cx.strokeStyle = 'rgba(' + acc + ',0.6)'; cx.setLineDash([2, 5]); cx.beginPath(); cx.moveTo(0, Yv(res.goal)); cx.lineTo(w - 74, Yv(res.goal)); cx.stroke(); cx.fillStyle = 'rgb(' + acc + ')'; cx.fillText('GOAL', 8, Yv(res.goal) - 9); }
     cx.setLineDash([]); cx.strokeStyle = 'rgb(' + acc + ')'; cx.lineWidth = 2.5; cx.lineJoin = 'round'; cx.beginPath();
-    for (y = 0; y <= Y; y++) y ? cx.lineTo(X(y), Yv(res.p50[y])) : cx.moveTo(X(y), Yv(res.p50[y])); cx.stroke();
+    curve(res.s50); cx.stroke();
     cx.fillStyle = 'rgba(' + fg + ',0.5)'; cx.textBaseline = 'alphabetic'; cx.fillText('Today', 6, h - 8); cx.textAlign = 'right'; cx.fillText('Year ' + Y, w - 78, h - 8); cx.textAlign = 'left';
   }
   ['iYears', 'iMix'].forEach(function (id) { $(id).addEventListener('input', function () { labels(); $('planstate').textContent = 'Inputs changed. Run again to update.'; }); });
@@ -916,30 +937,26 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 </script>
 
 <script>
-/* ---------- Background: slow contour lines, kept quiet for reading ---------- */
+/* ---------- Background: contour lines, drawn once and drifted by the graphics card (no per-frame work) ---------- */
 (function () {
-  var c = document.getElementById('waves'), x = c.getContext('2d'), hero = document.querySelector('.hero');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var c = document.getElementById('waves'), x = c.getContext('2d');
   var CASES = { 1: [3, 2], 2: [2, 1], 3: [3, 1], 4: [0, 1], 5: [0, 3, 2, 1], 6: [0, 2], 7: [0, 3], 8: [0, 3], 9: [0, 2], 10: [0, 1, 3, 2], 11: [0, 1], 12: [3, 1], 13: [2, 1], 14: [3, 2] };
-  var w = 0, h = 0, field = null, cols = 0, rows = 0, CELL = 12, dirty = true, lastScroll = -1, frame = 0;
-  function size() {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth; h = window.innerHeight; c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    CELL = w < 700 ? 14 : 12; cols = Math.ceil(w / CELL) + 2; rows = Math.ceil(h / CELL) + 2; field = new Float32Array(cols * rows); dirty = true;
-  }
+  var PAD = 70, seed = Math.random() * 1000;
   function draw() {
-    var t = reduce ? 0 : performance.now(), sy = window.scrollY * 0.6, i, j;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = window.innerWidth + PAD * 2, h = window.innerHeight + PAD * 2, CELL = 8;
+    c.style.cssText = 'left:' + (-PAD) + 'px;top:' + (-PAD) + 'px;right:auto;bottom:auto;width:' + w + 'px;height:' + h + 'px';
+    c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var cols = Math.ceil(w / CELL) + 2, rows = Math.ceil(h / CELL) + 2, f = new Float32Array(cols * rows), i, j;
     for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
-      var px = i * CELL, wy = j * CELL + sy;
-      field[j * cols + i] = Math.sin(px * 0.0031 + t * 0.00004) * Math.cos(wy * 0.0037 - t * 0.00003)
-        + 0.5 * Math.sin((px + wy) * 0.0052 + t * 0.00005) + 0.5 * Math.cos((px - wy) * 0.0043 - t * 0.00002);
+      var px = i * CELL + seed, py = j * CELL + seed * 0.7;
+      f[j * cols + i] = Math.sin(px * 0.0031) * Math.cos(py * 0.0037) + 0.5 * Math.sin((px + py) * 0.0052) + 0.5 * Math.cos((px - py) * 0.0043);
     }
     x.clearRect(0, 0, w, h); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
     var n = 0, fg = FG();
     for (var lv = -1.5; lv <= 1.6; lv += 0.3, n++) {
-      x.strokeStyle = 'rgba(' + fg + ',' + (n % 4 === 0 ? 0.22 : 0.10) + ')'; x.beginPath();
+      x.strokeStyle = 'rgba(' + fg + ',' + (n % 4 === 0 ? 0.20 : 0.09) + ')'; x.beginPath();
       for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
-        var a = field[j * cols + i], b = field[j * cols + i + 1], c2 = field[(j + 1) * cols + i + 1], d = field[(j + 1) * cols + i];
+        var a = f[j * cols + i], b = f[j * cols + i + 1], c2 = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
         var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
         if (idx === 0 || idx === 15) continue;
         var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx];
@@ -954,22 +971,10 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       }
       x.stroke();
     }
-    var hb = hero.getBoundingClientRect().bottom;
-    if (hb > 0) {
-      x.clearRect(0, 0, w, hb); var fgd = x.createLinearGradient(0, hb, 0, hb + 110); fgd.addColorStop(0, 'rgba(0,0,0,1)'); fgd.addColorStop(1, 'rgba(0,0,0,0)');
-      x.globalCompositeOperation = 'destination-out'; x.fillStyle = fgd; x.fillRect(0, hb, w, 110); x.globalCompositeOperation = 'source-over';
-    }
   }
-  function loop() {
-    if (!reduce && (++frame % 8 === 0)) dirty = true;                     /* about 7 redraws a second: slow drift, light on the device */
-    if (window.scrollY !== lastScroll) { lastScroll = window.scrollY; dirty = true; }
-    if (dirty && !document.hidden && hero.getBoundingClientRect().bottom < h) { draw(); dirty = false; }
-    requestAnimationFrame(loop);
-  }
-  size();
-  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(size, 150); });
-  window.addEventListener('themechange', function () { dirty = true; });
-  requestAnimationFrame(loop);
+  draw();
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(draw, 200); });
+  window.addEventListener('themechange', draw);
 })();
 </script>
 </body>
