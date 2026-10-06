@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luis Diaz Busquets | Finance and wealth management</title>
+<title>Costco (COST) equity research | Luis Diaz Busquets</title>
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -14,16 +14,13 @@
   document.documentElement.setAttribute('data-theme', pick || (h >= 7 && h < 19 ? 'light' : 'dark'));
 })();
 </script>
-<meta name="description" content="Luis Diaz Busquets is a finance student at Bryant University and a wealth management intern at ATON Financial who builds investing tools. Based in San Juan, Puerto Rico.">
-<meta property="og:title" content="Luis Diaz Busquets">
-<meta property="og:description" content="Finance student at Bryant University, wealth management intern, and builder of investing tools.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://ldiazbusquets.github.io/">
+<meta name="description" content="Equity research on Costco Wholesale by Luis Diaz Busquets: a free cash flow valuation of $831.50 per share and a Hold / Wait recommendation.">
+<meta property="og:title" content="Costco (COST) equity research | Luis Diaz Busquets">
+<meta property="og:description" content="A free cash flow valuation of $831.50 per share and a Hold / Wait recommendation.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ldiazbusquets.github.io/costco.html">
 <meta property="og:image" content="https://ldiazbusquets.github.io/preview.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ldiazbusquets.github.io/preview.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000000'/%3E%3Cpath d='M8 50 C24 48 36 40 56 14' stroke='%235B9FE0' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -604,35 +601,87 @@
   .project .built, .feature .built, .sim small { color: #8A8A8A !important; }
   html[data-theme="light"] { --dim: #6B8274; }
   html[data-theme="light"] .project .built, html[data-theme="light"] .feature .built, html[data-theme="light"] .sim small { color: #557062 !important; }
-
-  .plain li.cert { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-  .plain li.cert a { flex: none; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; text-decoration: none; color: var(--soft); padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; transition: color .2s, border-color .2s; }
-  .plain li.cert a::after { content: " \2197"; }
-  .plain li.cert a:hover { color: var(--white); border-color: var(--white); }
-  .project .more { margin-top: 18px; }
+</style>
+<style>
+  /* ---------- research page ---------- */
+  #waves { opacity: .38; }   /* quieter background for long reading */
+  .hero.page { min-height: 0; padding-bottom: clamp(36px, 6vw, 72px); }
+  .hero.page .hero-head { padding-top: calc(64px + clamp(28px, 7vh, 80px)); max-width: calc(var(--max) + 2 * var(--g)); margin: 0 auto; width: 100%; }
+  .hero.page h1 { font-size: clamp(2.2rem, 6vw, 5rem); }
+  .hero.page .lede { max-width: 56ch; }
+  .back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 26px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); text-decoration: none; }
+  .back:hover { color: var(--white); }
+  .verdict { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin-top: clamp(28px, 4vw, 44px); padding: 6px; }
+  .verdict > div { padding: clamp(16px, 2.2vw, 26px); border-left: 1px solid var(--line); }
+  .verdict > div:first-child { border-left: 0; }
+  .verdict b { display: block; font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 2.8vw, 2.3rem); letter-spacing: -.02em; line-height: 1.1; }
+  .verdict span { display: block; margin-top: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .11em; color: var(--soft); }
+  .verdict .call b { color: var(--brass); }
+  .range { margin-top: 14px; padding: clamp(20px, 3vw, 34px); }
+  .range h3 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); margin-bottom: 18px; }
+  .range svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .range text { font-family: "Manrope", Arial, sans-serif; font-size: 12px; fill: var(--soft); }
+  .range .lab { fill: var(--ink); font-weight: 600; }
+  .range .bar { fill: var(--ink); opacity: .22; } .range .axis { stroke: var(--line); }
+  .range .pt { fill: var(--ink); } .range .acc { fill: var(--brass); } .range .accl { stroke: var(--brass); }
+  .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; padding-top: clamp(48px, 7vw, 96px); padding-bottom: clamp(48px, 7vw, 96px); }
+  .toc { position: sticky; top: 84px; display: grid; gap: 2px; }
+  .toc a { display: flex; gap: 12px; padding: 9px 12px; border-radius: 12px; font-size: .9rem; color: var(--soft); text-decoration: none; transition: background .2s, color .2s; }
+  .toc a i { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .08em; opacity: .7; padding-top: 2px; }
+  .toc a:hover { color: var(--white); }
+  .toc a.on { color: var(--white); background: rgba(255,255,255,.08); }
+  html[data-theme="light"] .toc a.on { background: rgba(255,255,255,.6); box-shadow: inset 0 1px 1px #fff, 0 4px 14px rgba(26,58,40,.12); }
+  .chapter { padding: 0 0 clamp(64px, 9vw, 120px); scroll-margin-top: 84px; }
+  .chapter:last-child { padding-bottom: 0; }
+  .chapter h2 { max-width: 24ch; }
+  .chapter h3 { margin: 34px 0 10px; font-size: 1.12rem; }
+  .chapter p, .chapter li { max-width: 68ch; color: #C9C9C9; }
+  html[data-theme="light"] .chapter p, html[data-theme="light"] .chapter li { color: #36413A; }
+  .chapter p { margin: 0 0 16px; }
+  .chapter ul { margin: 0 0 16px; padding-left: 20px; } .chapter li { margin-bottom: 8px; } .chapter li b { color: var(--white); font-weight: 600; }
+  blockquote { margin: 26px 0; padding: 4px 0 4px 22px; border-left: 2px solid var(--brass); font-family: var(--display); font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.4; max-width: 34ch; }
+  blockquote cite { display: block; margin-top: 10px; font-family: "Manrope", Arial, sans-serif; font-style: normal; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); }
+  .figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 28px; }
+  .figs > div { padding: 18px 20px; border-radius: 18px; border: 1px solid rgba(255,255,255,.14); background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+    -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%); box-shadow: inset 0 1px 1px rgba(255,255,255,.25), 0 12px 30px rgba(0,0,0,.35); }
+  html[data-theme="light"] .figs > div { border-color: rgba(255,255,255,.8); background: linear-gradient(135deg, rgba(255,255,255,.42), rgba(255,255,255,.16)); box-shadow: inset 0 1px 1px #fff, 0 12px 28px rgba(26,58,40,.16); }
+  .figs b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.7rem; letter-spacing: -.02em; line-height: 1.1; color: var(--white); }
+  .figs span { display: block; margin-top: 6px; font-size: .82rem; line-height: 1.35; color: var(--soft); }
+  .tablewrap { overflow-x: auto; margin: 8px 0 24px; border-radius: 18px; border: 1px solid var(--line); }
+  table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: .92rem; }
+  th { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .11em; color: var(--soft); padding: 14px 16px; background: rgba(255,255,255,.04); }
+  html[data-theme="light"] th { background: rgba(255,255,255,.4); }
+  td { padding: 13px 16px; border-top: 1px solid var(--line); vertical-align: top; color: #C9C9C9; }
+  html[data-theme="light"] td { color: #36413A; }
+  td:first-child { color: var(--white); font-weight: 600; white-space: nowrap; }
+  .takeaway { padding: 18px 22px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,.04); }
+  html[data-theme="light"] .takeaway { background: rgba(255,255,255,.4); border-color: rgba(255,255,255,.8); }
+  .takeaway b { color: var(--white); }
+  .sources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .note { font-size: .82rem; color: var(--soft); max-width: 68ch; margin-top: 18px; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .toc { position: static; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin: 0 calc(-1 * var(--g)); padding-left: var(--g); padding-right: var(--g); }
+    .toc a { white-space: nowrap; border: 1px solid var(--line); border-radius: 999px; }
+    .verdict { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .verdict > div:nth-child(3) { border-left: 0; } .verdict > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 </style>
 </head>
 <body>
 <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
 <canvas id="waves" aria-hidden="true"></canvas>
 
-<header class="hero" id="top">
-  <canvas id="fan" aria-hidden="true"></canvas>
-  <span class="origin" id="origin">$10,000</span>
-
+<header class="hero page" id="top">
   <nav class="nav" aria-label="Main">
-    <a class="mark" href="#top">LDB</a>
+    <a class="mark" href="index.html">LDB</a>
     <div class="nav-links">
-      <a href="#about" data-es="Sobre mí">About</a>
-      <a href="#experience" data-es="Experiencia">Experience</a>
-      <a href="#work" data-es="Proyectos">Projects</a>
-      <a href="costco.html" data-es="Análisis">Research</a>
-      <a href="#education" data-es="Educación">Education</a>
-      <a href="#contact" data-es="Contacto">Contact</a>
-      <div class="lang" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="true">EN</button>
-        <button type="button" data-lang="es" aria-pressed="false">ES</button>
-      </div>
+      <a href="index.html#about">About</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#work">Projects</a>
+      <a href="index.html#education">Education</a>
+      <a href="index.html#contact">Contact</a>
       <button class="theme-btn" type="button" aria-label="Switch between light and dark">
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
@@ -640,229 +689,231 @@
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
     </div>
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#about" data-es="Sobre mí">About</a>
-      <a href="#experience" data-es="Experiencia">Experience</a>
-      <a href="#work" data-es="Proyectos">Projects</a>
-      <a href="costco.html" data-es="Análisis de Costco">Costco research</a>
-      <a href="#education" data-es="Educación">Education</a>
-      <a href="#contact" data-es="Contacto">Contact</a>
+      <a href="index.html">Home</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#work">Projects</a>
+      <a href="index.html#education">Education</a>
+      <a href="index.html#contact">Contact</a>
     </div>
   </nav>
-
   <div class="hero-head">
-    <h1>Luis Diaz<br>Busquets</h1>
-    <p class="lede" data-es="Estudiante de finanzas en Bryant University, practicante de gestión patrimonial y creador de herramientas de inversión. De San Juan, Puerto Rico.">Finance student at Bryant University, wealth management intern, and builder of investing tools. From San Juan, Puerto Rico.</p>
-    <div class="cta">
-      <a class="btn solid" href="#work" data-es="Ver proyectos">View projects</a>
-      <a class="btn" href="#contact" data-es="Contacto">Get in touch</a>
+    <a class="back" href="index.html#work">&larr; All projects</a>
+    <p class="eyebrow">Equity research, FIN 370, Bryant University</p>
+    <h1>Costco<br>Wholesale</h1>
+    <p class="lede">A full fundamental analysis of Costco (COST) against Walmart, Target, and BJ's: profitability, revenue quality, working capital, debt, cost of capital, and two valuation approaches. My conclusion is that it is an excellent business trading above what its cash flows support.</p>
+    <div class="panel verdict">
+      <div class="call"><b>Hold / Wait</b><span>Recommendation</span></div>
+      <div><b>$831.50</b><span>Intrinsic value per share</span></div>
+      <div><b>$970.31</b><span>Market price at the time</span></div>
+      <div><b>&minus;14.31%</b><span>Implied return</span></div>
     </div>
-  </div>
-
-  <div class="sim">
-    <p>
-      <span id="simText"></span>
-      <small data-es="Ilustrativo: rendimiento anual promedio de 7%, volatilidad de 15%. No es un pronóstico. Es el mismo método que usa ARGUS, una herramienta que construí.">Illustrative: 7% average annual return, 15% volatility. Not a forecast. It's the same method behind ARGUS, a tool I built.</small>
-    </p>
-    <button class="btn" id="rerun" type="button" data-es="Simular de nuevo">Run it again</button>
+    <div class="panel range">
+      <h3>Where each method lands, per share</h3>
+      <svg viewBox="0 0 1000 250" role="img" aria-label="Valuation ranges: peer multiples 395 to 500 dollars, free cash flow model 831.50, market price 970.31, analyst targets 650 to 1315 with an average of 1072">
+  <g class="axis" stroke-width="1"><path d="M150 20V214"/><path d="M269 20V214"/><path d="M387 20V214"/><path d="M506 20V214"/><path d="M624 20V214"/><path d="M743 20V214"/><path d="M861 20V214"/><path d="M980 20V214"/></g>
+  <g text-anchor="middle"><text x="150" y="238">$0</text><text x="387" y="238">$400</text><text x="624" y="238">$800</text><text x="861" y="238">$1,200</text></g>
+  <text class="lab" x="0" y="50">Peer multiples</text><rect class="bar" x="384" y="34" width="62" height="22" rx="11"/><text x="456" y="50">$395 to $500</text>
+  <text class="lab" x="0" y="104">FCF model</text><circle class="acc" cx="643" cy="99" r="9"/><text class="lab" x="627" y="104" text-anchor="end">$831.50</text>
+  <text class="lab" x="0" y="158">Market price</text><circle class="pt" cx="725" cy="153" r="9"/><text class="lab" x="741" y="158">$970.31</text>
+  <text class="lab" x="0" y="212">Analyst targets</text><rect class="bar" x="535" y="196" width="394" height="22" rx="11"/><circle class="pt" cx="786" cy="207" r="6"/>
+  <path class="accl" d="M643 20V214" stroke-width="1.5" stroke-dasharray="3 5"/>
+</svg>
+    </div>
+    <p class="note">Prices and estimates are as of when each section was written during the semester, so the market price quoted varies slightly between sections. This is coursework and not investment advice.</p>
   </div>
 </header>
 
 <main>
-  <section id="about">
-    <div class="wrap">
-      <p class="eyebrow" data-es="Sobre mí">About</p>
-      <h2 data-es="Financiero de formación, <em>constructor por costumbre.</em>">Finance by training, <em>builder by habit.</em></h2>
-      <div class="about">
-        <figure class="portrait"><img src="portrait.webp" alt="Portrait of Luis Diaz Busquets" width="1200" height="1200" onerror="this.parentNode.hidden=true"></figure>
-        <div>
-        <p class="big" data-es="Estudio finanzas en Bryant University, con concentraciones menores en Inteligencia Artificial Aplicada y Derecho, y me gradúo en la primavera de 2027. Crecí en San Juan y trabajo tanto en español como en inglés.">I study finance at Bryant University, with minors in Applied AI and Law, and I graduate in spring 2027. I grew up in San Juan and work in both English and Spanish.</p>
-        <div class="side">
-          <p data-es="Durante los últimos dos veranos he sido practicante en ATON Financial, un asesor de inversiones registrado ante la SEC en Puerto Rico, apoyando servicio al cliente, cumplimiento y operaciones.">For the past two summers I've interned at ATON Financial, an SEC-registered investment adviser in Puerto Rico, supporting client services, compliance, and operations.</p>
-          <p data-es="Fuera del salón de clases construyo las herramientas que me gustaría tener: análisis de portafolios, agentes de investigación y sistemas de trading.">Outside the classroom I build the tools I wish I had: portfolio analytics, research agents, and trading systems.</p>
-          <p data-es="A largo plazo, planifico obtener las certificaciones CFA y CFP y una maestría en finanzas.">Longer term, I plan to earn the CFA and CFP designations and a master's degree in finance.</p>
-          <p data-es="Busco un puesto a tiempo completo en gestión patrimonial a partir de mayo de 2027.">I'm looking for a full-time wealth management role starting after May 2027.</p>
-        </div>
-        </div>
-      </div>
+  <div class="wrap layout">
+    <nav class="toc" aria-label="Chapters">
+      <a href="#overview"><i>01</i>Company overview</a><a href="#profitability"><i>02</i>Profitability</a><a href="#revenue"><i>03</i>Revenue</a><a href="#assets"><i>04</i>Assets</a><a href="#debt"><i>05</i>Debt</a><a href="#wacc"><i>06</i>Cost of capital</a><a href="#fcf"><i>07</i>FCF valuation</a><a href="#multiples"><i>08</i>Market multiples</a><a href="#recommendation"><i>09</i>Recommendation</a>
+    </nav>
+    <div>
+<section class="chapter" id="overview">
+  <p class="eyebrow">01 Company overview</p>
+  <h2>A membership business <em>that happens to sell groceries.</em></h2>
+  <p>Costco Wholesale Corporation operates a membership-based warehouse retail model that offers a limited selection of branded and private-label merchandise at low prices to both individual and business members. The strategy emphasizes high sales volume, rapid inventory turnover, and disciplined cost control, resulting in relatively low gross margins on merchandise. A significant portion of operating income is derived from annual membership fees, which provide a stable and recurring revenue stream. Costco's private-label brand, Kirkland Signature, contributes to customer loyalty and margin management while reinforcing the value proposition.</p>
+  <blockquote>"To continually provide our members with quality goods and services at the lowest possible prices."<cite>Costco's mission</cite></blockquote>
+  <h3>Sector and subsector</h3>
+  <p>Costco operates within the Consumer Staples sector, reflecting its focus on essential goods such as food, household products, and everyday necessities that exhibit relatively stable demand across economic cycles. Within the sector it is classified in the Retail Consumer Staples subsector as a warehouse club retailer. This highlights Costco's defensive characteristics: consistent customer traffic, predictable cash flows, and resilience during periods of economic volatility.</p>
+  <h3>How it reaches members</h3>
+  <ul>
+    <li><b>Warehouse clubs</b> are the primary channel, where members buy in bulk at low margins.</li>
+    <li><b>Costco.com</b> supplements warehouse sales with select merchandise, including large or specialty items.</li>
+    <li><b>Ancillary services</b> such as pharmacies, optical and hearing aid centers, fuel stations, food courts, and travel drive member traffic.</li>
+    <li><b>Business-to-business sales</b> support small and medium-sized enterprises through bulk purchasing and delivery.</li>
+  </ul>
+  <p>The target market is value-oriented households, families, and small to medium-sized businesses, typically middle to higher income. Merchandise comes from a broad, diversified supplier network, and no single supplier or customer accounts for a material share of purchases or revenue, which keeps concentration risk low.</p>
+  <h3>Competitors</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Peer</th><th>Where it overlaps</th><th>Where it differs</th></tr></thead>
+    <tbody>
+      <tr><td>BJ's Wholesale Club</td><td>Membership warehouse model, bulk value pricing, direct competitor for club customers</td><td>Smaller scale and footprint, little international exposure, more promotional pricing</td></tr>
+      <tr><td>Walmart</td><td>Scale, global footprint, cost leadership, grocery focus</td><td>No membership for core stores, broader customer base, less recurring fee income, multiple segments</td></tr>
+      <tr><td>Target</td><td>National big-box footprint, staples plus discretionary, strong private labels</td><td>No membership fees, more cyclical, broader assortment, more reliance on promotions</td></tr>
+      <tr><td>Dollar General</td><td>Value-conscious consumers, non-discretionary staples</td><td>No membership, smaller baskets, lower-income and rural focus, higher product margins</td></tr>
+      <tr><td>Dollar Tree</td><td>Low prices and everyday essentials</td><td>Fixed price points, no recurring revenue, more economically sensitive customers</td></tr>
+    </tbody>
+  </table></div>
+  <p class="takeaway"><b>Key takeaway.</b> Costco differentiates itself through its membership-driven revenue model, low-margin and high-volume strategy, and stable cash flows from renewal fees, while many peers rely more heavily on promotional pricing, discretionary spending, or higher merchandise margins. This gives Costco greater earnings visibility and more defensive characteristics than traditional retailers.</p>
+  <h3>Industry outlook</h3>
+  <p>Consumer staples retail is defensive: demand for necessities stays resilient in downturns, and large retailers benefit from economies of scale, supplier relationships, and logistics networks. The pressures are rising labor costs, supply chain inflation, thin margins, intense competition, and the investment that e-commerce and omnichannel retailing require. Success increasingly depends on scale, operational efficiency, and customer loyalty. Companies with disciplined cost structures and loyal customer bases, such as Costco, are well positioned to adapt.</p>
+  <div class="sources"><a class="btn" href="https://drive.google.com/file/d/1i8Pw4PuAFjqeeenarINdwRnz4CVKuPpV/view?usp=sharing" target="_blank" rel="noopener">Costco 10-K, FY2025</a></div>
+</section>
+
+<section class="chapter" id="profitability">
+  <p class="eyebrow">02 Profitability analysis</p>
+  <h2>The lowest margins in the group, <em>and the most consistent returns.</em></h2>
+  <div class="figs">
+    <div><b>12.84%</b><span>Gross margin, FY2025</span></div>
+    <div><b>3.77%</b><span>Operating margin, up from 3.47%</span></div>
+    <div><b>2.94%</b><span>Net margin, up from 2.56%</span></div>
+    <div><b>10.50%</b><span>ROA, up from 8.45%</span></div>
+    <div><b>30–33%</b><span>RNOA across the period</span></div>
+    <div><b>25–31%</b><span>ROE across the period</span></div>
+  </div>
+  <p>Over fiscal years 2021 to 2025, Costco's profitability profile is defined by consistently low margins but very stable performance relative to Target, Walmart, and BJ's. Gross margin stays around 12 to 13% each year, clearly the lowest among peers, reflecting the low-markup, membership-driven strategy. Even with thinner gross margins, operating margin edges up from 3.47% to 3.77% and net margin rises from 2.56% to 2.94%, showing gradual improvement in operating efficiency.</p>
+  <p>Target's margins are more volatile, with a sharp drop in 2022 followed by partial recovery. Walmart is stable with moderate margins, and BJ's sits slightly above Costco on margins without improving as consistently. Costco ranks lowest on margins but strongest on consistency, an operational advantage in periods of inflation, supply chain pressure, and shifting consumer demand.</p>
+  <p>Return metrics are where Costco separates itself. ROA increases from 8.45% to about 10.50%, and RNOA holds at roughly 30 to 33%, indicating excellent operating asset productivity. ROE stays high and stable between about 25% and 31%.</p>
+  <h3>DuPont analysis</h3>
+  <p>ROE fluctuations were driven primarily by operational efficiency, not financial leverage. Net profit margin improved steadily from 2.56% to 2.94%. Total asset turnover increased from 3.41 to 3.75, reinforcing the high-volume model. The equity multiplier declined from 3.28 to 2.64, indicating reduced reliance on leverage. Despite lower leverage, ROE remained consistently high, which suggests shareholder returns are driven more by operating performance than by debt financing.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1GYzuaUDXMzN18TX-xrKuqFp8VuVuJMV_RUbiwXcrDIc/edit?usp=sharing" target="_blank" rel="noopener">Profitability sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1qFl47qVynLiBY0RJIrfUOOqLp6vFK-KVqlyCs7wTFD8/edit?usp=sharing" target="_blank" rel="noopener">Portfolio sheet</a></div>
+</section>
+
+<section class="chapter" id="revenue">
+  <p class="eyebrow">03 Revenue recognition</p>
+  <h2>Growth that comes from scale, <em>not from markup.</em></h2>
+  <div class="figs">
+    <div><b>87–88%</b><span>COGS as a share of revenue</span></div>
+    <div><b>~9%</b><span>SG&amp;A as a share of revenue</span></div>
+    <div><b>&gt; 1.0</b><span>Operating cash flow to net income</span></div>
+    <div><b>72.7%</b><span>Revenue from the United States</span></div>
+    <div><b>13.4%</b><span>Revenue from Canada</span></div>
+    <div><b>~92%</b><span>Revenue from developed markets</span></div>
+  </div>
+  <p>Costco has continued to show strong top-line growth driven by net merchandise sales and recurring membership fees, reflecting warehouse expansion, comparable sales growth, and sustained renewal rates. Cost of goods sold consistently represents about 87 to 88% of revenue, which points to disciplined pricing and operational efficiency as the drivers of growth, not margin expansion. BJ's also grew, but its growth has moderated more noticeably, and its COGS of about 81 to 82% of revenue reflects a different pricing structure.</p>
+  <h3>Expense structure</h3>
+  <p>Costco's cost structure is highly stable across five years. SG&amp;A stays around 9% of revenue even through inflation and wage pressure, and operating income as a share of revenue is stable to slightly improving, which suggests operating leverage as revenue scales. BJ's carries SG&amp;A of about 14 to 15% of revenue. It keeps higher gross margins, but the higher operating expense ratio indicates lower scale efficiency.</p>
+  <h3>Five-year trend</h3>
+  <p>Costco saw significant revenue growth immediately after the pandemic period, followed by normalization. Growth has moderated but remains positive, and operating income and net income have grown steadily. BJ's shows more variability, particularly in operating income and interest-related expenses.</p>
+  <h3>Earnings quality</h3>
+  <p>The ratio of operating cash flow to net income consistently exceeds 1.0 for Costco, indicating that reported earnings are supported by cash generation with low reliance on accruals. BJ's also exceeds 1.0 but with more year-to-year variability, suggesting higher sensitivity to working capital swings.</p>
+  <h3>Where the revenue comes from</h3>
+  <p>Revenue exposure is concentrated entirely within the warehouse clubs and superstores classification, making Costco a pure-play warehouse club retailer. Geographically, the United States accounts for about 72.7% of last-twelve-month revenue and Canada 13.4%, with smaller contributions from Mainland China, Japan, the United Kingdom, France, Spain, and South Korea. The Americas represent about 86 to 87% of revenue, and roughly 92% comes from developed markets. That reduces political and currency risk but limits exposure to high-growth emerging markets.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1eeW8vk5Cp4UuDwIy7UNRmpC33Kf4mj8iJ2tTTAIhom8/edit?usp=sharing" target="_blank" rel="noopener">Revenue recognition sheet</a></div>
+</section>
+
+<section class="chapter" id="assets">
+  <p class="eyebrow">04 Asset recognition</p>
+  <h2>Customers pay <em>before suppliers are due.</em></h2>
+  <p>Costco runs lean on liquidity by conventional benchmarks, and that is a feature of the model. Fast inventory turnover and near-instant collection mean the business funds itself from operations.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Measure</th><th>Costco, five-year range</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td>Cash ratio</td><td>0.31 to 0.45</td><td>Little idle cash; liquidity comes from turnover and operating cash flow</td></tr>
+      <tr><td>Current ratio</td><td>Close to 1.0</td><td>Typical of high-volume retail; efficient working capital, not weakness</td></tr>
+      <tr><td>Days cash on hand</td><td>16 to 23 days</td><td>Stable cash flows reduce the need for large reserves</td></tr>
+      <tr><td>Receivables, share of assets</td><td>3 to 4%</td><td>Most sales are paid immediately by cash or card</td></tr>
+      <tr><td>Days sales outstanding</td><td>3 to 4 days</td><td>Very rapid collection and low credit risk</td></tr>
+      <tr><td>Inventory days</td><td>27 to 33 days</td><td>Strong supply chain efficiency</td></tr>
+      <tr><td>Inventory turnover</td><td>11 to 13 times</td><td>Product moves quickly with low holding costs</td></tr>
+      <tr><td>Days payable outstanding</td><td>30 to 35 days</td><td>Supplier credit partly finances inventory</td></tr>
+      <tr><td>Cash conversion cycle</td><td>Near zero days</td><td>Costco is often paid before it pays suppliers</td></tr>
+      <tr><td>Net PP&amp;E, share of assets</td><td>43 to 47%</td><td>Ownership of warehouses and distribution infrastructure</td></tr>
+      <tr><td>PP&amp;E turnover</td><td>7 to 8 times</td><td>Warehouses generate substantial sales per dollar invested</td></tr>
+    </tbody>
+  </table></div>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/15ZvLjAP8uqmbAxFwoWjIlcfDfppHQubSWUrcbA0W6Gk/edit?usp=sharing" target="_blank" rel="noopener">Asset analysis sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1Px-F0LIWXYl9h14bGy98v-yCXQnM8BDMStB8Jvy3aJk/edit?usp=sharing" target="_blank" rel="noopener">Asset recognition sheet</a></div>
+</section>
+
+<section class="chapter" id="debt">
+  <p class="eyebrow">05 Debt analysis</p>
+  <h2>Almost no leverage, <em>and interest covered eighty times over.</em></h2>
+  <div class="figs">
+    <div><b>2.46%</b><span>Debt to market value of equity, 2025</span></div>
+    <div><b>12.89%</b><span>Debt to total assets, 2025</span></div>
+    <div><b>80×+</b><span>EBITDA to interest expense</span></div>
+    <div><b>86×+</b><span>Operating cash flow to interest expense</span></div>
+    <div><b>&gt; 3</b><span>Altman Z-Score, safe zone all five years</span></div>
+  </div>
+  <p>Costco has maintained significantly lower leverage than its competitors over the past five years. In 2025 its interest-bearing debt is about 2.46% of the market value of equity and about 12.89% of total assets, the lowest among BJ's, Target, and Walmart. Costco finances a larger portion of its assets through equity and internal funding.</p>
+  <p>Coverage is extremely strong. EBITDA covers interest expense more than 80 times, and operating cash flow covers it more than 86 times, far above peers. The risk of financial distress from debt servicing is very low.</p>
+  <h3>Altman Z-Score</h3>
+  <p>The Z-Score has stayed well above the safe-zone threshold of 3 throughout the period. The strongest contributors are leverage and efficiency: market value of equity is very high relative to total liabilities, and Costco generates more than three dollars of sales for every dollar of assets. Liquidity looks weaker because of negative working capital, which is common among large retailers given rapid inventory turnover and favorable supplier terms.</p>
+  <h3>Debt types and maturities</h3>
+  <p>Long-term debt consists mainly of senior unsecured notes across various maturities, alongside lease liabilities for warehouses, distribution centers, and offices. The maturity schedule is staggered across multiple years, which reduces refinancing risk and preserves flexibility.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/10zS6rbZRBBs87h3BubJ9AU-R1uee7m74am9d-MGLk3Q/edit?usp=sharing" target="_blank" rel="noopener">Debt analysis sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1iyQuPsbDV9ue0EhNoDqTDH6RbzKAVlqjqpdU6QEoUho/edit?usp=sharing" target="_blank" rel="noopener">Liabilities and debt financing</a></div>
+</section>
+
+<section class="chapter" id="wacc">
+  <p class="eyebrow">06 Cost of capital</p>
+  <h2>A discount rate of 8.36%, <em>built from CAPM.</em></h2>
+  <div class="figs">
+    <div><b>8.36%</b><span>WACC, base case</span></div>
+    <div><b>4.22%</b><span>Risk-free rate, 10-year Treasury</span></div>
+    <div><b>5.0%</b><span>Market risk premium</span></div>
+    <div><b>0.86</b><span>Beta, average of FactSet and S&amp;P Capital IQ</span></div>
+  </div>
+  <p>Costco's weighted average cost of capital is 8.36%, the weighted average of its cost of debt and cost of equity. It represents the required return for investors and serves as the discount rate in the valuation.</p>
+  <p>Cost of equity was estimated with the Capital Asset Pricing Model, using the 10-year U.S. Treasury yield of 4.22% as the risk-free rate and a market risk premium of 5.0%. Beta estimates came from FactSet and S&amp;P Capital IQ, and their average of 0.86 was used as the base case. A lower beta produces a lower cost of equity and WACC, and a higher beta raises both. Cost of debt was calculated from market data and adjusted for taxes, and capital structure weights used the market value of equity and book value of debt.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1rXgoGmeicwP2SXfdBq7Tgz5d29-yLcqK9hDEgZjrkRE/edit?usp=sharing" target="_blank" rel="noopener">WACC sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1EQ6MqIWIYfMItddHjZB01eUHj4tHHOMWtoDgLnipo20/edit?usp=sharing" target="_blank" rel="noopener">Cost of capital sheet</a></div>
+</section>
+
+<section class="chapter" id="fcf">
+  <p class="eyebrow">07 Free cash flow valuation</p>
+  <h2>The cash flows support $831.50 a share. <em>The market was paying more.</em></h2>
+  <p>The free cash flow model implies a value of $831.50 per share. Against a market price of about $994.68 when this section was written, that suggests Costco was overvalued by about $163 per share under the model's assumptions.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Assumption</th><th>Value</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>Revenue growth, 2026 to 2030</td><td>8.45% falling to 5.07%</td><td>FactSet analyst estimates; expansion continues but slows as the company matures</td></tr>
+      <tr><td>Terminal growth</td><td>3.0%</td><td>Aligned with long-term economic growth</td></tr>
+      <tr><td>COGS</td><td>86 to 87% of sales</td><td>FactSet projections and historical vertical analysis</td></tr>
+      <tr><td>SG&amp;A</td><td>7.87% of sales</td><td>Recent historical average, held roughly constant</td></tr>
+      <tr><td>Change in net operating assets</td><td>−0.58% of sales</td><td>Continued reinvestment in warehouses, logistics, and working capital</td></tr>
+      <tr><td>WACC</td><td>8.36%</td><td>From the cost of capital analysis</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Reading the gap</h3>
+  <p>The difference between the model value and the market price comes down to expectations. The market appears to price in stronger long-term growth, continued global expansion, and sustained success of the membership model. The FCF model is more conservative: it reduces growth gradually and builds in consistent reinvestment. Costco's fundamentals remain strong, but the market price reflects a premium to the intrinsic value estimated here.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1LzADeM6441dEWFaIw6K_xsb_D7qgzpLusUA_m3Vp6cs/edit?usp=sharing" target="_blank" rel="noopener">Free cash flow sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1uVkB4cgdQHRjS0t6OZdCl7d9jANdZ4D-kJKP8Axw8cA/edit?usp=sharing" target="_blank" rel="noopener">FCF valuation sheet</a></div>
+</section>
+
+<section class="chapter" id="multiples">
+  <p class="eyebrow">08 Market multiples</p>
+  <h2>Peers say $300 to $500. <em>That is the premium, measured.</em></h2>
+  <p>Per-share metrics for Costco and its peer group were taken from forward-looking FactSet estimates so that every comparable is on the same basis. Costco trades at a premium to peers, particularly on price-to-earnings and price-to-cash-flow, reflecting stronger profitability, operational efficiency, and its membership model.</p>
+  <p>Peer multiples were summarized by industry average, first quartile, and third quartile. Given Costco's financial performance and premium positioning, the third quartile was treated as the most appropriate benchmark. Even so, applying industry multiples to Costco's metrics implies a range of about $300 to $500 per share.</p>
+  <p class="takeaway"><b>Key insight.</b> Costco trades at a significant premium to its peers, one that traditional market multiples may not fully capture given its superior operating performance and market position.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1elsOVF_wBSbyzNCfuFU7PQpmI-hNyQXSR-FfX5YJt2M/edit?usp=sharing" target="_blank" rel="noopener">Multiples sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1b89VWbUZ_W3A0ns5lcKznaKCzCvcRelpxBRYSLXMudw/edit?usp=sharing" target="_blank" rel="noopener">Market multiples sheet</a></div>
+</section>
+
+<section class="chapter" id="recommendation">
+  <p class="eyebrow">09 Final recommendation</p>
+  <h2>Hold and wait. <em>A great company at a price that leaves no margin of safety.</em></h2>
+  <p>Based on the valuation analysis, Costco appears overvalued relative to its intrinsic value estimate of $831.50 per share. With the market price at $970.31, that implies a downside of approximately 14.31%. Despite strong fundamentals and consistent financial performance, the valuation does not provide a sufficient margin of safety. The recommendation is to Hold / Wait, as investors may benefit from a more attractive entry point in the future.</p>
+  <h3>Why the cash flow model carries all the weight</h3>
+  <p>The FCF model produces $831.50 per share and serves as the basis for the overall estimate. Market-based multiples, including P/E, P/S, P/B, and P/CF, generate lower values of roughly $395 to $500 per share. Those relative models were excluded from the final estimate because they cannot fully capture Costco's operating performance, membership-based revenue, and long-term growth stability. The FCF model reflects intrinsic value from projected cash flows instead of market sentiment or peer comparison, so it received a 100% weighting.</p>
+  <h3>Where this differs from the Street</h3>
+  <p>Analyst consensus is more optimistic. The average price target is about $1,072, within a range of $650 to $1,315, and most analysts rate the stock Buy or Strong Buy, with Buy and Overweight ratings holding at roughly 55 to 65% over time and very few Sells.</p>
+  <p>This analysis arrives at a more conservative figure. Analysts often build forward-looking growth expectations, continued market dominance, and premium multiples into their targets. The FCF model emphasizes valuation discipline by focusing on underlying cash generation. The result is a Hold / Wait where the Street says Buy: even high-quality companies may not be attractive investments at elevated prices.</p>
+  <p class="takeaway"><b>Final insight.</b> Costco remains a high-quality, well-managed company with strong long-term fundamentals, but its market valuation limits upside. Investment decisions should be guided by disciplined entry pricing as well as company strength.</p>
+  <div class="sources"><a class="btn" href="https://docs.google.com/spreadsheets/d/1NEk8vhhDm5ciF0GA0JPizddWQddBANwzN4LCYbvd1UU/edit?usp=sharing" target="_blank" rel="noopener">Valuation summary sheet</a><a class="btn" href="https://docs.google.com/spreadsheets/d/1vW76su3EjLUrlYMyZ_0XMBWCukPzG7V0/edit?usp=sharing&ouid=100503891749103320497&rtpof=true&sd=true" target="_blank" rel="noopener">Full financial model</a></div>
+</section>
+
     </div>
-  </section>
-
-  <section id="experience" style="padding-top:0">
-    <div class="wrap">
-      <p class="eyebrow" data-es="Experiencia">Experience</p>
-      <h2 data-es="Dos veranos en gestión patrimonial, <em>y los roles que me llevaron ahí.</em>">Two summers in wealth management, <em>and the roles that led there.</em></h2>
-
-      <div class="row">
-        <div class="when" data-es="May – sep 2026<br>Jul – sep 2025">May – Sep 2026<br>Jul – Sep 2025</div>
-        <div>
-          <h3 data-es="Practicante de gestión patrimonial">Wealth Management Intern</h3>
-          <p class="org">ATON Financial, San Juan</p>
-          <p class="desc" data-es="Apoyé servicio al cliente, cumplimiento y operaciones en un asesor de inversiones registrado ante la SEC. Redacté la guía bilingüe de operaciones de servicio al cliente de la firma, creé módulos de adiestramiento de eMoney para el personal, preparé investigación sobre la Ley de Asesores de Inversiones para el oficial de cumplimiento y trabajé en el CRM de Salesforce de la firma.">Supported client services, compliance, and operations at an SEC-registered investment adviser. Wrote the firm's bilingual Client Services Operations Guide, built eMoney training modules for staff, prepared Investment Advisers Act research for the compliance officer, and worked in the firm's Salesforce CRM.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="when" data-es="Jul – sep 2025">Jul – Sep 2025</div>
-        <div>
-          <h3 data-es="Practicante de manejo de riesgos">Risk Management Intern</h3>
-          <p class="org">Risk Management Services LLC, San Juan</p>
-          <p class="desc" data-es="Apoyé el trabajo de manejo de riesgos y seguros de la firma.">Supported the firm's risk management and insurance work.</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="when" data-es="May – jun 2025">May – Jun 2025</div>
-        <div>
-          <h3 data-es="Auditor de seguros">Insurance Auditor</h3>
-          <p class="org">Luciano Insurance LLC</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="when" data-es="Verano 2024">Summer 2024</div>
-        <div>
-          <h3 data-es="Asistente y observación profesional">Assistantship and job shadowing</h3>
-          <p class="org">Popular Securities</p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="when">2022</div>
-        <div>
-          <h3 data-es="Observación de asesoría patrimonial">Wealth advising job shadowing</h3>
-          <p class="org">UBS</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="work" class="work">
-    <div class="wrap">
-      <p class="eyebrow" data-es="Proyectos">Projects</p>
-      <h2 data-es="Herramientas que he construido <em>para invertir e investigar.</em>">Tools I've built <em>for investing and research.</em></h2>
-
-      <div class="feature">
-        <div>
-          <h3>ARGUS Portfolio Planner</h3>
-          <p data-es="Una herramienta de análisis de portafolios que corre en el navegador. Toma las posiciones lote por lote y muestra cómo podría comportarse el portafolio, cómo se habría comportado y qué hay realmente dentro de cada ETF.">A portfolio analysis tool that runs in the browser. It takes holdings lot by lot and shows how the portfolio might behave, how it would have behaved, and what is really inside each ETF.</p>
-          <p class="built" data-es="Hecho con React. Importa y exporta Excel.">Built with React. Imports and exports Excel.</p>
-        </div>
-        <ul>
-          <li data-es="Simulación Monte Carlo con <b>1,500</b> trayectorias">Monte Carlo simulation with <b>1,500</b> paths</li>
-          <li data-es="Prueba histórica con datos de <b>1928 a 2025</b>">Historical backtest on <b>1928 to 2025</b> data</li>
-          <li data-es="Frontera eficiente y estimación de beta (CAPM)">Efficient frontier and CAPM beta estimation</li>
-          <li data-es="Desglose interno de ETF">ETF look-through to underlying holdings</li>
-          <li data-es="<b>13</b> pestañas, con informes listos para imprimir"><b>13</b> tabs, with print-ready reports</li>
-        </ul>
-      </div>
-
-      <div class="projects">
-        <div class="project">
-          <div class="thumb"><svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g stroke="#fff" fill="none" stroke-width="1"><path d="M70 118 L150 62 L232 96 L318 48" stroke-opacity=".4"/><path d="M150 62 L208 134 L318 48" stroke-opacity=".22"/>
-<rect x="52" y="100" width="36" height="36" stroke-opacity=".3"><animate attributeName="stroke-opacity" values=".3;1;.3" dur="3.6s" begin="0s" repeatCount="indefinite"/></rect><rect x="137" y="49" width="26" height="26" stroke-opacity=".3"><animate attributeName="stroke-opacity" values=".3;1;.3" dur="3.6s" begin="0.8s" repeatCount="indefinite"/></rect><rect x="216" y="80" width="32" height="32" stroke-opacity=".3"><animate attributeName="stroke-opacity" values=".3;1;.3" dur="3.6s" begin="1.6s" repeatCount="indefinite"/></rect><rect x="198" y="124" width="20" height="20" stroke-opacity=".3"><animate attributeName="stroke-opacity" values=".3;1;.3" dur="3.6s" begin="1.2s" repeatCount="indefinite"/></rect>
-<rect x="298" y="28" width="40" height="40" stroke="#5B9FE0" stroke-width="1.5"><animate attributeName="x" values="284;298;298;284" keyTimes="0;.2;.85;1" dur="3.6s" repeatCount="indefinite"/><animate attributeName="y" values="14;28;28;14" keyTimes="0;.2;.85;1" dur="3.6s" repeatCount="indefinite"/><animate attributeName="width" values="68;40;40;68" keyTimes="0;.2;.85;1" dur="3.6s" repeatCount="indefinite"/><animate attributeName="height" values="68;40;40;68" keyTimes="0;.2;.85;1" dur="3.6s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values="0;1;1;0" keyTimes="0;.2;.85;1" dur="3.6s" repeatCount="indefinite"/></rect></g>
-<g fill="#fff"><circle cx="70" cy="118" r="1.6"/><circle cx="150" cy="62" r="1.6"/><circle cx="232" cy="96" r="1.6"/><circle cx="208" cy="134" r="1.6"/></g>
-<circle r="3" fill="#5B9FE0"><animateMotion dur="3.6s" repeatCount="indefinite" path="M70 118 L150 62 L232 96 L318 48 L318 48" keyPoints="0;1;1" keyTimes="0;.7;1" calcMode="linear"/></circle>
-<circle r="2" fill="#fff" fill-opacity=".8"><animateMotion dur="3.6s" begin="1s" repeatCount="indefinite" path="M150 62 L208 134 L318 48"/></circle></svg></div>
-          <h3>LADON &amp; HERETIC</h3>
-          <p data-es="Dos agentes de investigación. LADON vigila mis posiciones y mi lista de seguimiento en busca de catalizadores; HERETIC busca nuevas oportunidades y lee los informes regulatorios a fondo.">Two research agents. LADON watches my holdings and watchlist for catalysts; HERETIC looks for new opportunities and reads the filings in depth.</p>
-          <p class="built" data-es="Servidor MCP propio con 14 herramientas financieras, corriendo en modelos locales.">Custom MCP server with 14 finance tools, running on local models.</p>
-        </div>
-        <div class="project">
-          <div class="thumb"><svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><clipPath id="rv"><rect x="0" y="0" height="170" width="400"><animate attributeName="width" values="20;400;400" keyTimes="0;.62;1" dur="6s" repeatCount="indefinite"/></rect></clipPath></defs><path d="M0 44H400" stroke="#5B9FE0" stroke-dasharray="2 4" stroke-opacity=".6"/><g clip-path="url(#rv)"><path d="M28 52V79" stroke="#fff" stroke-opacity=".5"/><rect x="23" y="63" width="10" height="2" fill="#8a8a8a"/><path d="M46 54V75" stroke="#fff" stroke-opacity=".5"/><rect x="41" y="64" width="10" height="2" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M64 54V90" stroke="#fff" stroke-opacity=".5"/><rect x="59" y="64" width="10" height="14" fill="#8a8a8a"/><path d="M82 56V86" stroke="#fff" stroke-opacity=".5"/><rect x="77" y="62" width="10" height="16" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M100 48V93" stroke="#fff" stroke-opacity=".5"/><rect x="95" y="62" width="10" height="19" fill="#8a8a8a"/><path d="M118 64V117" stroke="#fff" stroke-opacity=".5"/><rect x="113" y="80" width="10" height="21" fill="#8a8a8a"/><path d="M136 80V108" stroke="#fff" stroke-opacity=".5"/><rect x="131" y="92" width="10" height="9" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M154 81V119" stroke="#fff" stroke-opacity=".5"/><rect x="149" y="92" width="10" height="22" fill="#8a8a8a"/><path d="M172 107V133" stroke="#fff" stroke-opacity=".5"/><rect x="167" y="114" width="10" height="14" fill="#8a8a8a"/><path d="M190 118V142" stroke="#fff" stroke-opacity=".5"/><rect x="185" y="128" width="10" height="2" fill="#8a8a8a"/><path d="M208 113V138" stroke="#fff" stroke-opacity=".5"/><rect x="203" y="125" width="10" height="3" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M226 105V133" stroke="#fff" stroke-opacity=".5"/><rect x="221" y="115" width="10" height="10" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M244 73V130" stroke="#fff" stroke-opacity=".5"/><rect x="239" y="89" width="10" height="26" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M262 69V96" stroke="#fff" stroke-opacity=".5"/><rect x="257" y="77" width="10" height="12" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M280 72V99" stroke="#fff" stroke-opacity=".5"/><rect x="275" y="77" width="10" height="9" fill="#8a8a8a"/><path d="M298 71V98" stroke="#fff" stroke-opacity=".5"/><rect x="293" y="86" width="10" height="3" fill="#8a8a8a"/><path d="M316 50V93" stroke="#fff" stroke-opacity=".5"/><rect x="311" y="65" width="10" height="24" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M334 49V87" stroke="#fff" stroke-opacity=".5"/><rect x="329" y="65" width="10" height="13" fill="#8a8a8a"/><path d="M352 43V83" stroke="#fff" stroke-opacity=".5"/><rect x="347" y="52" width="10" height="25" fill="#000" stroke="#fff" stroke-opacity=".75"/><path d="M370 30V59" stroke="#fff" stroke-opacity=".5"/><rect x="365" y="44" width="10" height="8" fill="#000" stroke="#fff" stroke-opacity=".75"/><circle cx="370" cy="44" r="3" fill="none" stroke="#5B9FE0"><animate attributeName="r" values="3;13" dur="1.5s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".9;0" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="370" cy="44" r="3" fill="#5B9FE0"/></g></svg></div>
-          <h3 data-es="Bot de trading simulado">Paper trading bot</h3>
-          <p data-es="Un bot que opera estrategias de swing y day trading con dinero simulado, usando señales RSI, MACD y EMA y reglas de tamaño de posición.">A bot that trades swing and day strategies with simulated money, using RSI, MACD, and EMA signals and position sizing rules.</p>
-          <p class="built" data-es="Python y la API de paper trading de Alpaca.">Python and the Alpaca paper trading API.</p>
-        </div>
-        <div class="project">
-          <div class="thumb"><svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M40 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M104 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M168 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M232 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M296 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M360 26V146" stroke="#fff" stroke-opacity=".14"/><path d="M40 26H360" stroke="#fff" stroke-opacity=".14"/><path d="M40 50H360" stroke="#fff" stroke-opacity=".14"/><path d="M40 74H360" stroke="#fff" stroke-opacity=".14"/><path d="M40 98H360" stroke="#fff" stroke-opacity=".14"/><path d="M40 122H360" stroke="#fff" stroke-opacity=".14"/><path d="M40 146H360" stroke="#fff" stroke-opacity=".14"/><rect x="50" y="56" width="38" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="114" y="56" width="26" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="178" y="56" width="44" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="242" y="56" width="30" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="50" y="80" width="30" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="114" y="80" width="40" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="178" y="80" width="22" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="306" y="80" width="36" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="50" y="104" width="42" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="178" y="104" width="34" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="242" y="104" width="40" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="114" y="128" width="34" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="242" y="128" width="24" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="306" y="128" width="42" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="306" y="56" width="28" height="6" rx="1" fill="#fff" fill-opacity=".32"/><rect x="168" y="98" width="64" height="24" fill="#5B9FE0" fill-opacity=".14" stroke="#5B9FE0" stroke-width="1.5"><animate attributeName="x" values="168;168;232;232;104;104;296;296;168" keyTimes="0;.18;.25;.43;.5;.68;.75;.93;1" calcMode="spline" keySplines="0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1" dur="7s" repeatCount="indefinite"/><animate attributeName="y" values="98;98;50;50;74;74;122;122;98" keyTimes="0;.18;.25;.43;.5;.68;.75;.93;1" calcMode="spline" keySplines="0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1" dur="7s" repeatCount="indefinite"/></rect><rect x="50" y="34" width="150" height="6" rx="1" fill="#fff" fill-opacity=".6"><animate attributeName="width" values="150;150;90;90;120;120;60;60;150" keyTimes="0;.18;.25;.43;.5;.68;.75;.93;1" calcMode="spline" keySplines="0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1;0 0 1 1;.4 0 .2 1" dur="7s" repeatCount="indefinite"/></rect></svg></div>
-          <h3 data-es="Guía maestra de Excel">Excel Master Guide</h3>
-          <p data-es="Una referencia interactiva para profesionales de finanzas: más de 20 secciones, más de 60 razones financieras y una biblioteca de 80 fórmulas, con ejercicios y glosario.">An interactive reference for finance professionals: 20+ sections, 60+ financial ratios, and an 80-entry formula library, with exercises and a glossary.</p>
-          <p class="built" data-es="Aplicación HTML interactiva.">Interactive HTML application.</p>
-        </div>
-        <div class="project">
-          <div class="thumb"><svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M30 142H370" stroke="#fff" stroke-opacity=".3"/><rect class="bar" style="--i:0" x="52" y="98" width="26" height="44" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:1" x="96" y="90" width="26" height="52" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:2" x="140" y="81" width="26" height="61" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:3" x="184" y="72" width="26" height="70" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:4" x="228" y="64" width="26" height="78" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:5" x="272" y="56" width="26" height="86" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".6"/><rect class="bar" style="--i:6" x="316" y="30" width="26" height="112" fill="#5B9FE0" fill-opacity=".22" stroke="#5B9FE0"/><path d="M30 52H370" stroke="#fff" stroke-dasharray="2 5" stroke-opacity=".45"/><path class="trend" d="M65 96 Q200 62 330 34" stroke="#fff" stroke-opacity=".5" fill="none" pathLength="100"/></svg></div>
-          <h3 data-es="Análisis de acciones: Costco (COST)">Equity research: Costco (COST)</h3>
-          <p data-es="Análisis fundamental completo frente a Walmart, Target y BJ's. Un modelo de flujo de caja libre arroja $831.50 por acción frente a un precio de mercado de $970.31: recomendación de mantener y esperar.">A full fundamental analysis against Walmart, Target, and BJ's. A free cash flow model gives $831.50 per share against a market price of $970.31: Hold and wait.</p>
-          <p class="built" data-es="Bryant University, FIN 370.">Bryant University, FIN 370.</p>
-          <p class="more"><a class="btn" href="costco.html" data-es="Leer el análisis completo">Read the full research</a></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="education">
-    <div class="wrap">
-      <p class="eyebrow" data-es="Educación">Education</p>
-      <h2 data-es="Educación <em>y certificaciones.</em>">Education <em>and certifications.</em></h2>
-      <div class="edu">
-        <div>
-          <h3 class="name">Bryant University</h3>
-          <p data-es="B.S. en Administración de Empresas, concentración en Finanzas, con concentraciones menores en Inteligencia Artificial Aplicada y Estudios Legales">B.S. in Business Administration, Finance concentration, with minors in Applied AI and Law Studies</p>
-          <p class="muted" data-es="Smithfield, Rhode Island. Septiembre de 2023 a mayo de 2027.">Smithfield, Rhode Island. September 2023 to May 2027.</p>
-          <p class="muted" style="margin-top:14px" data-es="Antes: Colegio San Ignacio de Loyola, 2017 a 2023.">Before that: Colegio San Ignacio de Loyola, 2017 to 2023.</p>
-          <h3 class="gap" data-es="Organizaciones estudiantiles">Student organizations</h3>
-          <ul class="plain">
-            <li>Wealth Management Association</li>
-            <li>Finance Association</li>
-            <li>AI Investment Club</li>
-            <li>Law Society</li>
-          </ul>
-        </div>
-        <div>
-          <h3 data-es="Certificaciones">Certifications</h3>
-          <ul class="plain">
-            <li class="cert"><span>Bloomberg Market Concepts</span><a href="https://portal.bloombergforeducation.com/certificates/kFwxQwvimxRMtUiJzP3ueDUH" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li class="cert"><span>Bloomberg Finance Fundamentals</span><a href="https://portal.bloombergforeducation.com/certificates/PdKfaiBHRC5DfPEAdMZm9UvC" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li class="cert"><span>Bloomberg Spreadsheet Analysis</span><a href="https://portal.bloombergforeducation.com/certificates/tHSBxtvfuhwBDpVEEwpgjBr2" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li class="cert"><span>Bloomberg ESG</span><a href="https://portal.bloombergforeducation.com/certificates/RRNJbR5QCkRYTJedRzS74xqW" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li>eMoney Fundamentals</li>
-            <li class="cert"><span>Envestnet Institute On Campus</span><a href="https://verify.skilljar.com/c/xt59hfgcpmfw" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li data-es="Certificaciones de FactSet (en curso)">FactSet certifications (in progress)</li>
-          </ul>
-          <h3 class="gap" data-es="Idiomas">Languages</h3>
-          <p data-es="Español e inglés, con fluidez en ambos">English and Spanish, fluent in both</p>
-          <h3 class="gap" data-es="Destrezas">Skills</h3>
-          <ul class="plain">
-            <li data-es="Bloomberg Terminal (BQL, filtrado de acciones, análisis de renta fija)">Bloomberg Terminal (BQL, equity screening, fixed-income analysis)</li>
-            <li>Python</li>
-            <li>Microsoft Excel, Word, PowerPoint, Outlook</li>
-            <li data-es="Herramientas de IA (ChatGPT, Claude, Claude Code, investigación generativa, análisis de datos)">AI tools (ChatGPT, Claude, Claude Code, generative research, data analysis)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="contact">
-    <div class="wrap"><div class="panel">
-      <p class="eyebrow" data-es="Contacto">Contact</p>
-      <h2 data-es="Hablemos.">Let's talk.</h2>
-      <p data-es="Estoy disponible para puestos a tiempo completo en gestión patrimonial a partir de mayo de 2027, y siempre con ganas de conversar sobre mercados o sobre lo que estoy construyendo.">I'm available for full-time wealth management roles starting after May 2027, and always glad to talk markets or what I'm building.</p>
-      <div class="actions">
-        <a class="btn solid" id="cEmail" hidden data-es="Escríbeme">Email me</a>
-        <a class="btn solid" id="cLinkedIn" hidden target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" id="cHandshake" hidden target="_blank" rel="noopener">Handshake</a>
-        <a class="btn" id="cGitHub" hidden target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" id="cResume" hidden data-es="Descargar résumé">Download resume</a>
-      </div>
-    </div></div>
-  </section>
+  </div>
 </main>
 
 <footer>
   <div class="wrap"><div class="foot">
     <span>&copy; <span id="yr">2026</span> Luis Diaz Busquets</span>
     <span>San Juan, Puerto Rico</span>
-    <a href="#top" data-es="Volver arriba">Back to top</a>
+    <a href="#top">Back to top</a>
   </div></div>
 </footer>
 
 <script>
-/* ============================================================
-   EDIT THESE. Leave any of them as '' and its button stays hidden.
-   For the resume: upload resume.pdf to the repo, then set resume: 'resume.pdf'
-   ============================================================ */
 function LIGHT() { return document.documentElement.getAttribute('data-theme') === 'light'; }
 function FG() { return LIGHT() ? '27,40,32' : '255,255,255'; }
 function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matrix phosphor green, dark: steel blue */
@@ -887,258 +938,25 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
   });
 })();
 
-var CONTACT = {
-  email:    '',
-  linkedin: 'https://www.linkedin.com/in/luis-diaz-busquets',
-  handshake: 'https://app.joinhandshake.com/profiles/ldiaz',
-  github:   'https://github.com/ldiazbusquets',
-  resume:   ''
-};
 
 (function () {
   var menuBtn = document.querySelector('.menu-btn'), menu = document.getElementById('mobileMenu');
   function setMenu(open) { menu.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); }
   menuBtn.addEventListener('click', function (e) { e.stopPropagation(); setMenu(!menu.classList.contains('open')); });
-  menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') setMenu(false); });
   document.addEventListener('click', function (e) { if (!menu.contains(e.target)) setMenu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
-  window.addEventListener('resize', function () { setMenu(false); });
-
-  /* project illustrations: play only while on screen, and not at all if the visitor prefers reduced motion */
-  (function () {
-    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.querySelectorAll('.thumb svg').forEach(function (svg) {
-      if (!svg.pauseAnimations) return;
-      if (still) { svg.setCurrentTime(2.9); svg.pauseAnimations(); return; }
-      if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { en[0].isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations(); }).observe(svg);
-    });
-  })();
-
   document.getElementById('yr').textContent = new Date().getFullYear();
-
-  /* ---------- Contact buttons ---------- */
-  function link(id, href) { var a = document.getElementById(id); if (href) { a.href = href; a.hidden = false; } }
-  link('cEmail', CONTACT.email ? 'mailto:' + CONTACT.email : '');
-  link('cLinkedIn', CONTACT.linkedin);
-  link('cHandshake', CONTACT.handshake);
-  link('cGitHub', CONTACT.github);
-  link('cResume', CONTACT.resume);
-
-  /* ---------- Language toggle ---------- */
-  var lang = 'en';
-  var nodes = document.querySelectorAll('[data-es]');
-  nodes.forEach(function (n) { n.setAttribute('data-en', n.innerHTML); });
-  var langBox = document.querySelector('.lang'), swapTimer = 0;
-  function applyLang() {
-    document.documentElement.lang = lang;
-    nodes.forEach(function (n) { n.innerHTML = n.getAttribute('data-' + lang); });
-    writeCaption();
-  }
-  function setLang(next, animate) {
-    next = next === 'es' ? 'es' : 'en';
-    if (animate && next === lang) return;
-    lang = next;
-    langBox.setAttribute('data-lang', lang);
-    document.querySelectorAll('.lang button').forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
-    });
-    try { localStorage.setItem('lang', lang); } catch (e) {}
-    clearTimeout(swapTimer);
-    if (!animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { applyLang(); return; }
-    document.body.classList.add('lang-out');                 /* fade the text out, swap it, fade back in */
-    swapTimer = setTimeout(function () { applyLang(); document.body.classList.remove('lang-out'); }, 210);
-  }
-  document.querySelectorAll('.lang button').forEach(function (b) {
-    b.addEventListener('click', function () { setLang(b.dataset.lang, true); });
-  });
-
-  /* ---------- Monte Carlo fan chart ---------- */
-  var N = 400, STEPS = 360, MU = 0.07, SIGMA = 0.15, START = 10000;
-  var LO = Math.log(4500), HI = Math.log(700000);
-  var hero = document.querySelector('.hero');
-  var canvas = document.getElementById('fan');
-  var ctx = canvas.getContext('2d');
-  var off = document.createElement('canvas');
-  var paths = [], bands = null, stats = null, raf = 0, geo = null, trackers = [], revealStart = 0, visible = true, looping = false, pointer = null;
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function gauss() {
-    var u = 0, v = 0;
-    while (u === 0) u = Math.random();
-    while (v === 0) v = Math.random();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  }
-  function pct(sorted, p) { return sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))]; }
-
-  function simulate() {
-    var dt = 1 / 12, drift = (MU - SIGMA * SIGMA / 2) * dt, vol = SIGMA * Math.sqrt(dt);
-    paths = [];
-    for (var i = 0; i < N; i++) {
-      var p = new Float32Array(STEPS + 1); p[0] = Math.log(START);
-      for (var s = 1; s <= STEPS; s++) p[s] = p[s - 1] + drift + vol * gauss();
-      paths.push(p);
-    }
-    bands = { p10: [], p50: [], p90: [], at: [] };
-    for (var k = 0; k <= STEPS; k += 6) {
-      var col = paths.map(function (p) { return p[k]; }).sort(function (a, b) { return a - b; });
-      bands.at.push(k); bands.p10.push(pct(col, .1)); bands.p50.push(pct(col, .5)); bands.p90.push(pct(col, .9));
-    }
-    var last = bands.at.length - 1;
-    stats = { median: Math.exp(bands.p50[last]), low: Math.exp(bands.p10[last]) };
-  }
-
-  function render() {
-    var w = hero.clientWidth, h = hero.clientHeight, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    [canvas, off].forEach(function (c) { c.width = w * dpr; c.height = h * dpr; });
-    var o = off.getContext('2d');
-    o.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var x0 = parseFloat(getComputedStyle(document.querySelector('.hero-head')).paddingLeft) || 24;
-    var top = h * 0.24, k = (Math.log(START) - LO) / (HI - LO);
-    var bottom = Math.min(h - 24, (document.querySelector('.sim').offsetTop - 44 - k * top) / (1 - k));
-    var hr = document.querySelector('.hero-head').getBoundingClientRect(), hh = hero.getBoundingClientRect();
-    var lastKid = document.querySelector('.cta') || document.querySelector('.lede'), lk = lastKid.getBoundingClientRect();
-    geo = { x0: x0, w: w, top: top, bottom: bottom, dpr: dpr, headRight: Math.max(lk.right, document.querySelector('.lede').getBoundingClientRect().right) - hh.left + 16, headBottom: lk.bottom - hh.top + 14 };
-    function X(s) { return x0 + (w - x0) * (s / STEPS); }
-    function Y(v) { return bottom - (v - LO) / (HI - LO) * (bottom - top); }
-
-    o.lineWidth = 1; o.strokeStyle = 'rgba(' + FG() + ',0.075)';
-    for (var i = 0; i < paths.length; i++) {
-      o.beginPath(); o.moveTo(X(0), Y(paths[i][0]));
-      for (var s = 2; s <= STEPS; s += 2) o.lineTo(X(s), Y(paths[i][s]));
-      o.stroke();
-    }
-    o.beginPath();
-    bands.at.forEach(function (s, j) { j ? o.lineTo(X(s), Y(bands.p90[j])) : o.moveTo(X(s), Y(bands.p90[j])); });
-    for (var j = bands.at.length - 1; j >= 0; j--) o.lineTo(X(bands.at[j]), Y(bands.p10[j]));
-    o.closePath(); o.fillStyle = 'rgba(' + FG() + ',0.045)'; o.fill();
-
-    o.beginPath();
-    bands.at.forEach(function (s, j) { j ? o.lineTo(X(s), Y(bands.p50[j])) : o.moveTo(X(s), Y(bands.p50[j])); });
-    o.lineWidth = 2.5; o.strokeStyle = 'rgb(' + ACC() + ')'; o.lineJoin = 'round';
-    if (LIGHT()) { o.shadowColor = 'rgba(0,255,65,0.9)'; o.shadowBlur = 10; }
-    o.stroke(); o.shadowBlur = 0;
-    o.beginPath(); o.arc(X(0), Y(Math.log(START)), 4.5, 0, Math.PI * 2); o.fillStyle = 'rgb(' + ACC() + ')'; o.fill();
-
-    var tag = document.getElementById('origin');
-    tag.style.left = x0 + 'px'; tag.style.top = (Y(Math.log(START)) + 10) + 'px';
-  }
-
-  /* ---------- Blob-tracking overlay ---------- */
-  function gx(st) { return geo.x0 + (geo.w - geo.x0) * (st / STEPS); }
-  function gy(v) { return geo.bottom - (v - LO) / (HI - LO) * (geo.bottom - geo.top); }
-  var tags = [], meTag = null;
-  function makeTag(cls) {
-    var d = document.createElement('span'); d.className = 'tag' + (cls ? ' ' + cls : ''); d.setAttribute('aria-hidden', 'true');
-    canvas.insertAdjacentElement('afterend', d); return d;
-  }
-  function place(el, x, y) { el.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)'; }
-  function pickTrackers() {
-    trackers = [];
-    var count = geo.w < 700 ? 5 : 9;
-    for (var i = 0; i < count; i++) trackers.push({
-      p: Math.floor(Math.random() * N), id: 100 + Math.floor(Math.random() * 900),
-      size: 14 + Math.random() * 34, speed: 0.00012 + Math.random() * 0.00005,
-      phase: i / count * 6.283 + Math.random() * 0.6, lo: 0.10 + Math.random() * 0.22, hi: 0.58 + Math.random() * 0.40
-    });
-    while (tags.length < count) tags.push(makeTag());
-    while (tags.length > count) tags.pop().remove();
-    if (!meTag) { meTag = makeTag('me'); meTag.hidden = true; }
-  }
-  function draw(now) {
-    var t = reduce ? 1 : Math.min(1, (now - revealStart) / 1900);
-    var e = 1 - Math.pow(1 - t, 3);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var sw = Math.max(1, Math.floor(off.width * e));
-    ctx.drawImage(off, 0, 0, sw, off.height, 0, 0, sw, off.height);
-    ctx.setTransform(geo.dpr, 0, 0, geo.dpr, 0, 0);
-
-    var pts = trackers.map(function (tr) {
-      var u = reduce ? tr.hi : tr.lo + (tr.hi - tr.lo) * (0.5 + 0.5 * Math.sin(now * tr.speed + tr.phase));
-      var st = Math.min(u, e * 0.999) * STEPS, i = Math.floor(st), f = st - i, p = paths[tr.p];
-      var v = p[i] + (p[Math.min(STEPS, i + 1)] - p[i]) * f;
-      return { x: gx(st), y: gy(v), v: Math.exp(v), tr: tr };
-    }).sort(function (a, b) { return a.x - b.x; });
-
-    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',0.6)';
-    ctx.beginPath();
-    pts.forEach(function (p, i) { i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); });
-    ctx.stroke();
-
-    pts.forEach(function (p, i) {
-      var h = p.tr.size / 2;
-      var blocked = p.x - h < geo.headRight && p.y - h < geo.headBottom;     /* never sit on the headline or buttons */
-      tags[i].style.opacity = blocked ? 0 : 1;
-      if (blocked) return;
-      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',0.92)';
-      ctx.strokeRect(Math.round(p.x - h) + 0.5, Math.round(p.y - h) + 0.5, Math.round(p.tr.size), Math.round(p.tr.size));
-      ctx.fillStyle = 'rgb(' + FG() + ')'; ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
-      tags[i].textContent = '#' + p.tr.id + '  ' + money(p.v);
-      place(tags[i], p.x + h + 7, p.y - h - 1);
-    });
-
-    if (meTag) meTag.hidden = !(pointer && pointer.x >= geo.x0);
-    if (pointer && pointer.x >= geo.x0) {
-      var near = pts.slice().sort(function (a, b) {
-        return Math.hypot(a.x - pointer.x, a.y - pointer.y) - Math.hypot(b.x - pointer.x, b.y - pointer.y);
-      }).slice(0, 3);
-      ctx.strokeStyle = 'rgba(' + ACC() + ',0.95)'; ctx.lineWidth = 1;
-      near.forEach(function (p) { ctx.beginPath(); ctx.moveTo(pointer.x, pointer.y); ctx.lineTo(p.x, p.y); ctx.stroke(); });
-      ctx.strokeStyle = 'rgb(' + ACC() + ')'; ctx.lineWidth = 1.25;
-      ctx.strokeRect(Math.round(pointer.x - 17) + 0.5, Math.round(pointer.y - 17) + 0.5, 34, 34);
-      var yr = Math.max(0, Math.min(30, (pointer.x - geo.x0) / (geo.w - geo.x0) * 30));
-      var val = Math.exp(LO + (geo.bottom - pointer.y) / (geo.bottom - geo.top) * (HI - LO));
-      meTag.textContent = (lang === 'es' ? 'Año ' : 'Year ') + yr.toFixed(1) + '  ' + money(val);
-      place(meTag, pointer.x + 24, pointer.y - 18);
-    }
-  }
-  function loop(now) {
-    if (!visible) { looping = false; return; }
-    draw(now); raf = requestAnimationFrame(loop);
-  }
-  function start() {
-    if (reduce) { draw(performance.now()); return; }
-    if (!looping) { looping = true; raf = requestAnimationFrame(loop); }
-  }
-  function reveal() { revealStart = performance.now(); pickTrackers(); start(); }
-
+  /* highlight the chapter being read */
+  var links = {}; document.querySelectorAll('.toc a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible && geo) start(); }).observe(hero);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        for (var k in links) links[k].classList.toggle('on', k === en.target.id);
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('.chapter').forEach(function (c) { io.observe(c); });
   }
-  hero.addEventListener('pointermove', function (ev) {
-    if (ev.pointerType === 'touch') return;
-    var r = hero.getBoundingClientRect();
-    pointer = { x: ev.clientX - r.left, y: ev.clientY - r.top };
-    if (reduce) draw(performance.now());
-  });
-  hero.addEventListener('pointerleave', function () { pointer = null; if (reduce) draw(performance.now()); });
-
-  function money(v) {
-    var r = v >= 100000 ? Math.round(v / 1000) * 1000 : Math.round(v / 100) * 100;
-    return '$' + r.toLocaleString('en-US');
-  }
-  function writeCaption() {
-    if (!stats) return;
-    document.getElementById('simText').innerHTML = lang === 'es'
-      ? N + ' trayectorias simuladas de $10,000 invertidos durante 30 años. La mitad terminó por encima de <strong>' + money(stats.median) + '</strong>; una de cada diez terminó por debajo de <strong>' + money(stats.low) + '</strong>.'
-      : N + ' simulated paths for $10,000 invested over 30 years. Half finished above <strong>' + money(stats.median) + '</strong>; one in ten finished below <strong>' + money(stats.low) + '</strong>.';
-  }
-  function run() { simulate(); writeCaption(); render(); reveal(); }
-
-  document.getElementById('rerun').addEventListener('click', run);
-  window.addEventListener('themechange', function () { if (geo) { render(); if (reduce) draw(performance.now()); } });
-  var timer;
-  window.addEventListener('resize', function () {
-    clearTimeout(timer);
-    timer = setTimeout(function () { render(); if (reduce) draw(performance.now()); }, 150);
-  });
-
-  var saved = null;
-  try { saved = localStorage.getItem('lang'); } catch (e) {}
-  simulate();
-  setLang(saved || 'en');
-  render(); reveal();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { render(); if (reduce) draw(performance.now()); });
 })();
 </script>
 
