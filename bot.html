@@ -755,7 +755,7 @@
 <section class="chapter" id="sim">
   <p class="eyebrow">01 Watch it trade</p>
   <h2>The real rules, <em>running on a simulated market.</em></h2>
-  <p>The chart below generates a random price series and lets the bot's rules trade it one day at a time. Prices are made up, so the result changes on every run. The entries, stops, targets, and position sizes are calculated exactly as the bot calculates them.</p>
+  <p>The chart below generates a random price series and lets the bot's rules trade it one day at a time. Prices are made up, so the result changes on every run, and some runs lose money. The made-up market moves in rising and falling phases that last a couple of months, which is the kind of market this strategy is designed for. In a market with no direction it roughly breaks even. The entries, stops, targets, and position sizes are calculated exactly as the bot calculates them.</p>
   <div class="simgrid">
     <div class="panel simchart">
       <canvas id="simc"></canvas>
@@ -887,15 +887,15 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 (function () {
   var RISK = 0.01, STOP = 0.07, TP1 = 0.05, TP2 = 0.10, TRAIL = 0.03, TDAYS = 10, FLAT = 0.015, MAXFRAC = 0.20, FEE = 0.005, START = 100000;
   var cv = document.getElementById('simc'), cx = cv.getContext('2d'), logEl = document.getElementById('simlog');
-  var bars, ema21, ema50, rsi, hist, vavg, day, cash, pos, closed, wins, marks, levels, eqHist, paused = false, timer = 0;
+  var bars, ema21, ema50, rsi, hist, vavg, day, cash, pos, closed, wins, marks, levels, eqHist, paused = false, timer = 0, vLo = null, vHi = null;
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function g() { return (Math.random() + Math.random() + Math.random() + Math.random() - 2) / 1.15 * 1.73; }
   function ema(arr, n) { var k = 2 / (n + 1), out = [arr[0]]; for (var i = 1; i < arr.length; i++) out.push(arr[i] * k + out[i - 1] * (1 - k)); return out; }
   function build() {
     var n = 330, p = 100, drift = 0.0009; bars = [];
     for (var i = 0; i < n; i++) {
-      if (i % 45 === 0) drift = Math.random() < 0.42 ? -(0.0006 + Math.random() * 0.0016) : 0.0004 + Math.random() * 0.0016;   /* alternating up and down regimes */
-      var o = p * (1 + g() * 0.003), c = o * Math.exp(drift + g() * 0.014);
+      if (i === 0 || Math.random() < 1 / 70) drift = Math.random() < 0.42 ? -(0.0012 + Math.random() * 0.002) : 0.001 + Math.random() * 0.002;   /* trends that last about 70 days on average, up or down */
+      var o = p * (1 + g() * 0.003), c = o * Math.exp(drift + g() * 0.011);
       bars.push({ o: o, c: c, h: Math.max(o, c) * (1 + Math.abs(g()) * 0.005), l: Math.min(o, c) * (1 - Math.abs(g()) * 0.005), v: 0.5 + Math.random() });
       p = c;
     }
@@ -906,7 +906,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     rsi = [50]; var up = 0, dn = 0;
     for (var j = 1; j < n; j++) { var d = cl[j] - cl[j - 1]; up = (up * 13 + Math.max(d, 0)) / 14; dn = (dn * 13 + Math.max(-d, 0)) / 14; rsi.push(100 - 100 / (1 + up / (dn || 1e-9))); }
     vavg = bars.map(function (_, i) { var s = 0, k = 0; for (var q = Math.max(0, i - 19); q <= i; q++) { s += bars[q].v; k++; } return s / k; });
-    day = 60; cash = START; pos = null; closed = 0; wins = 0; marks = []; levels = []; eqHist = []; logEl.innerHTML = '';
+    vLo = vHi = null; day = 60; cash = START; pos = null; closed = 0; wins = 0; marks = []; levels = []; eqHist = []; logEl.innerHTML = '';
     say('', 'Scanning for a long or short setup.');
   }
   function money(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
@@ -963,6 +963,8 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     for (i = a; i <= day; i++) { lo = Math.min(lo, bars[i].l, ema21[i]); hi = Math.max(hi, bars[i].h, ema21[i]); }
     if (pos) { lo = Math.min(lo, pos.stop, pos.entry * (1 + pos.dir * TP2)); hi = Math.max(hi, pos.stop, pos.entry * (1 + pos.dir * TP2)); }
     var pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
+    if (vLo === null) { vLo = lo; vHi = hi; } else { vLo += (lo - vLo) * 0.3; vHi += (hi - vHi) * 0.3; }   /* ease the price scale so the chart does not jump */
+    lo = Math.min(lo, vLo); hi = Math.max(hi, vHi);
     var stepX = (w - 70) / span, bw = Math.max(3, stepX * 0.68);
     function X(i) { return 8 + (i - a + 0.5) * stepX; } function Y(v) { return 10 + (hi - v) / (hi - lo) * (h - 20); }
     var fg = FG(), acc = ACC();
@@ -1012,7 +1014,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
   paint();
   var onScreen = true;
   if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; }).observe(cv);
-  setInterval(function () { if (onScreen) tick(); }, 190);
+  setInterval(function () { if (onScreen && !document.hidden) tick(); }, 420);   /* one trading day roughly every 0.4 seconds */
 
   /* ---------- year to date, shown only if backtest.json has been uploaded ---------- */
   fetch('backtest.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
@@ -1182,7 +1184,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     if (seen && (Math.abs(tx - cx) > 0.3 || Math.abs(ty - cy) > 0.3)) {
       cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12; dirty = true;
     }
-    if (!reduce && (++frame % 2 === 0)) dirty = true;
+    if (!reduce && (++frame % 6 === 0)) dirty = true;   /* background chart redraws about 10 times a second on this page */
     if (window.scrollY !== lastScroll) { lastScroll = window.scrollY; dirty = true; }
     var hb = hero.getBoundingClientRect().bottom;
     if (dirty && hb < h) { draw(); if (hb > 0) { x.clearRect(0, 0, w, hb); var fg = x.createLinearGradient(0, hb, 0, hb + 110); fg.addColorStop(0, 'rgba(0,0,0,1)'); fg.addColorStop(1, 'rgba(0,0,0,0)'); x.globalCompositeOperation = 'destination-out'; x.fillStyle = fg; x.fillRect(0, hb, w, 110); x.globalCompositeOperation = 'source-over'; } dirty = false; }
