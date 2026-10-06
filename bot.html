@@ -682,6 +682,19 @@
   @keyframes contourDrift { from { transform: translate3d(-50px, -40px, 0) scale(1.02); } to { transform: translate3d(50px, 40px, 0) scale(1.06); } }
   @media (prefers-reduced-motion: reduce) { #waves { animation: none; } }
   .hero.page { background: transparent; }
+
+  /* project pages: fast scrolling. The background is still, and panels are tinted glass without live blur. */
+  #waves { animation: none; transform: none; will-change: auto; }
+  .hero.page::before { display: none; }
+  .feature, .project, .edu > div, .panel, .sim, .figs > div, .btn:not(.solid), .theme-btn, .menu-btn, .nav-links a, .toc a.on {
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  }
+  .panel, .figs > div { background: linear-gradient(135deg, rgba(34,34,34,.86), rgba(16,16,16,.86)); }
+  html[data-theme="light"] .panel, html[data-theme="light"] .figs > div { background: linear-gradient(135deg, rgba(255,255,255,.66), rgba(255,255,255,.40)); }
+
+  /* breathing room between a panel and the note beneath it */
+  .chapter .note { margin-top: 26px; }
+  .hero.page .note { margin-top: 22px; }
 </style>
 
 <style>
