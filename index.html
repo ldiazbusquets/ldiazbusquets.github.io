@@ -610,6 +610,26 @@
   .plain li.cert a::after { content: " \2197"; }
   .plain li.cert a:hover { color: var(--white); border-color: var(--white); }
   .project .more { margin-top: 18px; }
+
+  /* nav: Home link, and collapse to the menu button earlier now that there are more links */
+  @media (max-width: 1100px) { .nav-links a { display: none; } .menu-btn { display: block; } }
+  @media (min-width: 821px) and (max-width: 1100px) { .mobile-menu { display: block; left: auto; width: 320px; } }
+  html[data-theme="light"] .hero > .origin { color: #00C236; text-shadow: 0 0 10px rgba(0,255,65,.45); }
+
+  .coursework { margin-top: 14px; }
+  .coursework > h3.second { margin-top: 34px; }
+  .coursework > h3 { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--soft); margin-bottom: 8px; }
+  .courselist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(28px, 4vw, 56px); }
+  .courselist li { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .courselist .code { font-size: 11px; font-weight: 600; letter-spacing: .1em; color: var(--soft); padding-top: 4px; white-space: nowrap; }
+  .courselist b { display: block; font-weight: 600; letter-spacing: -.01em; }
+  .courselist p { margin: 6px 0 0; font-size: .92rem; color: var(--soft); max-width: 46ch; }
+  .courselist p a { color: var(--ink); text-underline-offset: 3px; }
+  .courselist .status { display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--brass); vertical-align: 2px; }
+  .coursework .built { margin: 22px 0 0; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--soft); }
+  .coursework .built a { color: inherit; text-underline-offset: 4px; }
+  .coursework .built a::after { content: " \2197"; }
+  @media (max-width: 820px) { .courselist { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -623,6 +643,7 @@
   <nav class="nav" aria-label="Main">
     <a class="mark" href="#top">LDB</a>
     <div class="nav-links">
+      <a href="#top" data-es="Inicio">Home</a>
       <a href="#about" data-es="Sobre mí">About</a>
       <a href="#experience" data-es="Experiencia">Experience</a>
       <a href="#work" data-es="Proyectos">Projects</a>
@@ -640,6 +661,7 @@
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
     </div>
     <div class="mobile-menu" id="mobileMenu">
+      <a href="#top" data-es="Inicio">Home</a>
       <a href="#about" data-es="Sobre mí">About</a>
       <a href="#experience" data-es="Experiencia">Experience</a>
       <a href="#work" data-es="Proyectos">Projects</a>
@@ -816,7 +838,7 @@
             <li class="cert"><span>Bloomberg Finance Fundamentals</span><a href="https://portal.bloombergforeducation.com/certificates/PdKfaiBHRC5DfPEAdMZm9UvC" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
             <li class="cert"><span>Bloomberg Spreadsheet Analysis</span><a href="https://portal.bloombergforeducation.com/certificates/tHSBxtvfuhwBDpVEEwpgjBr2" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
             <li class="cert"><span>Bloomberg ESG</span><a href="https://portal.bloombergforeducation.com/certificates/RRNJbR5QCkRYTJedRzS74xqW" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
-            <li>eMoney Fundamentals</li>
+            <li class="cert"><span>eMoney Fundamentals</span><a href="https://learning.emoneyadvisor.com/share/gamification/badges/external/6ff9cbbc-a1c4-4b9b-91d1-c571672860fe?lang=en" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
             <li class="cert"><span>Envestnet Institute On Campus</span><a href="https://verify.skilljar.com/c/xt59hfgcpmfw" target="_blank" rel="noopener" data-es="Verificar">Verify</a></li>
             <li data-es="Certificaciones de FactSet (en curso)">FactSet certifications (in progress)</li>
           </ul>
@@ -830,6 +852,26 @@
             <li data-es="Herramientas de IA (ChatGPT, Claude, Claude Code, investigación generativa, análisis de datos)">AI tools (ChatGPT, Claude, Claude Code, generative research, data analysis)</li>
           </ul>
         </div>
+      </div>
+      <div class="panel coursework">
+        <h3 data-es="Cursos de finanzas">Finance coursework</h3>
+        <ul class="courselist">
+            <li><span class="code">FIN 201</span><div><b><span data-es="Gerencia Financiera">Financial Management</span></b><p data-es="Los fundamentos de las finanzas corporativas: valor del dinero en el tiempo, riesgo y rendimiento, valoración de valores, presupuesto de capital y cómo las empresas eligen su financiamiento.">The foundations of corporate finance: time value of money, risk and return, valuing securities, capital budgeting, and how firms choose their financing.</p></div></li>
+            <li><span class="code">FIN 312</span><div><b><span data-es="Inversiones">Investments</span></b><p data-es="Cómo se valoran y negocian los valores, cómo se miden el riesgo y el rendimiento, y las bases del manejo de portafolios. Se ofrece en el Financial Markets Center de Bryant con datos de mercado en vivo.">How securities are priced and traded, how risk and return are measured, and the basics of portfolio management. Taught in Bryant's Financial Markets Center with live market data.</p></div></li>
+            <li><span class="code">FIN 315</span><div><b><span data-es="Instituciones y Mercados Financieros">Financial Institutions and Markets</span></b><p data-es="Cómo funciona el sistema financiero de Estados Unidos: bancos, aseguradoras y mercados de capital, y el marco económico y legal que los rodea.">How the U.S. financial system works: banks, insurers, and capital markets, and the economic and legal framework around them.</p></div></li>
+            <li><span class="code">FIN 368</span><div><b><span data-es="Finanzas Multinacionales">Multinational Finance</span></b><p data-es="Gerencia financiera a nivel internacional: mercados de divisas, financiamiento del comercio, cobertura y arbitraje, y presupuesto de capital para inversión extranjera.">Financial management across borders: currency markets, trade financing, hedging and arbitrage, and capital budgeting for foreign investment.</p></div></li>
+            <li><span class="code">FIN 370</span><div><b><span data-es="Análisis de Estados Financieros">Financial Statement Analysis</span></b><p data-es="Lectura crítica de estados financieros para juzgar cuánto vale realmente una empresa. Es el curso detrás de mi <a href=&quot;costco.html&quot;>análisis de Costco</a>.">Reading financial statements critically to judge what a company is really worth. This is the course behind my <a href="costco.html">Costco research</a>.</p></div></li>
+            <li><span class="code">FIN 466</span><div><b><span data-es="Análisis de Datos para Finanzas">Data Analysis for Finance</span></b><p data-es="Trabajo con grandes conjuntos de datos financieros, numéricos y de texto, usando herramientas analíticas de código abierto para apoyar decisiones financieras.">Working with large financial datasets, both numbers and text, using open-source analytical tools to support financial decisions.</p></div></li>
+            <li><span class="code">FIN 458</span><div><b><span data-es="Valores de Deuda, Derivados e Inversión">Debt Securities, Derivatives and Investing</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Análisis de renta fija: valoración y manejo de bonos, con conceptos de opciones y futuros aplicados a la valoración y al manejo de riesgo.">Fixed income analysis: pricing and managing bonds, with options and futures concepts applied to pricing and risk management.</p></div></li>
+            <li><span class="code">FIN 414</span><div><b><span data-es="Aplicaciones de IA en Finanzas">AI Applications in Finance</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Usos prácticos de la IA en finanzas, incluyendo robo-asesores, análisis de sentimiento en texto y trabajo con modelos de IA mediante APIs.">Practical uses of AI in finance, including robo-advisors, sentiment analysis of text, and working with AI models through APIs.</p></div></li>
+        </ul>
+                <h3 class="second" data-es="Cursos de derecho">Law coursework</h3>
+        <ul class="courselist">
+            <li><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
+            <li><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
+            <li><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
+        </ul>
+        <p class="built"><a href="https://catalog.bryant.edu/undergraduate/coursedescriptions/" target="_blank" rel="noopener" data-es="Catálogo académico de Bryant">Bryant's academic catalog</a></p>
       </div>
     </div>
   </section>
@@ -995,9 +1037,12 @@ var CONTACT = {
     var x0 = parseFloat(getComputedStyle(document.querySelector('.hero-head')).paddingLeft) || 24;
     var top = h * 0.24, k = (Math.log(START) - LO) / (HI - LO);
     var bottom = Math.min(h - 24, (document.querySelector('.sim').offsetTop - 44 - k * top) / (1 - k));
-    var hr = document.querySelector('.hero-head').getBoundingClientRect(), hh = hero.getBoundingClientRect();
-    var lastKid = document.querySelector('.cta') || document.querySelector('.lede'), lk = lastKid.getBoundingClientRect();
-    geo = { x0: x0, w: w, top: top, bottom: bottom, dpr: dpr, headRight: Math.max(lk.right, document.querySelector('.lede').getBoundingClientRect().right) - hh.left + 16, headBottom: lk.bottom - hh.top + 14 };
+    var hh = hero.getBoundingClientRect(), keep = [];
+    document.querySelectorAll('.hero-head h1, .hero-head .lede, .hero-head .cta a').forEach(function (el) {
+      var q = el.getBoundingClientRect();
+      keep.push({ l: q.left - hh.left - 12, r: q.right - hh.left + 12, t: q.top - hh.top - 10, b: q.bottom - hh.top + 10 });
+    });
+    geo = { x0: x0, w: w, top: top, bottom: bottom, dpr: dpr, keep: keep };
     function X(s) { return x0 + (w - x0) * (s / STEPS); }
     function Y(v) { return bottom - (v - LO) / (HI - LO) * (bottom - top); }
 
@@ -1067,7 +1112,8 @@ var CONTACT = {
 
     pts.forEach(function (p, i) {
       var h = p.tr.size / 2;
-      var blocked = p.x - h < geo.headRight && p.y - h < geo.headBottom;     /* never sit on the headline or buttons */
+      var blocked = false;                                   /* never sit on the name, intro, or buttons */
+      for (var z = 0; z < geo.keep.length; z++) { var k = geo.keep[z]; if (p.x + h + 120 > k.l && p.x - h < k.r && p.y + h > k.t && p.y - h < k.b) { blocked = true; break; } }
       tags[i].style.opacity = blocked ? 0 : 1;
       if (blocked) return;
       ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',0.92)';
