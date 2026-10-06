@@ -9,9 +9,12 @@
 <script>
 /* Theme: light from 7am to 7pm on the visitor's device, dark otherwise. A manual choice lasts for the visit. */
 (function () {
-  var pick = null; try { pick = sessionStorage.getItem('theme'); } catch (e) {}
-  var h = new Date().getHours();
-  document.documentElement.setAttribute('data-theme', pick || (h >= 7 && h < 19 ? 'light' : 'dark'));
+  var h = new Date().getHours(), auto = h >= 7 && h < 19 ? 'light' : 'dark', pick = null;
+  try {                                   /* a manual choice only holds until the next 7am or 7pm switch */
+    var raw = (sessionStorage.getItem('theme') || '').split('|');
+    if (raw[0] && raw[1] === auto) pick = raw[0]; else sessionStorage.removeItem('theme');
+  } catch (e) {}
+  document.documentElement.setAttribute('data-theme', pick || auto);
 })();
 </script>
 <meta name="description" content="A swing trading bot built in Python on the Alpaca paper trading API, with its rules running in a live simulation.">
@@ -842,7 +845,14 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 (function () {
   var root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]');
   function byHour() { var h = new Date().getHours(); return h >= 7 && h < 19 ? 'light' : 'dark'; }
-  function chosen() { try { return sessionStorage.getItem('theme'); } catch (e) { return null; } }
+  function chosen() {
+    try {
+      var raw = (sessionStorage.getItem('theme') || '').split('|');
+      if (raw[0] && raw[1] === byHour()) return raw[0];
+      sessionStorage.removeItem('theme');
+    } catch (e) {}
+    return null;
+  }
   function apply(t) {
     var changed = root.getAttribute('data-theme') !== t;
     if (changed) root.setAttribute('data-theme', t);
@@ -853,7 +863,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     apply(chosen() || byHour());
     document.querySelector('.theme-btn').addEventListener('click', function () {
       var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      try { sessionStorage.setItem('theme', next); } catch (e) {}
+      try { sessionStorage.setItem('theme', next + '|' + byHour()); } catch (e) {}
       apply(next);
     });
     setInterval(function () { if (!chosen()) apply(byHour()); }, 60000);   /* follows the clock while the page stays open */
