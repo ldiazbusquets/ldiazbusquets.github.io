@@ -24,7 +24,8 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ldiazbusquets.github.io/preview.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23000000'/%3E%3Cpath d='M8 50 C24 48 36 40 56 14' stroke='%235B9FE0' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Urbanist:wght@300..600&family=Manrope:wght@400..700&display=swap" rel="stylesheet">
@@ -101,8 +102,8 @@
     color: var(--white); background: none; border: 0; border-radius: 999px; padding: 4px 12px; cursor: pointer; transition: color .25s;
   }
   .lang button[aria-pressed="true"] { color: #000; }
-  [data-es], #simText { transition: opacity .2s ease, filter .2s ease; }
-  body.lang-out [data-es], body.lang-out #simText { opacity: 0; filter: blur(5px); }
+  [data-es], #simText, #simNote { transition: opacity .2s ease, filter .2s ease; }
+  body.lang-out [data-es], body.lang-out #simText, body.lang-out #simNote { opacity: 0; filter: blur(5px); }
   @media (prefers-reduced-motion: reduce) { .lang::before, [data-es], #simText { transition: none; } }
   .menu-btn { display: none; width: 40px; height: 40px; padding: 0; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: none; cursor: pointer; position: relative; }
   .menu-btn span { position: absolute; left: 11px; right: 11px; height: 1.5px; background: #fff; transition: transform .25s ease, top .25s ease; }
@@ -630,6 +631,8 @@
   .coursework .built a { color: inherit; text-underline-offset: 4px; }
   .coursework .built a::after { content: " \2197"; }
   @media (max-width: 820px) { .courselist { grid-template-columns: minmax(0, 1fr); } }
+
+  .contact h2 { font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; font-stretch: 125%; font-weight: 800; letter-spacing: -.02em; line-height: .95; font-size: clamp(2.3rem, 6.4vw, 5rem); }
 </style>
 </head>
 <body>
@@ -647,7 +650,6 @@
       <a href="#about" data-es="Sobre mí">About</a>
       <a href="#experience" data-es="Experiencia">Experience</a>
       <a href="#work" data-es="Proyectos">Projects</a>
-      <a href="costco.html" data-es="Análisis">Research</a>
       <a href="#education" data-es="Educación">Education</a>
       <a href="#contact" data-es="Contacto">Contact</a>
       <div class="lang" role="group" aria-label="Language">
@@ -665,7 +667,6 @@
       <a href="#about" data-es="Sobre mí">About</a>
       <a href="#experience" data-es="Experiencia">Experience</a>
       <a href="#work" data-es="Proyectos">Projects</a>
-      <a href="costco.html" data-es="Análisis de Costco">Costco research</a>
       <a href="#education" data-es="Educación">Education</a>
       <a href="#contact" data-es="Contacto">Contact</a>
     </div>
@@ -683,7 +684,7 @@
   <div class="sim">
     <p>
       <span id="simText"></span>
-      <small data-es="Ilustrativo: rendimiento anual promedio de 7%, volatilidad de 15%. No es un pronóstico. Es el mismo método que usa ARGUS, una herramienta que construí.">Illustrative: 7% average annual return, 15% volatility. Not a forecast. It's the same method behind ARGUS, a tool I built.</small>
+      <small id="simNote"></small>
     </p>
     <button class="btn" id="rerun" type="button" data-es="Simular de nuevo">Run it again</button>
   </div>
@@ -870,6 +871,8 @@
             <li><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
             <li><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
             <li><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
+            <li><span class="code">LGLS 412</span><div><b><span data-es="Derecho de las Instituciones Financieras">Law of Financial Institutions</span></b><p data-es="Las leyes y regulaciones que rigen a los bancos y otras instituciones financieras.">The laws and regulations that govern banks and other financial institutions.</p></div></li>
+            <li><span class="code">LGLS 451</span><div><b><span data-es="Derecho Mercantil Internacional">International Business Law</span></b><p data-es="Las reglas legales detrás de los negocios internacionales: contratos, comercio y resolución de disputas entre países.">The legal rules behind doing business across borders: contracts, trade, and resolving disputes between countries.</p></div></li>
         </ul>
         <p class="built"><a href="https://catalog.bryant.edu/undergraduate/coursedescriptions/" target="_blank" rel="noopener" data-es="Catálogo académico de Bryant">Bryant's academic catalog</a></p>
       </div>
@@ -995,8 +998,8 @@ var CONTACT = {
   });
 
   /* ---------- Monte Carlo fan chart ---------- */
-  var N = 400, STEPS = 360, MU = 0.07, SIGMA = 0.15, START = 10000;
-  var LO = Math.log(4500), HI = Math.log(700000);
+  var N = 400, STEPS = 360, MU = 0.07, SIGMA = 0.15, START = 10000;   /* MU and SIGMA are redrawn on every run */
+  var LO = Math.log(2500), HI = Math.log(1400000);
   var hero = document.querySelector('.hero');
   var canvas = document.getElementById('fan');
   var ctx = canvas.getContext('2d');
@@ -1013,6 +1016,8 @@ var CONTACT = {
   function pct(sorted, p) { return sorted[Math.min(sorted.length - 1, Math.floor(p * sorted.length))]; }
 
   function simulate() {
+    MU = Math.round((0.06 + Math.random() * 0.03) * 1000) / 1000;        /* average return: 6% to 9% */
+    SIGMA = Math.round((0.12 + Math.random() * 0.06) * 1000) / 1000;     /* volatility: 12% to 18% */
     var dt = 1 / 12, drift = (MU - SIGMA * SIGMA / 2) * dt, vol = SIGMA * Math.sqrt(dt);
     paths = [];
     for (var i = 0; i < N; i++) {
@@ -1081,10 +1086,11 @@ var CONTACT = {
     trackers = [];
     var count = geo.w < 700 ? 5 : 9;
     for (var i = 0; i < count; i++) trackers.push({
-      p: Math.floor(Math.random() * N), id: 100 + Math.floor(Math.random() * 900),
-      size: 14 + Math.random() * 34, speed: 0.00012 + Math.random() * 0.00005,
-      phase: i / count * 6.283 + Math.random() * 0.6, lo: 0.10 + Math.random() * 0.22, hi: 0.58 + Math.random() * 0.40
+      p: Math.floor(Math.random() * N), size: 14 + Math.random() * 34,
+      speed: 1 / (24000 + Math.random() * 14000),          /* one trip from year 0 to year 30 takes 24 to 38 seconds */
+      phase: i / count, fix: (i + 1) / (count + 1), last: -1
     });
+
     while (tags.length < count) tags.push(makeTag());
     while (tags.length > count) tags.pop().remove();
     if (!meTag) { meTag = makeTag('me'); meTag.hidden = true; }
@@ -1099,10 +1105,13 @@ var CONTACT = {
     ctx.setTransform(geo.dpr, 0, 0, geo.dpr, 0, 0);
 
     var pts = trackers.map(function (tr) {
-      var u = reduce ? tr.hi : tr.lo + (tr.hi - tr.lo) * (0.5 + 0.5 * Math.sin(now * tr.speed + tr.phase));
+      var u = reduce ? tr.fix : (now * tr.speed + tr.phase) % 1;
+      if (u < tr.last) tr.p = Math.floor(Math.random() * N);       /* finished: start again at $10,000 on another path */
+      tr.last = u;
+      var fade = reduce ? 1 : Math.max(0, Math.min(1, u / 0.05, (1 - u) / 0.06));
       var st = Math.min(u, e * 0.999) * STEPS, i = Math.floor(st), f = st - i, p = paths[tr.p];
       var v = p[i] + (p[Math.min(STEPS, i + 1)] - p[i]) * f;
-      return { x: gx(st), y: gy(v), v: Math.exp(v), tr: tr };
+      return { x: gx(st), y: gy(v), v: Math.exp(v), tr: tr, fade: fade };
     }).sort(function (a, b) { return a.x - b.x; });
 
     ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',0.6)';
@@ -1114,12 +1123,12 @@ var CONTACT = {
       var h = p.tr.size / 2;
       var blocked = false;                                   /* never sit on the name, intro, or buttons */
       for (var z = 0; z < geo.keep.length; z++) { var k = geo.keep[z]; if (p.x + h + 120 > k.l && p.x - h < k.r && p.y + h > k.t && p.y - h < k.b) { blocked = true; break; } }
-      tags[i].style.opacity = blocked ? 0 : 1;
+      tags[i].style.opacity = blocked ? 0 : p.fade;
       if (blocked) return;
-      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',0.92)';
+      ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(' + FG() + ',' + (0.92 * p.fade).toFixed(3) + ')';
       ctx.strokeRect(Math.round(p.x - h) + 0.5, Math.round(p.y - h) + 0.5, Math.round(p.tr.size), Math.round(p.tr.size));
       ctx.fillStyle = 'rgb(' + FG() + ')'; ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
-      tags[i].textContent = '#' + p.tr.id + '  ' + money(p.v);
+      tags[i].textContent = '#' + ('00' + (p.tr.p + 1)).slice(-3) + '  ' + money(p.v);
       place(tags[i], p.x + h + 7, p.y - h - 1);
     });
 
@@ -1168,6 +1177,10 @@ var CONTACT = {
     document.getElementById('simText').innerHTML = lang === 'es'
       ? N + ' trayectorias simuladas de $10,000 invertidos durante 30 años. La mitad terminó por encima de <strong>' + money(stats.median) + '</strong>; una de cada diez terminó por debajo de <strong>' + money(stats.low) + '</strong>.'
       : N + ' simulated paths for $10,000 invested over 30 years. Half finished above <strong>' + money(stats.median) + '</strong>; one in ten finished below <strong>' + money(stats.low) + '</strong>.';
+    var m = (MU * 100).toFixed(1), v = (SIGMA * 100).toFixed(1);
+    document.getElementById('simNote').textContent = lang === 'es'
+      ? 'Esta corrida: rendimiento anual promedio de ' + m + '%, volatilidad de ' + v + '%. Los supuestos cambian en cada corrida. No es un pronóstico. Es el mismo método que usa ARGUS, una herramienta que construí.'
+      : 'This run: ' + m + '% average annual return, ' + v + '% volatility. The assumptions change on every run. Not a forecast. It is the same method behind ARGUS, a tool I built.';
   }
   function run() { simulate(); writeCaption(); render(); reveal(); }
 
@@ -1191,8 +1204,6 @@ var CONTACT = {
 <script>
 /* ---------- Background behind everything below the hero ---------- */
 (function () {
-  var BACKGROUND = 'market';   /* 'market' = live candlestick chart, 'topo' = contour lines */
-
   var c = document.getElementById('waves'), x = c.getContext('2d');
   var hero = document.querySelector('.hero');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1203,50 +1214,6 @@ var CONTACT = {
     w = window.innerWidth; h = window.innerHeight;
     c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
     dirty = true;
-  }
-
-  /* ----- contour lines ----- */
-  var CASES = { 1: [3, 2], 2: [2, 1], 3: [3, 1], 4: [0, 1], 5: [0, 3, 2, 1], 6: [0, 2], 7: [0, 3], 8: [0, 3], 9: [0, 2], 10: [0, 1, 3, 2], 11: [0, 1], 12: [3, 1], 13: [2, 1], 14: [3, 2] };
-  var field = null, cols = 0, rows = 0, CELL = 10;
-  function drawTopo() {
-    var t = reduce ? 0 : performance.now(), sy = window.scrollY, i, j;
-    CELL = w < 700 ? 12 : 10;
-    cols = Math.ceil(w / CELL) + 2; rows = Math.ceil(h / CELL) + 2;
-    if (!field || field.length !== cols * rows) field = new Float32Array(cols * rows);
-    for (j = 0; j < rows; j++) {
-      for (i = 0; i < cols; i++) {
-        var px = i * CELL, py = j * CELL, wy = py + sy;
-        var v = Math.sin(px * 0.0031 + t * 0.00007) * Math.cos(wy * 0.0037 - t * 0.00005)
-              + 0.5 * Math.sin((px + wy) * 0.0052 + t * 0.00009) + 0.5 * Math.cos((px - wy) * 0.0043 - t * 0.00004);
-        if (seen) { var dx = px - cx, dy = py - cy; v += 1.15 * Math.exp(-(dx * dx + dy * dy) / 52000); }
-        field[j * cols + i] = v;
-      }
-    }
-    x.clearRect(0, 0, w, h); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
-    var n = 0;
-    for (var lv = -1.5; lv <= 2.6; lv += 0.3, n++) {
-      x.strokeStyle = 'rgba(' + FG() + ',' + (n % 4 === 0 ? 0.26 : 0.12) + ')';
-      x.beginPath();
-      for (j = 0; j < rows - 1; j++) {
-        for (i = 0; i < cols - 1; i++) {
-          var a = field[j * cols + i], b = field[j * cols + i + 1], c2 = field[(j + 1) * cols + i + 1], d = field[(j + 1) * cols + i];
-          var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
-          if (idx === 0 || idx === 15) continue;
-          var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx];
-          for (var q = 0; q < e.length; q += 2) {
-            for (var m = 0; m < 2; m++) {
-              var ed = e[q + m], ex, ey;
-              if (ed === 0) { ex = X0 + CELL * (lv - a) / (b - a); ey = Y0; }
-              else if (ed === 1) { ex = X0 + CELL; ey = Y0 + CELL * (lv - b) / (c2 - b); }
-              else if (ed === 2) { ex = X0 + CELL * (lv - d) / (c2 - d); ey = Y0 + CELL; }
-              else { ex = X0; ey = Y0 + CELL * (lv - a) / (d - a); }
-              m ? x.lineTo(ex, ey) : x.moveTo(ex, ey);
-            }
-          }
-        }
-      }
-      x.stroke();
-    }
   }
 
   /* ----- candlestick chart ----- */
@@ -1262,14 +1229,15 @@ var CONTACT = {
     var last = candles[n - 1]; last.c = last.h = last.l = target = last.o; last.v = 0.1;
     born = performance.now(); lo = 0; hi = 0;
   }
+  function liveCol(k) { return k.c >= k.o ? ACC() : (LIGHT() ? '226,54,54' : '255,255,255'); }
   function pill(px, py, text, strong) {
     x.font = '600 11px Manrope, Helvetica, Arial, sans-serif'; x.textBaseline = 'middle'; x.textAlign = 'center';
     var tw = x.measureText(text).width + 16, hh = 20, left = px - tw / 2, rr = 6;
     x.beginPath(); x.moveTo(left + rr, py - hh / 2); x.arcTo(left + tw, py - hh / 2, left + tw, py + hh / 2, rr);
     x.arcTo(left + tw, py + hh / 2, left, py + hh / 2, rr); x.arcTo(left, py + hh / 2, left, py - hh / 2, rr); x.arcTo(left, py - hh / 2, left + tw, py - hh / 2, rr); x.closePath();
-    x.fillStyle = strong ? 'rgb(' + ACC() + ')' : (LIGHT() ? 'rgba(255,255,255,0.92)' : 'rgba(20,20,20,0.9)'); x.fill();
+    x.fillStyle = strong ? 'rgb(' + strong + ')' : (LIGHT() ? 'rgba(255,255,255,0.92)' : 'rgba(20,20,20,0.9)'); x.fill();
     if (!strong) { x.strokeStyle = 'rgba(' + FG() + ',0.25)'; x.lineWidth = 1; x.stroke(); }
-    x.fillStyle = strong ? '#000' : 'rgba(' + FG() + ',0.8)'; x.fillText(text, px, py + 0.5);
+    x.fillStyle = strong ? (strong === '226,54,54' ? '#fff' : '#000') : 'rgba(' + FG() + ',0.8)'; x.fillText(text, px, py + 0.5);
   }
   function drawMarket() {
     var now = performance.now(), need = Math.ceil(w / STEP) + 3, i, k, n;
@@ -1323,7 +1291,7 @@ var CONTACT = {
     for (i = 0; i < n; i++) {
       k = candles[i]; var px = X(i); if (px < -STEP) continue;
       var up = k.c >= k.o, isLive = i === n - 1, isHover = i === hover, f = fade(px);
-      var a = isLive ? 0.95 : isHover ? 0.9 : 0.20 * f, col = isLive ? ACC() : FG();
+      var a = isLive ? 0.95 : isHover ? 0.9 : 0.20 * f, col = isLive ? liveCol(k) : FG();
       var yo = Y(k.o), yc = Y(k.c), bt = Math.min(yo, yc), bh = Math.max(1, Math.abs(yc - yo)), mid = Math.round(px) + 0.5;
       x.fillStyle = 'rgba(' + col + ',' + (a * 0.38).toFixed(3) + ')';
       x.fillRect(mid - BODY / 2, volBot - k.v * volH, BODY, k.v * volH);                    /* volume */
@@ -1342,12 +1310,13 @@ var CONTACT = {
 
     /* last price: dotted line, pulsing dot, price tag */
     var ly = Y(live.c), lx = X(n - 1);
-    x.strokeStyle = 'rgba(' + ACC() + ',0.45)'; x.setLineDash([2, 4]); x.lineWidth = 1;
+    var lc = liveCol(live);
+    x.strokeStyle = 'rgba(' + lc + ',0.45)'; x.setLineDash([2, 4]); x.lineWidth = 1;
     x.beginPath(); x.moveTo(0, Math.round(ly) + 0.5); x.lineTo(right + 10, Math.round(ly) + 0.5); x.stroke(); x.setLineDash([]);
     var pulse = reduce ? 0.5 : (now % 1600) / 1600;
-    x.strokeStyle = 'rgba(' + ACC() + ',' + (0.6 * (1 - pulse)).toFixed(3) + ')'; x.beginPath(); x.arc(lx, ly, 3 + pulse * 11, 0, 6.283); x.stroke();
-    x.fillStyle = 'rgb(' + ACC() + ')'; x.beginPath(); x.arc(lx, ly, 3, 0, 6.283); x.fill();
-    if (axis) pill(right + 14 + axis / 2, ly, live.c.toFixed(2), true);
+    x.strokeStyle = 'rgba(' + lc + ',' + (0.6 * (1 - pulse)).toFixed(3) + ')'; x.beginPath(); x.arc(lx, ly, 3 + pulse * 11, 0, 6.283); x.stroke();
+    x.fillStyle = 'rgb(' + lc + ')'; x.beginPath(); x.arc(lx, ly, 3, 0, 6.283); x.fill();
+    if (axis) pill(right + 14 + axis / 2, ly, live.c.toFixed(2), lc);
 
     /* cursor: vertical guide and that candle's close */
     if (hover >= 0 && hover < n - 1) {
@@ -1359,7 +1328,7 @@ var CONTACT = {
   }
 
   var frame = 0;
-  function draw() { BACKGROUND === 'market' ? drawMarket() : drawTopo(); }
+  function draw() { drawMarket(); }
 
   window.addEventListener('pointermove', function (ev) {
     if (ev.pointerType === 'touch') return;
