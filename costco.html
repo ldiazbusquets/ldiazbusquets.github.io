@@ -608,7 +608,7 @@
 </style>
 <style>
   /* ---------- research page ---------- */
-  #waves { opacity: .38; }   /* quieter background for long reading */
+  #waves { opacity: .8; }
   .hero.page { min-height: 0; padding-bottom: clamp(36px, 6vw, 72px); }
   .hero.page .hero-head { padding-top: calc(64px + clamp(28px, 7vh, 80px)); max-width: calc(var(--max) + 2 * var(--g)); margin: 0 auto; width: 100%; }
   .hero.page h1 { font-size: clamp(2.2rem, 6vw, 5rem); }
@@ -978,154 +978,58 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 </script>
 
 <script>
-/* ---------- Background behind everything below the hero ---------- */
+/* ---------- Background: slow contour lines, kept quiet for reading ---------- */
 (function () {
-  var c = document.getElementById('waves'), x = c.getContext('2d');
-  var hero = document.querySelector('.hero');
+  var c = document.getElementById('waves'), x = c.getContext('2d'), hero = document.querySelector('.hero');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var w = 0, h = 0, tx = -999, ty = -999, cx = -999, cy = -999, seen = false, dirty = true, lastScroll = -1;
-
+  var CASES = { 1: [3, 2], 2: [2, 1], 3: [3, 1], 4: [0, 1], 5: [0, 3, 2, 1], 6: [0, 2], 7: [0, 3], 8: [0, 3], 9: [0, 2], 10: [0, 1, 3, 2], 11: [0, 1], 12: [3, 1], 13: [2, 1], 14: [3, 2] };
+  var w = 0, h = 0, field = null, cols = 0, rows = 0, CELL = 12, dirty = true, lastScroll = -1, frame = 0;
   function size() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth; h = window.innerHeight;
-    c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    dirty = true;
+    w = window.innerWidth; h = window.innerHeight; c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    CELL = w < 700 ? 14 : 12; cols = Math.ceil(w / CELL) + 2; rows = Math.ceil(h / CELL) + 2; field = new Float32Array(cols * rows); dirty = true;
   }
-
-  /* ----- candlestick chart ----- */
-  var STEP = 17, BODY = 9, PERIOD = 3200, candles = [], born = 0, lo = 0, hi = 0, lastTick = 0, target = 100;
-  function gauss() { return (Math.random() + Math.random() + Math.random() + Math.random() - 2) / 1.15; }
-  function nextCandle(open) {
-    var close = open + gauss() * 1.5 + (100 - open) * 0.02;
-    return { o: open, c: close, h: Math.max(open, close) + Math.abs(gauss()) * 0.8, l: Math.min(open, close) - Math.abs(gauss()) * 0.8, v: 0.25 + Math.random() * 0.75 };
-  }
-  function seed() {
-    var n = Math.ceil(w / STEP) + 3, p = 100; candles = [];
-    for (var i = 0; i < n; i++) { var k = nextCandle(p); candles.push(k); p = k.c; }
-    var last = candles[n - 1]; last.c = last.h = last.l = target = last.o; last.v = 0.1;
-    born = performance.now(); lo = 0; hi = 0;
-  }
-  function pill(px, py, text, strong) {
-    x.font = '600 11px Manrope, Helvetica, Arial, sans-serif'; x.textBaseline = 'middle'; x.textAlign = 'center';
-    var tw = x.measureText(text).width + 16, hh = 20, left = px - tw / 2, rr = 6;
-    x.beginPath(); x.moveTo(left + rr, py - hh / 2); x.arcTo(left + tw, py - hh / 2, left + tw, py + hh / 2, rr);
-    x.arcTo(left + tw, py + hh / 2, left, py + hh / 2, rr); x.arcTo(left, py + hh / 2, left, py - hh / 2, rr); x.arcTo(left, py - hh / 2, left + tw, py - hh / 2, rr); x.closePath();
-    x.fillStyle = strong ? 'rgb(' + ACC() + ')' : (LIGHT() ? 'rgba(255,255,255,0.92)' : 'rgba(20,20,20,0.9)'); x.fill();
-    if (!strong) { x.strokeStyle = 'rgba(' + FG() + ',0.25)'; x.lineWidth = 1; x.stroke(); }
-    x.fillStyle = strong ? '#000' : 'rgba(' + FG() + ',0.8)'; x.fillText(text, px, py + 0.5);
-  }
-  function drawMarket() {
-    var now = performance.now(), need = Math.ceil(w / STEP) + 3, i, k, n;
-    if (candles.length !== need) seed();
-    n = candles.length;
-    var live = candles[n - 1], age = reduce ? 0 : now - born;
-    if (!reduce) {                                   /* the newest candle trades like a live price */
-      if (now - lastTick > 240) { lastTick = now; target += gauss() * 0.5 + (100 - target) * 0.01; live.v = Math.min(1, live.v + 0.03); }
-      live.c += (target - live.c) * 0.10;
-      live.h = Math.max(live.h, live.c); live.l = Math.min(live.l, live.c);
-      if (age >= PERIOD) {                           /* close it and open the next one */
-        candles.shift(); candles.push({ o: live.c, c: live.c, h: live.c, l: live.c, v: 0.1 });
-        live = candles[n - 1]; born = now; age = 0;
+  function draw() {
+    var t = reduce ? 0 : performance.now(), sy = window.scrollY * 0.6, i, j;
+    for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
+      var px = i * CELL, wy = j * CELL + sy;
+      field[j * cols + i] = Math.sin(px * 0.0031 + t * 0.00004) * Math.cos(wy * 0.0037 - t * 0.00003)
+        + 0.5 * Math.sin((px + wy) * 0.0052 + t * 0.00005) + 0.5 * Math.cos((px - wy) * 0.0043 - t * 0.00002);
+    }
+    x.clearRect(0, 0, w, h); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
+    var n = 0, fg = FG();
+    for (var lv = -1.5; lv <= 1.6; lv += 0.3, n++) {
+      x.strokeStyle = 'rgba(' + fg + ',' + (n % 4 === 0 ? 0.22 : 0.10) + ')'; x.beginPath();
+      for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
+        var a = field[j * cols + i], b = field[j * cols + i + 1], c2 = field[(j + 1) * cols + i + 1], d = field[(j + 1) * cols + i];
+        var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
+        if (idx === 0 || idx === 15) continue;
+        var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx];
+        for (var q = 0; q < e.length; q += 2) for (var m = 0; m < 2; m++) {
+          var ed = e[q + m], ex, ey;
+          if (ed === 0) { ex = X0 + CELL * (lv - a) / (b - a); ey = Y0; }
+          else if (ed === 1) { ex = X0 + CELL; ey = Y0 + CELL * (lv - b) / (c2 - b); }
+          else if (ed === 2) { ex = X0 + CELL * (lv - d) / (c2 - d); ey = Y0 + CELL; }
+          else { ex = X0; ey = Y0 + CELL * (lv - a) / (d - a); }
+          m ? x.lineTo(ex, ey) : x.moveTo(ex, ey);
+        }
       }
+      x.stroke();
     }
-    var mn = Infinity, mx = -Infinity;
-    for (i = 0; i < n; i++) { mn = Math.min(mn, candles[i].l); mx = Math.max(mx, candles[i].h); }
-    var pad = (mx - mn) * 0.08; mn -= pad; mx += pad;
-    if (!lo && !hi) { lo = mn; hi = mx; } else { lo += (mn - lo) * 0.03; hi += (mx - hi) * 0.03; }
-
-    var axis = w < 700 ? 0 : 62, right = w - axis - 14, top = h * 0.16, bot = h * 0.76, volBot = h * 0.93, volH = h * 0.10;
-    function Y(v) { return bot - (v - lo) / Math.max(0.001, hi - lo) * (bot - top); }
-    var shift = (age / PERIOD) * STEP;
-    function X(i) { return right - (n - 1 - i) * STEP - shift + STEP * 0.5; }
-    function fade(px) { var f = Math.max(0, Math.min(1, px / (w * 0.6))); return 0.12 + 0.88 * f * f * (3 - 2 * f); }   /* older candles dim toward the left */
-
-    x.clearRect(0, 0, w, h); x.textAlign = 'left';
-
-    /* price scale */
-    var span = hi - lo, stepV = span > 24 ? 5 : span > 10 ? 2 : 1;
-    x.font = '500 10px Manrope, Helvetica, Arial, sans-serif'; x.textBaseline = 'middle'; x.lineWidth = 1;
-    for (var v = Math.ceil(lo / stepV) * stepV; v < hi; v += stepV) {
-      var gy = Math.round(Y(v)) + 0.5;
-      x.strokeStyle = 'rgba(' + FG() + ',0.04)'; x.beginPath(); x.moveTo(0, gy); x.lineTo(right + 10, gy); x.stroke();
-      if (axis) { x.fillStyle = 'rgba(' + FG() + ',0.26)'; x.fillText(v.toFixed(2), right + 18, gy); }
-    }
-
-    /* soft fill under the moving average */
-    var ma = [];
-    for (i = 0; i < n; i++) { var sum = 0, cnt = 0; for (var q = Math.max(0, i - 8); q <= i; q++) { sum += candles[q].c; cnt++; } ma.push(sum / cnt); }
-    var g = x.createLinearGradient(0, top, 0, volBot);
-    g.addColorStop(0, 'rgba(' + ACC() + ',0.10)'); g.addColorStop(1, 'rgba(' + ACC() + ',0)');
-    x.beginPath(); x.moveTo(X(0), volBot);
-    for (i = 0; i < n; i++) x.lineTo(X(i), Y(ma[i]));
-    x.lineTo(X(n - 1), volBot); x.closePath(); x.fillStyle = g; x.fill();
-
-    /* which candle is under the cursor */
-    var hover = -1;
-    if (seen && cx < right + STEP) { hover = Math.round(n - 1 - (right + STEP * 0.5 - shift - cx) / STEP); if (hover < 0 || hover >= n) hover = -1; }
-
-    for (i = 0; i < n; i++) {
-      k = candles[i]; var px = X(i); if (px < -STEP) continue;
-      var up = k.c >= k.o, isLive = i === n - 1, isHover = i === hover, f = fade(px);
-      var a = isLive ? 0.95 : isHover ? 0.9 : 0.20 * f, col = isLive ? ACC() : FG();
-      var yo = Y(k.o), yc = Y(k.c), bt = Math.min(yo, yc), bh = Math.max(1, Math.abs(yc - yo)), mid = Math.round(px) + 0.5;
-      x.fillStyle = 'rgba(' + col + ',' + (a * 0.38).toFixed(3) + ')';
-      x.fillRect(mid - BODY / 2, volBot - k.v * volH, BODY, k.v * volH);                    /* volume */
-      x.strokeStyle = 'rgba(' + col + ',' + a.toFixed(3) + ')'; x.lineWidth = 1;
-      x.beginPath(); x.moveTo(mid, Y(k.h)); x.lineTo(mid, bt); x.moveTo(mid, bt + bh); x.lineTo(mid, Y(k.l)); x.stroke();
-      if (up) x.strokeRect(mid - BODY / 2, Math.round(bt) + 0.5, BODY, Math.max(1, Math.round(bh)));
-      else { x.fillStyle = 'rgba(' + col + ',' + (a * 0.9).toFixed(3) + ')'; x.fillRect(mid - BODY / 2, bt, BODY, bh); }
-    }
-
-    /* moving average line */
-    var lg = x.createLinearGradient(0, 0, right, 0);
-    lg.addColorStop(0, 'rgba(' + ACC() + ',0)'); lg.addColorStop(0.5, 'rgba(' + ACC() + ',0.35)'); lg.addColorStop(1, 'rgba(' + ACC() + ',0.6)');
-    x.strokeStyle = lg; x.lineWidth = 1.5; x.lineJoin = 'round'; x.beginPath();
-    for (i = 0; i < n; i++) i ? x.lineTo(X(i), Y(ma[i])) : x.moveTo(X(i), Y(ma[i]));
-    x.stroke();
-
-    /* last price: dotted line, pulsing dot, price tag */
-    var ly = Y(live.c), lx = X(n - 1);
-    x.strokeStyle = 'rgba(' + ACC() + ',0.45)'; x.setLineDash([2, 4]); x.lineWidth = 1;
-    x.beginPath(); x.moveTo(0, Math.round(ly) + 0.5); x.lineTo(right + 10, Math.round(ly) + 0.5); x.stroke(); x.setLineDash([]);
-    var pulse = reduce ? 0.5 : (now % 1600) / 1600;
-    x.strokeStyle = 'rgba(' + ACC() + ',' + (0.6 * (1 - pulse)).toFixed(3) + ')'; x.beginPath(); x.arc(lx, ly, 3 + pulse * 11, 0, 6.283); x.stroke();
-    x.fillStyle = 'rgb(' + ACC() + ')'; x.beginPath(); x.arc(lx, ly, 3, 0, 6.283); x.fill();
-    if (axis) pill(right + 14 + axis / 2, ly, live.c.toFixed(2), true);
-
-    /* cursor: vertical guide and that candle's close */
-    if (hover >= 0 && hover < n - 1) {
-      var hx = Math.round(X(hover)) + 0.5;
-      x.strokeStyle = 'rgba(' + FG() + ',0.22)'; x.setLineDash([2, 4]); x.beginPath(); x.moveTo(hx, top - 10); x.lineTo(hx, volBot); x.stroke(); x.setLineDash([]);
-      pill(hx, Math.max(top - 22, 78), candles[hover].c.toFixed(2), false);
-    }
-    x.textAlign = 'left';
-  }
-
-  var frame = 0;
-  function draw() { drawMarket(); }
-
-  window.addEventListener('pointermove', function (ev) {
-    if (ev.pointerType === 'touch') return;
-    tx = ev.clientX; ty = ev.clientY;
-    if (!seen || reduce) { cx = tx; cy = ty; }
-    seen = true;
-    dirty = true;
-  });
-  document.documentElement.addEventListener('pointerleave', function () { seen = false; dirty = true; });
-
-  function loop() {
-    if (seen && (Math.abs(tx - cx) > 0.3 || Math.abs(ty - cy) > 0.3)) {
-      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12; dirty = true;
-    }
-    if (!reduce && (++frame % 2 === 0)) dirty = true;
-    if (window.scrollY !== lastScroll) { lastScroll = window.scrollY; dirty = true; }
     var hb = hero.getBoundingClientRect().bottom;
-    if (dirty && hb < h) { draw(); if (hb > 0) { x.clearRect(0, 0, w, hb); var fg = x.createLinearGradient(0, hb, 0, hb + 110); fg.addColorStop(0, 'rgba(0,0,0,1)'); fg.addColorStop(1, 'rgba(0,0,0,0)'); x.globalCompositeOperation = 'destination-out'; x.fillStyle = fg; x.fillRect(0, hb, w, 110); x.globalCompositeOperation = 'source-over'; } dirty = false; }
+    if (hb > 0) {
+      x.clearRect(0, 0, w, hb); var fgd = x.createLinearGradient(0, hb, 0, hb + 110); fgd.addColorStop(0, 'rgba(0,0,0,1)'); fgd.addColorStop(1, 'rgba(0,0,0,0)');
+      x.globalCompositeOperation = 'destination-out'; x.fillStyle = fgd; x.fillRect(0, hb, w, 110); x.globalCompositeOperation = 'source-over';
+    }
+  }
+  function loop() {
+    if (!reduce && (++frame % 8 === 0)) dirty = true;                     /* about 7 redraws a second: slow drift, light on the device */
+    if (window.scrollY !== lastScroll) { lastScroll = window.scrollY; dirty = true; }
+    if (dirty && !document.hidden && hero.getBoundingClientRect().bottom < h) { draw(); dirty = false; }
     requestAnimationFrame(loop);
   }
   size();
-  var t;
-  window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(size, 150); });
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(size, 150); });
   window.addEventListener('themechange', function () { dirty = true; });
   requestAnimationFrame(loop);
 })();

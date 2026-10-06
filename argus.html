@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Excel Master Guide | Luis Diaz Busquets</title>
+<title>ARGUS Portfolio Planner | Luis Diaz Busquets</title>
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -17,11 +17,11 @@
   document.documentElement.setAttribute('data-theme', pick || auto);
 })();
 </script>
-<meta name="description" content="An interactive Excel reference I built for finance work: 60+ ratios, an 80-entry formula library, exercises, and a glossary. Try the ratio and formula finder.">
-<meta property="og:title" content="Excel Master Guide | Luis Diaz Busquets">
-<meta property="og:description" content="An interactive Excel reference I built for finance work: 60+ ratios, an 80-entry formula library, exercises, and a glossary. Try the ratio and formula finder.">
+<meta name="description" content="A portfolio analysis tool I built: lot-level holdings, 1,500-path Monte Carlo, a backtest on 1928 to 2025 data, efficient frontier, and ETF look-through. Try a working piece of it.">
+<meta property="og:title" content="ARGUS Portfolio Planner | Luis Diaz Busquets">
+<meta property="og:description" content="A portfolio analysis tool I built: lot-level holdings, 1,500-path Monte Carlo, a backtest on 1928 to 2025 data, efficient frontier, and ETF look-through. Try a working piece of it.">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://ldiazbusquets.github.io/excel.html">
+<meta property="og:url" content="https://ldiazbusquets.github.io/argus.html">
 <meta property="og:image" content="https://ldiazbusquets.github.io/preview.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -679,29 +679,23 @@
 </style>
 
 <style>
-  .finder { margin-top: 8px; padding: clamp(16px, 2.2vw, 26px); }
-  .search { width: 100%; font: inherit; font-size: 1rem; color: var(--ink); padding: 14px 18px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); outline: none; }
-  html[data-theme="light"] .search { background: rgba(255,255,255,.55); }
-  .search::placeholder { color: var(--soft); } .search:focus-visible { border-color: var(--brass); outline: 2px solid var(--brass); outline-offset: 2px; }
-  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
-  .pills button { font: inherit; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--soft); cursor: pointer; }
-  .pills button[aria-pressed="true"] { background: var(--white); color: var(--navy); border-color: var(--white); }
-  .count { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--soft); margin: 12px 2px; }
-  .cells { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .cell { padding: 16px 18px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,.03); display: flex; flex-direction: column; gap: 8px; }
-  html[data-theme="light"] .cell { background: rgba(255,255,255,.38); border-color: rgba(255,255,255,.8); }
-  .cell, .fx, .cells { min-width: 0; } .fx code { min-width: 0; } .cell .top { flex-wrap: wrap; }
-  .cell .top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .cell b { font-weight: 600; letter-spacing: -.01em; } .cell .cat { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--soft); white-space: nowrap; }
-  .fx { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: rgba(0,0,0,.3); }
-  html[data-theme="light"] .fx { background: rgba(255,255,255,.6); }
-  .fx i { font-style: italic; font-family: Georgia, serif; font-size: .85rem; color: var(--soft); padding: 9px 10px; border-right: 1px solid var(--line); }
-  .fx code { flex: 1; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .8rem; padding: 10px 12px; color: var(--brass); overflow-x: auto; white-space: nowrap; }
-  .fx button { font: inherit; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; padding: 0 12px; border: 0; border-left: 1px solid var(--line); background: none; color: var(--soft); cursor: pointer; }
-  .fx button:hover { color: var(--white); }
-  .cell p { margin: 0; font-size: .86rem; color: var(--soft); max-width: none; }
-  .none { padding: 26px 4px; color: var(--soft); }
-  @media (max-width: 820px) { .cells { grid-template-columns: 1fr; } }
+  .plan { margin-top: 8px; padding: clamp(16px, 2.2vw, 26px); }
+  .inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 18px; }
+  .inputs label { display: block; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .11em; color: var(--soft); }
+  .inputs label b { float: right; color: var(--ink); font-weight: 600; letter-spacing: 0; font-size: .9rem; text-transform: none; }
+  .inputs input[type=number] { width: 100%; margin-top: 8px; font: inherit; font-size: 1rem; color: var(--ink); padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.05); }
+  html[data-theme="light"] .inputs input[type=number] { background: rgba(255,255,255,.55); }
+  .inputs input[type=range] { width: 100%; margin-top: 16px; accent-color: var(--brass); }
+  .inputs input:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .planbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin: 18px 0 6px; }
+  .planbar span { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--soft); }
+  .planbar .btn::after { content: ""; }
+  .plan canvas { position: static; display: block; width: 100%; height: clamp(260px, 36vw, 400px); margin-top: 6px; }
+  .plan .figs { margin: 18px 0 0; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; font-size: .84rem; color: var(--soft); }
+  .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 8px; background: var(--brass); }
+  .legend i.band { height: 10px; background: var(--ink); opacity: .2; } .legend i.dash { background: none; border-top: 2px dashed var(--soft); height: 0; }
+  @media (max-width: 820px) { .inputs { grid-template-columns: 1fr 1fr; } .plan .figs { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body>
@@ -734,14 +728,14 @@
   </nav>
   <div class="hero-head">
     <a class="back" href="index.html#work">&larr; All projects</a>
-    <p class="eyebrow">Personal project, interactive reference</p>
-    <h1>Excel<br>Master Guide</h1>
-    <p class="lede">A reference I built for the Excel that finance work runs on. It began as my own notes and grew into a full interactive guide with a formula library, ratio reference, exercises, and practice drills.</p>
+    <p class="eyebrow">Personal project, built with React</p>
+    <h1>ARGUS<br>Portfolio Planner</h1>
+    <p class="lede">A portfolio analysis tool that runs entirely in the browser. It takes holdings lot by lot and answers three questions an investor should ask: how might this portfolio behave, how would it have behaved, and what is really inside it. I built it to share at no cost.</p>
     <div class="panel verdict">
-      <div class="call"><b>20+</b><span>Sections</span></div>
-      <div><b>60+</b><span>Financial ratios</span></div>
-      <div><b>80</b><span>Formulas in the library</span></div>
-      <div><b>43</b><span>Quiz questions</span></div>
+      <div class="call"><b>1,500</b><span>Simulated paths per run</span></div>
+      <div><b>98 years</b><span>Of history in the backtest</span></div>
+      <div><b>13 tabs</b><span>One per kind of analysis</span></div>
+      <div><b>4,100+</b><span>Lines of code, one file</span></div>
     </div>
   </div>
 </header>
@@ -749,56 +743,56 @@
 <main>
   <div class="wrap layout">
     <nav class="toc" aria-label="Sections">
-      <a href="#try"><i>01</i>Try the finder</a>
-      <a href="#inside"><i>02</i>What is inside</a>
-      <a href="#made"><i>03</i>How it was made</a>
+      <a href="#try"><i>01</i>Try a piece of it</a>
+      <a href="#does"><i>02</i>What the full tool does</a>
+      <a href="#built"><i>03</i>How it is built</a>
     </nav>
     <div>
 <section class="chapter" id="try">
-  <p class="eyebrow">01 Try the finder</p>
-  <h2>Find the ratio, <em>copy the formula.</em></h2>
-  <p>This is a working sample of the guide's ratio and formula reference. Search by name or filter by category, then copy a formula straight into a spreadsheet. The names in each formula stand for the cells that hold those figures.</p>
-  <div class="panel finder">
-    <input class="search" id="q" type="search" placeholder="Search ratios and formulas, for example margin, debt, or turnover" aria-label="Search ratios and formulas">
-    <div class="pills" id="pills"></div>
-    <p class="count" id="count" aria-live="polite"></p>
-    <div class="cells" id="cells"></div>
+  <p class="eyebrow">01 Try a piece of it</p>
+  <h2>Will this plan get there? <em>Run it 1,500 times and see.</em></h2>
+  <p>This is a small working version of the simulation at the center of ARGUS. Set a starting amount, a monthly contribution, a stock and bond mix, and a goal. It simulates 1,500 possible futures and shows the range of outcomes.</p>
+  <div class="panel plan">
+    <div class="inputs">
+      <div><label for="iStart">Starting amount</label><input id="iStart" type="number" min="0" step="1000" value="25000" inputmode="numeric"></div>
+      <div><label for="iAdd">Added each month</label><input id="iAdd" type="number" min="0" step="50" value="500" inputmode="numeric"></div>
+      <div><label for="iGoal">Goal</label><input id="iGoal" type="number" min="0" step="10000" value="1000000" inputmode="numeric"></div>
+      <div><label for="iYears">Years <b id="vYears">30</b></label><input id="iYears" type="range" min="5" max="45" step="1" value="30"></div>
+      <div style="grid-column: span 2"><label for="iMix">Mix <b id="vMix">70% stocks, 30% bonds</b></label><input id="iMix" type="range" min="0" max="100" step="5" value="70"></div>
+    </div>
+    <div class="planbar"><span id="planstate">Ready</span><button class="btn solid" id="planrun" type="button">Run 1,500 simulations</button></div>
+    <canvas id="planc"></canvas>
+    <div class="legend"><span><i></i>Median outcome</span><span><i class="band"></i>Middle 80% of outcomes</span><span><i class="dash"></i>Money put in</span></div>
+    <div class="figs" id="planfigs"></div>
   </div>
-  <p class="note">A sample of 24 entries. The full guide covers more than 60 ratios with benchmark ranges for each.</p>
+  <p class="note">Illustrative assumptions: stocks average 7% a year with 16% volatility, bonds 3.5% with 6% volatility, rebalanced monthly, before fees, taxes, and inflation. This is a teaching sample and not a forecast or investment advice. The full tool works from a person's actual holdings.</p>
 </section>
 
-<section class="chapter" id="inside">
-  <p class="eyebrow">02 What is inside</p>
-  <h2>Built around the work, <em>not the menus.</em></h2>
-  <p>Most Excel guides are organized by feature. This one is organized by what a finance professional is trying to get done.</p>
+<section class="chapter" id="does">
+  <p class="eyebrow">02 What the full tool does</p>
+  <h2>Three questions, <em>answered from the actual holdings.</em></h2>
   <div class="tablewrap"><table>
-    <thead><tr><th>Part</th><th>What it covers</th></tr></thead>
+    <thead><tr><th>Question</th><th>How ARGUS answers it</th></tr></thead>
     <tbody>
-      <tr><td>Career tracks</td><td>Eight paths, each with the Excel skills that matter most for it: investment banking, equity research, private equity, wealth management, FP&amp;A, corporate finance, consulting, and quant and risk</td></tr>
-      <tr><td>Financial ratios</td><td>More than 60 ratios in six categories, each with its Excel formula, how to read it, and a typical benchmark range</td></tr>
-      <tr><td>Formula library</td><td>80 searchable formulas with one-click copy, plus a list of the ones used most recently</td></tr>
-      <tr><td>Formula builder</td><td>An interactive tool that assembles formulas step by step, including valuation formulas such as WACC, CAPM, and terminal value</td></tr>
-      <tr><td>Exercises</td><td>Eleven projects from beginner to advanced, including a comps table, a three-statement model, a budget versus actual report, and a Monte Carlo retirement simulation</td></tr>
-      <tr><td>Quiz and drills</td><td>43 questions with explained answers, and a timed keyboard shortcut drill with scoring</td></tr>
-      <tr><td>Portfolio and risk</td><td>Performance attribution, the efficient frontier, risk budgeting, drawdown analysis, correlation matrices, stress testing, and value at risk</td></tr>
-      <tr><td>Glossary</td><td>80 finance terms from A to Z</td></tr>
+      <tr><td>What do I own?</td><td>Holdings are entered lot by lot, grouped by account, so cost basis and gains are tracked at the level taxes are calculated</td></tr>
+      <tr><td>What is really inside it?</td><td>An ETF look-through opens each fund and shows the underlying companies, which reveals hidden overlap between funds</td></tr>
+      <tr><td>How might it behave?</td><td>A Monte Carlo simulation runs 1,500 paths and reports the range of outcomes and the chance of reaching a goal</td></tr>
+      <tr><td>How would it have behaved?</td><td>A historical backtest replays the allocation through market returns from 1928 to 2025, using the long-run return data published by NYU professor Aswath Damodaran</td></tr>
+      <tr><td>How did it hold up in a crisis?</td><td>A black swan chart marks major market crises on the timeline so the drawdowns can be seen in context</td></tr>
+      <tr><td>Is the mix efficient?</td><td>An efficient frontier shows whether the same return was available with less risk, and a CAPM beta estimate shows sensitivity to the market</td></tr>
+      <tr><td>Can I take it with me?</td><td>Full Excel import and export, and print-ready reports formatted like a professional statement</td></tr>
     </tbody>
   </table></div>
-  <div class="sources" id="fullwrap" hidden><a class="btn solid" href="excel-guide.html" target="_blank" rel="noopener">Open the full guide</a></div>
+  <p>It also includes an assistant built on the Claude API that can refresh prices and answer questions about the portfolio in plain language, and a light and dark theme.</p>
 </section>
 
-<section class="chapter" id="made">
-  <p class="eyebrow">03 How it was made</p>
-  <h2>One file, <em>no installation.</em></h2>
-  <p>The guide is a single HTML file with its own search, quiz, and drill engines written in JavaScript. It opens in any browser, works offline, and needs nothing installed, which makes it easy to share with classmates and colleagues.</p>
-  <h3>Decisions along the way</h3>
-  <ul>
-    <li><b>Removed the progress tracker.</b> It looked good and slowed people down. A reference should get you to the answer and out of the way.</li>
-    <li><b>Icons instead of emoji, and one consistent type system,</b> so it reads like a professional tool.</li>
-    <li><b>Fixed a blur bug on phones</b> that made the section menu unreadable, caused by a visual effect on the sidebar.</li>
-    <li><b>Every ratio carries a benchmark,</b> because a number means little without something to compare it to.</li>
-  </ul>
-  <p class="takeaway"><b>Why I built it.</b> Writing a formula down with its meaning and a benchmark is how I learned it properly. The guide is that habit, organized so someone else can use it.</p>
+<section class="chapter" id="built">
+  <p class="eyebrow">03 How it is built</p>
+  <h2>One file, <em>and nothing leaves the browser.</em></h2>
+  <p>ARGUS is a single React application of more than 4,100 lines. All of the analysis runs on the user's own device, so portfolio data is never sent to a server. The price refresh and the assistant are the only parts that call out, and only when asked.</p>
+  <h3>Why I built it</h3>
+  <p>The planning software used in wealth management is powerful and expensive, and a student or a first-time investor never sees it. I wanted to understand how those tools reach their answers by building the calculations myself, and to make something useful that anyone could open for free.</p>
+  <p class="takeaway"><b>What it taught me.</b> A simulation is only as honest as its assumptions. Most of the work was in deciding what to assume and showing those assumptions to the user, not in the math.</p>
 </section>
     </div>
   </div>
@@ -867,31 +861,57 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 </script>
 
 <script>
-/* ---------- ratio and formula finder ---------- */
+/* ---------- mini Monte Carlo planner: 1,500 paths, the same count ARGUS uses ---------- */
 (function () {
-  var DATA = [{"n": "Gross Margin", "c": "Profitability", "f": "=(Revenue-COGS)/Revenue", "d": "Share of revenue left after direct costs. Higher means more pricing power."}, {"n": "Operating Margin", "c": "Profitability", "f": "=OperatingIncome/Revenue", "d": "Profit from core operations per dollar of sales."}, {"n": "Net Margin", "c": "Profitability", "f": "=NetIncome/Revenue", "d": "What reaches the bottom line from each dollar of sales."}, {"n": "Return on Equity", "c": "Profitability", "f": "=NetIncome/AVERAGE(Equity_Begin,Equity_End)", "d": "Profit generated on shareholders' capital."}, {"n": "Return on Assets", "c": "Profitability", "f": "=NetIncome/AVERAGE(Assets_Begin,Assets_End)", "d": "How efficiently the asset base produces profit."}, {"n": "DuPont ROE", "c": "Profitability", "f": "=(NetIncome/Revenue)*(Revenue/Assets)*(Assets/Equity)", "d": "Splits ROE into margin, turnover, and leverage to show what drives it."}, {"n": "Current Ratio", "c": "Liquidity", "f": "=CurrentAssets/CurrentLiabilities", "d": "Ability to cover short-term obligations. Near 1 is common in fast-turn retail."}, {"n": "Quick Ratio", "c": "Liquidity", "f": "=(Cash+Securities+Receivables)/CurrentLiabilities", "d": "A stricter test that leaves out inventory."}, {"n": "Cash Ratio", "c": "Liquidity", "f": "=(Cash+Securities)/CurrentLiabilities", "d": "Coverage from cash alone, the most conservative measure."}, {"n": "Cash Conversion Cycle", "c": "Liquidity", "f": "=DIO+DSO-DPO", "d": "Days between paying suppliers and collecting from customers. Lower is better."}, {"n": "Debt to Equity", "c": "Leverage", "f": "=TotalDebt/TotalEquity", "d": "How much of the business is financed with debt."}, {"n": "Net Debt to EBITDA", "c": "Leverage", "f": "=(TotalDebt-Cash)/EBITDA", "d": "Years of earnings needed to repay net debt. A standard lender measure."}, {"n": "Interest Coverage", "c": "Leverage", "f": "=EBIT/InterestExpense", "d": "How many times operating profit covers interest."}, {"n": "Debt Service Coverage", "c": "Leverage", "f": "=NetOperatingIncome/(Principal+Interest)", "d": "Cash available to meet all debt payments. Lenders usually want above 1.25."}, {"n": "Asset Turnover", "c": "Efficiency", "f": "=Revenue/AVERAGE(Assets_Begin,Assets_End)", "d": "Sales generated per dollar of assets."}, {"n": "Inventory Days (DIO)", "c": "Efficiency", "f": "=AVERAGE(Inv_Begin,Inv_End)/COGS*365", "d": "Average days inventory sits before it is sold."}, {"n": "Receivable Days (DSO)", "c": "Efficiency", "f": "=AVERAGE(AR_Begin,AR_End)/Revenue*365", "d": "Average days to collect from customers."}, {"n": "Payable Days (DPO)", "c": "Efficiency", "f": "=AVERAGE(AP_Begin,AP_End)/COGS*365", "d": "Average days taken to pay suppliers."}, {"n": "Price to Earnings", "c": "Valuation", "f": "=SharePrice/DilutedEPS", "d": "What investors pay for each dollar of earnings."}, {"n": "EV to EBITDA", "c": "Valuation", "f": "=(MarketCap+TotalDebt-Cash)/EBITDA", "d": "Values the whole business independent of how it is financed."}, {"n": "Free Cash Flow Yield", "c": "Valuation", "f": "=FreeCashFlow/MarketCap", "d": "Cash the business generates relative to its price."}, {"n": "PEG Ratio", "c": "Valuation", "f": "=(SharePrice/EPS)/(EPSGrowth*100)", "d": "P/E adjusted for growth. Around 1 is often read as fairly valued."}, {"n": "Total Shareholder Return", "c": "Market", "f": "=(EndPrice-StartPrice+Dividends)/StartPrice", "d": "Price change plus dividends, the investor's full return."}, {"n": "Revenue Growth, Year over Year", "c": "Market", "f": "=(Revenue_CY-Revenue_PY)/ABS(Revenue_PY)", "d": "ABS in the denominator keeps the sign right when the prior year is negative."}];
-  var cats = ['All'].concat(DATA.map(function (r) { return r.c; }).filter(function (c, i, a) { return a.indexOf(c) === i; })), cat = 'All';
-  var q = document.getElementById('q'), cells = document.getElementById('cells'), pills = document.getElementById('pills'), count = document.getElementById('count');
-  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
-  function draw() {
-    var term = q.value.trim().toLowerCase();
-    var rows = DATA.filter(function (r) { return (cat === 'All' || r.c === cat) && (!term || (r.n + ' ' + r.f + ' ' + r.d + ' ' + r.c).toLowerCase().indexOf(term) >= 0); });
-    count.textContent = rows.length + (rows.length === 1 ? ' entry' : ' entries');
-    cells.innerHTML = rows.length ? rows.map(function (r) {
-      return '<div class="cell"><div class="top"><b>' + esc(r.n) + '</b><span class="cat">' + r.c + '</span></div><div class="fx"><i>fx</i><code>' + esc(r.f) + '</code><button type="button" data-f="' + esc(r.f).replace(/"/g, '&quot;') + '">Copy</button></div><p>' + esc(r.d) + '</p></div>';
-    }).join('') : '<p class="none">Nothing matches that search. Try a shorter word, or choose All.</p>';
+  var N = 1500, S = { mu: 0.07, sd: 0.16 }, B = { mu: 0.035, sd: 0.06 }, RHO = 0.1;
+  var cv = document.getElementById('planc'), cx = cv.getContext('2d'), res = null;
+  function $(id) { return document.getElementById(id); }
+  function val(id, lo, hi) { var v = parseFloat($(id).value); if (!isFinite(v)) v = 0; return Math.max(lo, Math.min(hi, v)); }
+  function gauss() { var u = 0, v = 0; while (u === 0) u = Math.random(); while (v === 0) v = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(6.283185 * v); }
+  function money(v) { return v >= 1e6 ? '$' + (v / 1e6).toFixed(2) + 'M' : '$' + (Math.round(v / 100) * 100).toLocaleString('en-US'); }
+  function labels() { $('vYears').textContent = $('iYears').value; var m = +$('iMix').value; $('vMix').textContent = m + '% stocks, ' + (100 - m) + '% bonds'; }
+  function run() {
+    var start = val('iStart', 0, 1e9), add = val('iAdd', 0, 1e7), goal = val('iGoal', 0, 1e12), years = +$('iYears').value, wS = +$('iMix').value / 100;
+    var dt = 1 / 12, sS = S.sd * Math.sqrt(dt), sB = B.sd * Math.sqrt(dt), dS = (S.mu - S.sd * S.sd / 2) * dt, dB = (B.mu - B.sd * B.sd / 2) * dt, k = Math.sqrt(1 - RHO * RHO);
+    var byYear = []; for (var y = 0; y <= years; y++) byYear.push(new Float64Array(N));
+    for (var p = 0; p < N; p++) {
+      var v = start; byYear[0][p] = v;
+      for (var m = 1; m <= years * 12; m++) {
+        var z1 = gauss(), z2 = RHO * z1 + k * gauss();
+        v = v * (wS * Math.exp(dS + sS * z1) + (1 - wS) * Math.exp(dB + sB * z2)) + add;
+        if (m % 12 === 0) byYear[m / 12][p] = v;
+      }
+    }
+    var p10 = [], p50 = [], p90 = [];
+    byYear.forEach(function (a) { var s = Array.prototype.slice.call(a).sort(function (x, y) { return x - y; }); p10.push(s[Math.floor(N * 0.1)]); p50.push(s[Math.floor(N * 0.5)]); p90.push(s[Math.floor(N * 0.9)]); });
+    var end = byYear[years], hit = 0; for (var i = 0; i < N; i++) if (end[i] >= goal) hit++;
+    res = { years: years, p10: p10, p50: p50, p90: p90, goal: goal, start: start, add: add, paid: start + add * 12 * years, prob: hit / N };
+    $('planstate').textContent = N.toLocaleString('en-US') + ' paths simulated';
+    var f = [[Math.round(res.prob * 100) + '%', 'Chance of reaching ' + money(goal)], [money(p50[years]), 'Median after ' + years + ' years'], [money(p10[years]), 'One run in ten ends below this'], [money(res.paid), 'Total money put in']];
+    $('planfigs').innerHTML = f.map(function (q) { return '<div><b>' + q[0] + '</b><span>' + q[1] + '</span></div>'; }).join('');
+    paint();
   }
-  pills.innerHTML = cats.map(function (c) { return '<button type="button" aria-pressed="' + (c === cat) + '">' + c + '</button>'; }).join('');
-  pills.addEventListener('click', function (e) { if (e.target.tagName !== 'BUTTON') return; cat = e.target.textContent; pills.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b === e.target)); }); draw(); });
-  q.addEventListener('input', draw);
-  cells.addEventListener('click', function (e) {
-    var b = e.target; if (b.tagName !== 'BUTTON') return; var f = b.getAttribute('data-f');
-    function done(ok) { b.textContent = ok ? 'Copied' : 'Select and copy'; setTimeout(function () { b.textContent = 'Copy'; }, 1500); }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(f).then(function () { done(true); }, function () { done(false); }); else done(false);
-  });
-  draw();
-  /* show the link to the full guide only if that file has been uploaded */
-  fetch('excel-guide.html', { method: 'HEAD' }).then(function (r) { if (r.ok) document.getElementById('fullwrap').hidden = false; }).catch(function () {});
+  function paint() {
+    if (!res) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var Y = res.years, top = Math.max(res.p90[Y], res.goal * 1.08, 1), fg = FG(), acc = ACC();
+    function X(y) { return 6 + y / Y * (w - 84); } function Yv(v) { return 10 + (1 - Math.min(v, top) / top) * (h - 40); }
+    cx.font = '500 10px Manrope, Arial, sans-serif'; cx.textBaseline = 'middle';
+    for (var g = 0; g <= 4; g++) { var v = top * g / 4; cx.strokeStyle = 'rgba(' + fg + ',0.08)'; cx.beginPath(); cx.moveTo(0, Yv(v)); cx.lineTo(w - 74, Yv(v)); cx.stroke(); cx.fillStyle = 'rgba(' + fg + ',0.5)'; cx.fillText(money(v), w - 68, Yv(v)); }
+    cx.beginPath(); for (var y = 0; y <= Y; y++) y ? cx.lineTo(X(y), Yv(res.p90[y])) : cx.moveTo(X(y), Yv(res.p90[y]));
+    for (y = Y; y >= 0; y--) cx.lineTo(X(y), Yv(res.p10[y])); cx.closePath(); cx.fillStyle = 'rgba(' + fg + ',0.13)'; cx.fill();
+    cx.strokeStyle = 'rgba(' + fg + ',0.55)'; cx.setLineDash([4, 5]); cx.lineWidth = 1.25; cx.beginPath();
+    for (y = 0; y <= Y; y++) { var paid = res.start + res.add * 12 * y; y ? cx.lineTo(X(y), Yv(paid)) : cx.moveTo(X(y), Yv(paid)); } cx.stroke();
+    if (res.goal > 0 && res.goal <= top) { cx.strokeStyle = 'rgba(' + acc + ',0.6)'; cx.setLineDash([2, 5]); cx.beginPath(); cx.moveTo(0, Yv(res.goal)); cx.lineTo(w - 74, Yv(res.goal)); cx.stroke(); cx.fillStyle = 'rgb(' + acc + ')'; cx.fillText('GOAL', 8, Yv(res.goal) - 9); }
+    cx.setLineDash([]); cx.strokeStyle = 'rgb(' + acc + ')'; cx.lineWidth = 2.5; cx.lineJoin = 'round'; cx.beginPath();
+    for (y = 0; y <= Y; y++) y ? cx.lineTo(X(y), Yv(res.p50[y])) : cx.moveTo(X(y), Yv(res.p50[y])); cx.stroke();
+    cx.fillStyle = 'rgba(' + fg + ',0.5)'; cx.textBaseline = 'alphabetic'; cx.fillText('Today', 6, h - 8); cx.textAlign = 'right'; cx.fillText('Year ' + Y, w - 78, h - 8); cx.textAlign = 'left';
+  }
+  ['iYears', 'iMix'].forEach(function (id) { $(id).addEventListener('input', function () { labels(); $('planstate').textContent = 'Inputs changed. Run again to update.'; }); });
+  ['iStart', 'iAdd', 'iGoal'].forEach(function (id) { $(id).addEventListener('input', function () { $('planstate').textContent = 'Inputs changed. Run again to update.'; }); });
+  $('planrun').addEventListener('click', run);
+  window.addEventListener('resize', paint); window.addEventListener('themechange', paint);
+  labels(); run();
 })();
 </script>
 

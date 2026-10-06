@@ -651,6 +651,10 @@
     box-shadow: inset 0 1px 1px #fff, inset 0 0 24px rgba(255,255,255,.22), 0 22px 48px rgba(26,58,40,.22), 0 2px 6px rgba(26,58,40,.12);
   }
   html[data-theme="light"] .portrait::before { background: radial-gradient(70% 60% at 50% 38%, rgba(255,255,255,.65), rgba(255,255,255,0) 75%); }
+
+  /* project tiles: buttons sit on the same line across each row */
+  .project { display: flex; flex-direction: column; }
+  .project .more { margin-top: auto; padding-top: 20px; }
 </style>
 </head>
 <body>
@@ -790,6 +794,7 @@
           <h3>ARGUS Portfolio Planner</h3>
           <p data-es="Una herramienta de análisis de portafolios que corre en el navegador. Toma las posiciones lote por lote y muestra cómo podría comportarse el portafolio, cómo se habría comportado y qué hay realmente dentro de cada ETF.">A portfolio analysis tool that runs in the browser. It takes holdings lot by lot and shows how the portfolio might behave, how it would have behaved, and what is really inside each ETF.</p>
           <p class="built" data-es="Hecho con React. Importa y exporta Excel.">Built with React. Imports and exports Excel.</p>
+          <p class="more" style="margin-top:22px"><a class="btn solid" href="argus.html" data-es="Probar una parte">Try a piece of it</a></p>
         </div>
         <ul>
           <li data-es="Simulación Monte Carlo con <b>1,500</b> trayectorias">Monte Carlo simulation with <b>1,500</b> paths</li>
