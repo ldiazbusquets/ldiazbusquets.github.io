@@ -956,7 +956,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     for (i = a; i <= day; i++) { lo = Math.min(lo, bars[i].l, ema21[i]); hi = Math.max(hi, bars[i].h, ema21[i]); }
     if (pos) { lo = Math.min(lo, pos.stop); hi = Math.max(hi, pos.entry * (1 + TP2)); }
     var pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
-    var stepX = (w - 70) / span, bw = Math.max(2, stepX * 0.6);
+    var stepX = (w - 70) / span, bw = Math.max(3, stepX * 0.68);
     function X(i) { return 8 + (i - a + 0.5) * stepX; } function Y(v) { return 10 + (hi - v) / (hi - lo) * (h - 20); }
     var fg = FG(), acc = ACC();
     function hline(v, col, label, dash) {
@@ -965,10 +965,11 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     }
     for (i = a; i <= day; i++) {
       var b = bars[i], x = Math.round(X(i)) + 0.5, up = b.c >= b.o, live = i === day;
-      cx.strokeStyle = cx.fillStyle = 'rgba(' + (live ? acc : fg) + ',' + (live ? 0.95 : 0.42) + ')'; cx.lineWidth = 1;
+      var col = up ? (LIGHT() ? '0,168,60' : '0,214,90') : (LIGHT() ? '222,48,48' : '255,77,77');     /* green up, red down, always */
+      cx.strokeStyle = cx.fillStyle = 'rgba(' + col + ',' + (live ? 1 : 0.9) + ')'; cx.lineWidth = live ? 1.5 : 1;
       cx.beginPath(); cx.moveTo(x, Y(b.h)); cx.lineTo(x, Y(b.l)); cx.stroke();
-      var t = Y(Math.max(b.o, b.c)), bh = Math.max(1, Math.abs(Y(b.o) - Y(b.c)));
-      if (up) cx.strokeRect(x - bw / 2, Math.round(t) + 0.5, bw, Math.round(bh)); else cx.fillRect(x - bw / 2, t, bw, bh);
+      var t = Y(Math.max(b.o, b.c)), bh = Math.max(1.5, Math.abs(Y(b.o) - Y(b.c)));
+      cx.fillRect(x - bw / 2, t, bw, bh);
     }
     cx.strokeStyle = 'rgba(' + fg + ',0.55)'; cx.lineWidth = 1.25; cx.beginPath();
     for (i = a; i <= day; i++) i === a ? cx.moveTo(X(i), Y(ema21[i])) : cx.lineTo(X(i), Y(ema21[i]));

@@ -1,11 +1,10 @@
 """
 Year-to-date backtest of the paper trading bot's swing rules.
 
-Run once on your own computer:
-    pip install yfinance pandas
-    python backtest.py
-It writes backtest.json. Upload that file to the website repo and the
-"Year to date" section on bot.html appears automatically.
+This runs automatically on GitHub (see .github/workflows/backtest.yml) every
+weekday after the market closes. It downloads real daily prices, applies the
+bot's rules from January 1 to today, and writes backtest.json, which bot.html
+reads to show the "Year to date" section.
 """
 import json, datetime as dt
 import pandas as pd
