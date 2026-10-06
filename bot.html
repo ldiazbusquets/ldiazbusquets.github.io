@@ -701,6 +701,10 @@
   .legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 12px; font-size: .84rem; color: var(--soft); }
   .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 8px; background: var(--brass); }
   .legend i.b { background: var(--soft); }
+  .simsum { margin-top: 14px; padding: clamp(18px, 2.4vw, 28px); }
+  .simsum h3 { margin: 0 0 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--soft); }
+  .simsum .tablewrap { margin-bottom: 0; } .simsum td:first-child { font-weight: 400; color: var(--soft); }
+  .simsum td.up { color: var(--brass); font-weight: 600; } .simsum td.down { font-weight: 600; }
   @media (max-width: 900px) { .simgrid { grid-template-columns: minmax(0, 1fr); } .log { min-height: 0; } }
 </style>
 </head>
@@ -758,11 +762,11 @@
 <section class="chapter" id="sim">
   <p class="eyebrow">01 Watch it trade</p>
   <h2>The real rules, <em>running on a simulated market.</em></h2>
-  <p>The chart below generates a random price series and lets the bot's rules trade it one day at a time. Prices are made up, so the result changes on every run, and some runs lose money. The made-up market moves in rising and falling phases that last a couple of months, which is the kind of market this strategy is designed for. In a market with no direction it roughly breaks even. The entries, stops, targets, and position sizes are calculated exactly as the bot calculates them.</p>
+  <p>The chart below generates a random price series and lets the bot's rules trade it one day at a time. It runs once and then stops, so you can study the whole run and every trade before starting another. Prices are made up, so the result changes on every run, and some runs lose money. The made-up market moves in rising and falling phases that last a couple of months, which is the kind of market this strategy is designed for. In a market with no direction it roughly breaks even. The entries, stops, targets, and position sizes are calculated exactly as the bot calculates them.</p>
   <div class="simgrid">
     <div class="panel simchart">
       <canvas id="simc"></canvas>
-      <div class="simbar"><span id="simday">Day 0</span><div><button class="btn" id="simpause" type="button">Pause</button><button class="btn solid" id="simnew" type="button">New market</button></div></div>
+      <div class="simbar"><span id="simday">Day 0</span><div><button class="btn" id="simpause" type="button">Pause</button><button class="btn" id="simskip" type="button">Skip to end</button><button class="btn solid" id="simnew" type="button">New market</button></div></div>
     </div>
     <div class="panel simside">
       <div class="kv">
@@ -773,6 +777,14 @@
       </div>
       <ul class="log" id="simlog" aria-live="off"></ul>
     </div>
+  </div>
+  <div class="panel simsum" id="simsum" hidden>
+    <h3>This run, start to finish</h3>
+    <div class="figs" id="sumFigs"></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>#</th><th>Side</th><th>In</th><th>Out</th><th>Entry</th><th>Exit</th><th>Closed by</th><th>Result</th></tr></thead>
+      <tbody id="sumRows"></tbody>
+    </table></div>
   </div>
   <p class="note">Simulated prices for illustration. This is not a record of real or paper trading results, and it is not investment advice.</p>
 </section>
@@ -897,7 +909,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 (function () {
   var RISK = 0.01, STOP = 0.07, TP1 = 0.05, TP2 = 0.10, TRAIL = 0.03, TDAYS = 10, FLAT = 0.015, MAXFRAC = 0.20, FEE = 0.005, START = 100000;
   var cv = document.getElementById('simc'), cx = cv.getContext('2d'), logEl = document.getElementById('simlog');
-  var bars, ema21, ema50, rsi, hist, vavg, day, cash, pos, closed, wins, marks, levels, eqHist, paused = false, timer = 0, vLo = null, vHi = null;
+  var bars, ema21, ema50, rsi, hist, vavg, day, cash, pos, closed, wins, marks, levels, eqHist, paused = false, timer = 0, vLo = null, vHi = null, finished = false, tlog = [];
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function g() { return (Math.random() + Math.random() + Math.random() + Math.random() - 2) / 1.15 * 1.73; }
   function ema(arr, n) { var k = 2 / (n + 1), out = [arr[0]]; for (var i = 1; i < arr.length; i++) out.push(arr[i] * k + out[i - 1] * (1 - k)); return out; }
@@ -916,7 +928,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     rsi = [50]; var up = 0, dn = 0;
     for (var j = 1; j < n; j++) { var d = cl[j] - cl[j - 1]; up = (up * 13 + Math.max(d, 0)) / 14; dn = (dn * 13 + Math.max(-d, 0)) / 14; rsi.push(100 - 100 / (1 + up / (dn || 1e-9))); }
     vavg = bars.map(function (_, i) { var s = 0, k = 0; for (var q = Math.max(0, i - 19); q <= i; q++) { s += bars[q].v; k++; } return s / k; });
-    vLo = vHi = null; day = 60; cash = START; pos = null; closed = 0; wins = 0; marks = []; levels = []; eqHist = []; logEl.innerHTML = '';
+    vLo = vHi = null; finished = false; tlog = []; document.getElementById('simsum').hidden = true; day = 60; cash = START; pos = null; closed = 0; wins = 0; marks = []; levels = []; eqHist = []; logEl.innerHTML = '';
     say('', 'Scanning for a long or short setup.');
   }
   function money(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
@@ -931,12 +943,13 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     marks.push({ d: day, p: px, t: 'x', dir: d });
     if (pos.sh === 0) {
       closed++; if (pos.pnl > 0) wins++;
+      tlog.push({ dir: d, d0: pos.d - 60, d1: day - 60, entry: pos.entry, exit: px, why: why, pnl: pos.pnl });
       say(pos.pnl > 0 ? 'win' : '', why + ' at ' + px.toFixed(2) + '. ' + (d > 0 ? 'Long' : 'Short') + ' closed, <b>' + (pos.pnl >= 0 ? '+' : '&minus;') + money(Math.abs(pos.pnl)) + '</b>.');
       pos = null;
     } else say('win', why + ' at ' + px.toFixed(2) + ': ' + (d > 0 ? 'sold' : 'covered') + ' half, stop moved to entry.');
   }
   function step() {
-    day++; if (day >= bars.length) { say('', 'End of this market. Starting a new one.'); setTimeout(restart, 2600); return false; }
+    day++; if (day >= bars.length) { day = bars.length - 1; finish(); return false; }
     var b = bars[day], i = day;
     if (pos) {
       var d = pos.dir, e = pos.entry, adverse = d > 0 ? b.l : b.h, fav = d > 0 ? b.h : b.l;
@@ -970,12 +983,13 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, w, h);
     var span = Math.min(110, Math.max(60, Math.floor(w / 7))), a = Math.max(0, day - span + 1), lo = Infinity, hi = -Infinity, i;
+    if (finished) { a = 60; span = day - 60 + 1; }                    /* after the run: show the whole market at once */
     for (i = a; i <= day; i++) { lo = Math.min(lo, bars[i].l, ema21[i]); hi = Math.max(hi, bars[i].h, ema21[i]); }
     if (pos) { lo = Math.min(lo, pos.stop, pos.entry * (1 + pos.dir * TP2)); hi = Math.max(hi, pos.stop, pos.entry * (1 + pos.dir * TP2)); }
     var pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
     if (vLo === null) { vLo = lo; vHi = hi; } else { vLo += (lo - vLo) * 0.3; vHi += (hi - vHi) * 0.3; }   /* ease the price scale so the chart does not jump */
     lo = Math.min(lo, vLo); hi = Math.max(hi, vHi);
-    var stepX = (w - 70) / span, bw = Math.max(3, stepX * 0.68);
+    var stepX = (w - 70) / span, bw = Math.max(finished ? 1 : 3, stepX * 0.68), ms = finished ? 0.62 : 1;
     function X(i) { return 8 + (i - a + 0.5) * stepX; } function Y(v) { return 10 + (hi - v) / (hi - lo) * (h - 20); }
     var fg = FG(), acc = ACC();
     function hline(v, col, label, dash) {
@@ -997,7 +1011,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     marks.forEach(function (m) {
       if (m.d < a) return; var x = X(m.d), y = Y(m.p), upArrow = (m.t === 'e') === (m.dir > 0);     /* buys point up, sells and shorts point down */
       cx.fillStyle = m.t === 'e' ? 'rgb(' + acc + ')' : 'rgb(' + fg + ')'; cx.beginPath();
-      if (upArrow) { cx.moveTo(x, y + 6); cx.lineTo(x - 6, y + 17); cx.lineTo(x + 6, y + 17); } else { cx.moveTo(x, y - 6); cx.lineTo(x - 6, y - 17); cx.lineTo(x + 6, y - 17); }
+      if (upArrow) { cx.moveTo(x, y + 6 * ms); cx.lineTo(x - 6 * ms, y + 17 * ms); cx.lineTo(x + 6 * ms, y + 17 * ms); } else { cx.moveTo(x, y - 6 * ms); cx.lineTo(x - 6 * ms, y - 17 * ms); cx.lineTo(x + 6 * ms, y - 17 * ms); }
       cx.closePath(); cx.fill();
     });
     if (pos) {
@@ -1008,19 +1022,40 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       hline(pos.entry * (1 + pos.dir * TP2), 'rgba(' + acc + ',0.6)', sgn + '10%', [2, 4]);
     }
     var eq = equity();
-    document.getElementById('simday').textContent = 'Day ' + (day - 60) + (pos ? (pos.dir > 0 ? ', long' : ', short') : ', watching');
+    document.getElementById('simday').textContent = finished ? 'Run complete, ' + (day - 60) + ' trading days' : 'Day ' + (day - 60) + (pos ? (pos.dir > 0 ? ', long' : ', short') : ', watching');
     document.getElementById('kEq').textContent = money(eq);
     document.getElementById('kRet').textContent = ((eq / START - 1) * 100 >= 0 ? '+' : '') + ((eq / START - 1) * 100).toFixed(1) + '%';
     document.getElementById('kTr').textContent = closed;
     document.getElementById('kWin').textContent = closed ? Math.round(wins / closed * 100) + '%' : 'n/a';
   }
-  function tick() { if (!paused && step()) paint(); }
-  function restart() { build(); paint(); }
+  function finish() {
+    finished = true; vLo = vHi = null;
+    say('', 'Run complete. The full market and every trade are shown below.');
+    var eq = equity(), w = tlog.filter(function (t) { return t.pnl > 0; }), l = tlog.filter(function (t) { return t.pnl <= 0; });
+    function avg(a) { return a.length ? a.reduce(function (x, t) { return x + t.pnl; }, 0) / a.length : 0; }
+    function sm(v) { return (v >= 0 ? '+' : '\u2212') + money(Math.abs(v)); }
+    var best = tlog.reduce(function (m, t) { return Math.max(m, t.pnl); }, 0), worst = tlog.reduce(function (m, t) { return Math.min(m, t.pnl); }, 0);
+    var figs = [[((eq / START - 1) * 100 >= 0 ? '+' : '') + ((eq / START - 1) * 100).toFixed(1) + '%', 'Return over ' + (day - 60) + ' trading days'],
+      [tlog.length, 'Closed trades (' + tlog.filter(function (t) { return t.dir > 0; }).length + ' long, ' + tlog.filter(function (t) { return t.dir < 0; }).length + ' short)'],
+      [tlog.length ? Math.round(w.length / tlog.length * 100) + '%' : 'n/a', 'Win rate'],
+      [sm(avg(w)), 'Average winning trade'], [sm(avg(l)), 'Average losing trade'], [sm(best) + ' / ' + sm(worst), 'Best and worst trade']];
+    document.getElementById('sumFigs').innerHTML = figs.map(function (f) { return '<div><b>' + f[0] + '</b><span>' + f[1] + '</span></div>'; }).join('');
+    document.getElementById('sumRows').innerHTML = tlog.length ? tlog.map(function (t, i) {
+      return '<tr><td>' + (i + 1) + '</td><td>' + (t.dir > 0 ? 'Long' : 'Short') + '</td><td>Day ' + t.d0 + '</td><td>Day ' + t.d1 + '</td><td>' + t.entry.toFixed(2) + '</td><td>' + t.exit.toFixed(2) + '</td><td>' + t.why + '</td><td class="' + (t.pnl > 0 ? 'up' : 'down') + '">' + sm(t.pnl) + '</td></tr>';
+    }).join('') : '<tr><td colspan="8">No setup met all five conditions in this market, so the bot stayed in cash.</td></tr>';
+    if (pos) document.getElementById('sumRows').innerHTML += '<tr><td colspan="8">One ' + (pos.dir > 0 ? 'long' : 'short') + ' position was still open at the end and is valued at the last price.</td></tr>';
+    document.getElementById('simsum').hidden = false;
+    document.getElementById('simpause').hidden = true; document.getElementById('simskip').hidden = true;
+    paint();
+  }
+  function tick() { if (!paused && !finished && step()) paint(); }
+  function restart() { build(); paused = false; var pb = document.getElementById('simpause'); pb.hidden = false; pb.textContent = 'Pause'; document.getElementById('simskip').hidden = false; paint(); }
   document.getElementById('simnew').addEventListener('click', restart);
+  document.getElementById('simskip').addEventListener('click', function () { while (!finished) step(); });
   document.getElementById('simpause').addEventListener('click', function () { paused = !paused; this.textContent = paused ? 'Play' : 'Pause'; });
   window.addEventListener('resize', paint); window.addEventListener('themechange', paint);
   build();
-  if (still) { for (var k = 0; k < 150; k++) step(); paused = true; document.getElementById('simpause').textContent = 'Play'; }
+  if (still) { while (!finished) step(); }
   paint();
   var onScreen = true;
   if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { onScreen = en[0].isIntersecting; }).observe(cv);
