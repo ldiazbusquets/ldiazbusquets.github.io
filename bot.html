@@ -733,10 +733,10 @@
     <a class="back" href="index.html#work">&larr; All projects</a>
     <p class="eyebrow">Personal project, Python and the Alpaca paper trading API</p>
     <h1>Paper<br>trading bot</h1>
-    <p class="lede">A swing trading system I built to test whether a fixed set of rules can be followed without emotion. It scans for pullbacks in uptrends, sizes every position from the stop distance, and manages exits on its own. It trades simulated money only.</p>
+    <p class="lede">A swing trading system I built to test whether a fixed set of rules can be followed without emotion. It buys pullbacks in uptrends, shorts failed rallies in downtrends, sizes every position from the stop distance, and manages exits on its own. It trades simulated money only.</p>
     <div class="panel verdict">
       <div class="call"><b>1%</b><span>Of equity risked per trade</span></div>
-      <div><b>7%</b><span>Hard stop below entry</span></div>
+      <div><b>7%</b><span>Hard stop against the position</span></div>
       <div><b>+5% / +10%</b><span>Half off, then the rest</span></div>
       <div><b>10 days</b><span>Time stop if flat</span></div>
     </div>
@@ -783,33 +783,34 @@
     <canvas id="ytdc"></canvas>
     <div class="legend"><span><i></i>Bot, same rules as above</span><span><i class="b"></i>S&amp;P 500 (SPY), buy and hold</span></div>
   </div>
-  <p class="note">A backtest applies today's rules to past prices. It assumes every order fills at the planned price and ignores slippage, so real results would differ. Past performance does not predict future results.</p>
+  <p class="note">A backtest applies today's rules to past prices. It assumes every order fills at the planned price and ignores slippage, and it does not charge the cost of borrowing shares to short, so real results would differ. Past performance does not predict future results.</p>
 </section>
 
 <section class="chapter" id="rules">
   <p class="eyebrow">03 The rules</p>
   <h2>Every decision is written down <em>before the trade.</em></h2>
-  <h3>When it buys</h3>
-  <p>All five conditions must be true on the same day.</p>
+  <h3>When it enters</h3>
+  <p>It trades both directions. All five conditions must be true on the same day.</p>
   <div class="tablewrap"><table>
-    <thead><tr><th>Check</th><th>Rule</th><th>Why</th></tr></thead>
+    <thead><tr><th>Check</th><th>Long</th><th>Short</th></tr></thead>
     <tbody>
-      <tr><td>Trend</td><td>Price above the 50-day EMA, and the 21-day EMA rising</td><td>Only buy stocks that are already going up</td></tr>
-      <tr><td>Pullback</td><td>Price dips to the 21-day EMA and closes above it</td><td>Buy the dip in a trend, not the breakout</td></tr>
-      <tr><td>RSI(14)</td><td>Between 40 and 60 and turning up</td><td>A healthy reset, not an overbought chase</td></tr>
-      <tr><td>MACD (12, 26, 9)</td><td>Histogram rising</td><td>Momentum is turning back up</td></tr>
-      <tr><td>Volume</td><td>Below its 20-day average</td><td>Quiet selling suggests sellers are not in control</td></tr>
+      <tr><td>Trend</td><td>Price above the 50-day EMA, 21-day EMA rising</td><td>Price below the 50-day EMA, 21-day EMA falling</td></tr>
+      <tr><td>Setup</td><td>Dips to the 21-day EMA and closes above it</td><td>Rallies to the 21-day EMA and closes below it</td></tr>
+      <tr><td>RSI(14)</td><td>Between 40 and 60, turning up</td><td>Between 40 and 60, turning down</td></tr>
+      <tr><td>MACD (12, 26, 9)</td><td>Histogram rising</td><td>Histogram falling</td></tr>
+      <tr><td>Volume</td><td colspan="2">Below its 20-day average, so the move against the trend is a quiet one</td></tr>
+      <tr><td>Market</td><td>S&amp;P 500 above its 50-day EMA</td><td>S&amp;P 500 below its 50-day EMA</td></tr>
     </tbody>
   </table></div>
-  <p>It also stands aside when the S&amp;P 500 is below its own 50-day EMA.</p>
-  <h3>How much it buys</h3>
-  <p>Shares = (account value &times; 1%) &divide; (entry price &minus; stop price). A wider stop means fewer shares, so every trade risks the same share of the account. Positions are capped at 20% of the account, with at most five open at once.</p>
-  <h3>When it sells</h3>
+  <p>The market check means it only goes long when the broad market is rising and only shorts when it is falling. The simulation above trades a single made-up stock, so it skips that check.</p>
+  <h3>How much it trades</h3>
+  <p>Shares = (account value &times; 1%) &divide; (distance from entry to stop). A wider stop means fewer shares, so every trade risks the same share of the account. Positions are capped at 20% of the account, with at most five open at once.</p>
+  <h3>When it exits</h3>
   <ul>
-    <li><b>Stop:</b> 7% below entry, set at the moment of purchase and stored with the trade.</li>
-    <li><b>First target:</b> sell half at +5% and move the stop to the entry price, so the rest cannot lose.</li>
-    <li><b>Second target:</b> sell the remainder at +10%.</li>
-    <li><b>Trailing stop:</b> after the first target, the stop follows 3% below the highest close.</li>
+    <li><b>Stop:</b> 7% against the position, below a long or above a short, set at entry and stored with the trade.</li>
+    <li><b>First target:</b> close half at 5% in its favor and move the stop to the entry price, so the rest cannot lose.</li>
+    <li><b>Second target:</b> close the remainder at 10% in its favor.</li>
+    <li><b>Trailing stop:</b> after the first target, the stop follows 3% behind the best close.</li>
     <li><b>Time stop:</b> if a trade is within 1.5% of entry after 10 trading days, close it and free the capital.</li>
   </ul>
 </section>
@@ -893,7 +894,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
   function build() {
     var n = 330, p = 100, drift = 0.0009; bars = [];
     for (var i = 0; i < n; i++) {
-      if (i % 45 === 0) drift = 0.0002 + Math.random() * 0.0018 - (Math.random() < 0.22 ? 0.0022 : 0);
+      if (i % 45 === 0) drift = Math.random() < 0.42 ? -(0.0006 + Math.random() * 0.0016) : 0.0004 + Math.random() * 0.0016;   /* alternating up and down regimes */
       var o = p * (1 + g() * 0.003), c = o * Math.exp(drift + g() * 0.014);
       bars.push({ o: o, c: c, h: Math.max(o, c) * (1 + Math.abs(g()) * 0.005), l: Math.min(o, c) * (1 - Math.abs(g()) * 0.005), v: 0.5 + Math.random() });
       p = c;
@@ -906,43 +907,49 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     for (var j = 1; j < n; j++) { var d = cl[j] - cl[j - 1]; up = (up * 13 + Math.max(d, 0)) / 14; dn = (dn * 13 + Math.max(-d, 0)) / 14; rsi.push(100 - 100 / (1 + up / (dn || 1e-9))); }
     vavg = bars.map(function (_, i) { var s = 0, k = 0; for (var q = Math.max(0, i - 19); q <= i; q++) { s += bars[q].v; k++; } return s / k; });
     day = 60; cash = START; pos = null; closed = 0; wins = 0; marks = []; levels = []; eqHist = []; logEl.innerHTML = '';
-    say('', 'Scanning for a pullback in an uptrend.');
+    say('', 'Scanning for a long or short setup.');
   }
   function money(v) { return '$' + Math.round(v).toLocaleString('en-US'); }
   function say(cls, html) {
     var li = document.createElement('li'); li.className = cls; li.innerHTML = '<i>DAY ' + (day - 60) + '</i><span>' + html + '</span>';
     logEl.insertBefore(li, logEl.firstChild); while (logEl.children.length > 6) logEl.removeChild(logEl.lastChild);
   }
-  function equity() { return cash + (pos ? pos.sh * bars[day].c : 0); }
-  function sell(sh, px, why) {
-    cash += sh * px - sh * FEE; pos.pnl += sh * (px - pos.entry) - sh * FEE; pos.sh -= sh;
-    marks.push({ d: day, p: px, t: 's' });
+  function equity() { return cash + (pos ? pos.dir * pos.sh * bars[day].c : 0); }
+  function close(sh, px, why) {
+    var d = pos.dir;
+    cash += d * sh * px - sh * FEE; pos.pnl += d * sh * (px - pos.entry) - sh * FEE; pos.sh -= sh;
+    marks.push({ d: day, p: px, t: 'x', dir: d });
     if (pos.sh === 0) {
       closed++; if (pos.pnl > 0) wins++;
-      say(pos.pnl > 0 ? 'win' : '', why + ' at ' + px.toFixed(2) + '. Trade closed, <b>' + (pos.pnl >= 0 ? '+' : '&minus;') + money(Math.abs(pos.pnl)) + '</b>.');
-      levels.push({ a: pos.d, b: day, stop: pos.stop0, entry: pos.entry }); pos = null;
-    } else say('win', why + ' at ' + px.toFixed(2) + ': sold half, stop moved to entry.');
+      say(pos.pnl > 0 ? 'win' : '', why + ' at ' + px.toFixed(2) + '. ' + (d > 0 ? 'Long' : 'Short') + ' closed, <b>' + (pos.pnl >= 0 ? '+' : '&minus;') + money(Math.abs(pos.pnl)) + '</b>.');
+      pos = null;
+    } else say('win', why + ' at ' + px.toFixed(2) + ': ' + (d > 0 ? 'sold' : 'covered') + ' half, stop moved to entry.');
   }
   function step() {
     day++; if (day >= bars.length) { say('', 'End of this market. Starting a new one.'); setTimeout(restart, 2600); return false; }
     var b = bars[day], i = day;
     if (pos) {
-      pos.n++; pos.high = Math.max(pos.high, b.c);
-      if (b.l <= pos.stop) sell(pos.sh, Math.min(pos.stop, b.o), pos.tp1 ? 'Trailing stop' : 'Stop hit');
+      var d = pos.dir, e = pos.entry, adverse = d > 0 ? b.l : b.h, fav = d > 0 ? b.h : b.l;
+      pos.n++; pos.best = d > 0 ? Math.max(pos.best, b.c) : Math.min(pos.best, b.c);
+      if ((adverse - pos.stop) * d <= 0) close(pos.sh, d > 0 ? Math.min(pos.stop, b.o) : Math.max(pos.stop, b.o), pos.tp1 ? 'Trailing stop' : 'Stop hit');
       else {
-        if (!pos.tp1 && b.h >= pos.entry * (1 + TP1)) { pos.tp1 = true; pos.stop = pos.entry; sell(Math.floor(pos.sh / 2), pos.entry * (1 + TP1), 'First target'); }
-        if (pos && b.h >= pos.entry * (1 + TP2)) sell(pos.sh, pos.entry * (1 + TP2), 'Second target');
-        else if (pos && pos.tp1) pos.stop = Math.max(pos.stop, pos.high * (1 - TRAIL));
-        if (pos && pos.n >= TDAYS && Math.abs(b.c / pos.entry - 1) < FLAT) sell(pos.sh, b.c, 'Time stop');
+        if (!pos.tp1 && (fav - e * (1 + d * TP1)) * d >= 0) { pos.tp1 = true; pos.stop = e; close(Math.floor(pos.sh / 2), e * (1 + d * TP1), 'First target'); }
+        if (pos && (fav - e * (1 + d * TP2)) * d >= 0) close(pos.sh, e * (1 + d * TP2), 'Second target');
+        else if (pos && pos.tp1) { var tr = pos.best * (1 - d * TRAIL); pos.stop = d > 0 ? Math.max(pos.stop, tr) : Math.min(pos.stop, tr); }
+        if (pos && pos.n >= TDAYS && Math.abs(b.c / e - 1) < FLAT) close(pos.sh, b.c, 'Time stop');
       }
-    } else if (b.c > ema50[i] && ema21[i] > ema21[i - 5] && b.l <= ema21[i] * 1.015 && b.c >= ema21[i] &&
-               rsi[i] >= 40 && rsi[i] <= 60 && rsi[i] > rsi[i - 1] && hist[i] > hist[i - 1] && b.v < vavg[i]) {
-      var eq = cash, px = b.c, stop = px * (1 - STOP), sh = Math.floor(Math.min(eq * RISK / (px - stop), eq * MAXFRAC / px));
-      if (sh > 0) {
-        cash -= sh * px + sh * FEE;
-        pos = { entry: px, stop: stop, stop0: stop, sh: sh, tp1: false, high: px, n: 0, pnl: -sh * FEE, d: day };
-        marks.push({ d: day, p: px, t: 'b' });
-        say('buy', '<b>Buy ' + sh + ' shares</b> at ' + px.toFixed(2) + '. Stop ' + stop.toFixed(2) + ', risking ' + money(sh * (px - stop)) + '.');
+    } else {
+      var quiet = b.v < vavg[i] && rsi[i] >= 40 && rsi[i] <= 60, dir = 0;
+      if (quiet && b.c > ema50[i] && ema21[i] > ema21[i - 5] && b.l <= ema21[i] * 1.015 && b.c >= ema21[i] && rsi[i] > rsi[i - 1] && hist[i] > hist[i - 1]) dir = 1;
+      else if (quiet && b.c < ema50[i] && ema21[i] < ema21[i - 5] && b.h >= ema21[i] * 0.985 && b.c <= ema21[i] && rsi[i] < rsi[i - 1] && hist[i] < hist[i - 1]) dir = -1;
+      if (dir) {
+        var eq = cash, px = b.c, stop = px * (1 - dir * STOP), sh = Math.floor(Math.min(eq * RISK / Math.abs(px - stop), eq * MAXFRAC / px));
+        if (sh > 0) {
+          cash -= dir * sh * px + sh * FEE;
+          pos = { dir: dir, entry: px, stop: stop, sh: sh, tp1: false, best: px, n: 0, pnl: -sh * FEE, d: day };
+          marks.push({ d: day, p: px, t: 'e', dir: dir });
+          say('buy', '<b>' + (dir > 0 ? 'Buy ' : 'Short ') + sh + ' shares</b> at ' + px.toFixed(2) + '. Stop ' + stop.toFixed(2) + (dir > 0 ? '' : ' (above)') + ', risking ' + money(sh * Math.abs(px - stop)) + '.');
+        }
       }
     }
     eqHist.push(equity());
@@ -954,7 +961,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, w, h);
     var span = Math.min(110, Math.max(60, Math.floor(w / 7))), a = Math.max(0, day - span + 1), lo = Infinity, hi = -Infinity, i;
     for (i = a; i <= day; i++) { lo = Math.min(lo, bars[i].l, ema21[i]); hi = Math.max(hi, bars[i].h, ema21[i]); }
-    if (pos) { lo = Math.min(lo, pos.stop); hi = Math.max(hi, pos.entry * (1 + TP2)); }
+    if (pos) { lo = Math.min(lo, pos.stop, pos.entry * (1 + pos.dir * TP2)); hi = Math.max(hi, pos.stop, pos.entry * (1 + pos.dir * TP2)); }
     var pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
     var stepX = (w - 70) / span, bw = Math.max(3, stepX * 0.68);
     function X(i) { return 8 + (i - a + 0.5) * stepX; } function Y(v) { return 10 + (hi - v) / (hi - lo) * (h - 20); }
@@ -976,19 +983,20 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     cx.stroke();
     cx.fillStyle = 'rgba(' + fg + ',0.55)'; cx.font = '600 10px Manrope, Arial, sans-serif'; cx.textBaseline = 'middle'; cx.fillText('21 EMA', w - 58, Y(ema21[day]));
     marks.forEach(function (m) {
-      if (m.d < a) return; var x = X(m.d), y = Y(m.p);
-      cx.fillStyle = m.t === 'b' ? 'rgb(' + acc + ')' : 'rgb(' + fg + ')'; cx.beginPath();
-      if (m.t === 'b') { cx.moveTo(x, y + 6); cx.lineTo(x - 6, y + 17); cx.lineTo(x + 6, y + 17); } else { cx.moveTo(x, y - 6); cx.lineTo(x - 6, y - 17); cx.lineTo(x + 6, y - 17); }
+      if (m.d < a) return; var x = X(m.d), y = Y(m.p), upArrow = (m.t === 'e') === (m.dir > 0);     /* buys point up, sells and shorts point down */
+      cx.fillStyle = m.t === 'e' ? 'rgb(' + acc + ')' : 'rgb(' + fg + ')'; cx.beginPath();
+      if (upArrow) { cx.moveTo(x, y + 6); cx.lineTo(x - 6, y + 17); cx.lineTo(x + 6, y + 17); } else { cx.moveTo(x, y - 6); cx.lineTo(x - 6, y - 17); cx.lineTo(x + 6, y - 17); }
       cx.closePath(); cx.fill();
     });
     if (pos) {
+      var sgn = pos.dir > 0 ? '+' : '\u2212';
       hline(pos.stop, 'rgba(' + fg + ',0.8)', 'STOP', [4, 4]);
-      hline(pos.entry, 'rgba(' + acc + ',0.9)', 'ENTRY');
-      if (!pos.tp1) hline(pos.entry * (1 + TP1), 'rgba(' + acc + ',0.6)', '+5%', [2, 4]);
-      hline(pos.entry * (1 + TP2), 'rgba(' + acc + ',0.6)', '+10%', [2, 4]);
+      hline(pos.entry, 'rgba(' + acc + ',0.9)', pos.dir > 0 ? 'LONG' : 'SHORT');
+      if (!pos.tp1) hline(pos.entry * (1 + pos.dir * TP1), 'rgba(' + acc + ',0.6)', sgn + '5%', [2, 4]);
+      hline(pos.entry * (1 + pos.dir * TP2), 'rgba(' + acc + ',0.6)', sgn + '10%', [2, 4]);
     }
     var eq = equity();
-    document.getElementById('simday').textContent = 'Day ' + (day - 60) + (pos ? ', in a trade' : ', watching');
+    document.getElementById('simday').textContent = 'Day ' + (day - 60) + (pos ? (pos.dir > 0 ? ', long' : ', short') : ', watching');
     document.getElementById('kEq').textContent = money(eq);
     document.getElementById('kRet').textContent = ((eq / START - 1) * 100 >= 0 ? '+' : '') + ((eq / START - 1) * 100).toFixed(1) + '%';
     document.getElementById('kTr').textContent = closed;
@@ -1012,7 +1020,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
     document.getElementById('ytd').hidden = false; document.getElementById('ytdLink').hidden = false;
     function pct(v) { return (v >= 0 ? '+' : '') + Number(v).toFixed(1) + '%'; }
     document.getElementById('ytdIntro').textContent = 'From ' + d.start + ' to ' + d.end + ', the same rules were applied to daily prices for ' + d.universe.length + ' large U.S. stocks (' + d.universe.join(', ') + '), starting with ' + money(d.startEquity) + '.';
-    var figs = [[pct(d.returnPct), 'Bot return, year to date'], [pct(d.benchReturnPct), 'S&P 500 (SPY) over the same period'], [d.trades, 'Closed trades'], [d.winRate + '%', 'Win rate'], [d.profitFactor == null ? 'n/a' : d.profitFactor, 'Profit factor'], [Number(d.maxDrawdownPct).toFixed(1) + '%', 'Largest drawdown']];
+    var figs = [[pct(d.returnPct), 'Bot return, year to date'], [pct(d.benchReturnPct), 'S&P 500 (SPY) over the same period'], [d.trades, d.shortTrades != null ? 'Closed trades (' + d.longTrades + ' long, ' + d.shortTrades + ' short)' : 'Closed trades'], [d.winRate + '%', 'Win rate'], [d.profitFactor == null ? 'n/a' : d.profitFactor, 'Profit factor'], [Number(d.maxDrawdownPct).toFixed(1) + '%', 'Largest drawdown']];
     document.getElementById('ytdFigs').innerHTML = figs.map(function (f) { return '<div><b>' + f[0] + '</b><span>' + f[1] + '</span></div>'; }).join('');
     var c = document.getElementById('ytdc'), y = c.getContext('2d');
     function drawY() {
