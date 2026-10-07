@@ -15,6 +15,7 @@
     if (raw[0] && raw[1] === auto) pick = raw[0]; else sessionStorage.removeItem('theme');
   } catch (e) {}
   document.documentElement.setAttribute('data-theme', pick || auto);
+  try { if (localStorage.getItem('cb') === 'on') document.documentElement.setAttribute('data-cb', 'on'); } catch (e) {}   /* colorblind-friendly mode is remembered */
 })();
 </script>
 <meta name="description" content="Luis Diaz Busquets is a finance student at Bryant University and a wealth management intern at ATON Financial who builds investing tools. Based in San Juan, Puerto Rico.">
@@ -280,7 +281,7 @@
     padding: 12px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,.26); color: #fff; background: rgba(255,255,255,.05);
     transition: background .2s, color .2s, border-color .2s;
   }
-  .btn::after { content: " \2192"; opacity: .7; }
+  .btn::after { content: " →"; opacity: .7; }
   .btn:hover { background: rgba(255,255,255,.16); color: #fff; }
   .btn.solid { background: #fff; color: #000; border-color: #fff; }
   .btn.solid:hover { background: #D6D6D6; border-color: #D6D6D6; }
@@ -611,7 +612,7 @@
 
   .plain li.cert { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
   .plain li.cert a { flex: none; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; text-decoration: none; color: var(--soft); padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; transition: color .2s, border-color .2s; }
-  .plain li.cert a::after { content: " \2197"; }
+  .plain li.cert a::after { content: " ↗"; }
   .plain li.cert a:hover { color: var(--white); border-color: var(--white); }
   .project .more { margin-top: 18px; }
 
@@ -632,7 +633,7 @@
   .courselist .status { display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--brass); vertical-align: 2px; }
   .coursework .built { margin: 22px 0 0; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--soft); }
   .coursework .built a { color: inherit; text-underline-offset: 4px; }
-  .coursework .built a::after { content: " \2197"; }
+  .coursework .built a::after { content: " ↗"; }
   @media (max-width: 820px) { .courselist { grid-template-columns: minmax(0, 1fr); } }
 
   .contact h2 { font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; font-stretch: 125%; font-weight: 800; letter-spacing: -.02em; line-height: .95; font-size: clamp(2.3rem, 6.4vw, 5rem); }
@@ -655,6 +656,100 @@
   /* project tiles: buttons sit on the same line across each row */
   .project { display: flex; flex-direction: column; }
   .project .more { margin-top: auto; padding-top: 20px; }
+
+  /* colorblind-friendly mode (the eye button): blue and orange stand in for green and red */
+  html:root .theme-btn.cb-btn[aria-pressed="true"] { background: var(--white); color: var(--navy); border-color: var(--white); }
+  html[data-cb="on"][data-theme="light"] { --brass: #0072B2; --brass-deep: #0072B2; }
+  html[data-cb="on"][data-theme="light"] .hero > .tag.me { color: #005A8C; border-color: rgba(0,114,178,.6); }
+  html[data-cb="on"][data-theme="light"] .feature li b { color: #0072B2; }
+  html[data-cb="on"][data-theme="light"] .thumb [stroke="#5B9FE0"] { stroke: #0072B2; } html[data-cb="on"][data-theme="light"] .thumb [fill="#5B9FE0"] { fill: #0072B2; }
+  html[data-cb="on"][data-theme="light"] .hero > .origin { color: #0072B2; text-shadow: none; }
+
+  /* colorblind-friendly mode also raises contrast: no green tint, darker text, and visible edges on every panel and control */
+  html[data-cb="on"][data-theme="light"] { --ink: #000; --white: #000; --ink-soft: #333; --soft: #333; --dim: #595959; --line: rgba(0,0,0,.32); --navy: #F3F4F6; --mist: #F3F4F6; }
+  html[data-cb="on"][data-theme="light"] body, html[data-cb="on"][data-theme="light"] body::before { background: #F3F4F6; }
+  html[data-cb="on"][data-theme="light"] .hero { background: transparent; }
+  html[data-cb="on"][data-theme="light"] .hero > .nav { background: rgba(243,244,246,.9); border-bottom-color: rgba(0,0,0,.3); }
+  html[data-cb="on"][data-theme="light"] .feature, html[data-cb="on"][data-theme="light"] .project, html[data-cb="on"][data-theme="light"] .edu > div,
+  html[data-cb="on"][data-theme="light"] .panel, html[data-cb="on"][data-theme="light"] .sim,
+  html[data-cb="on"][data-theme="light"] .portrait {
+    background: #fff; border-color: rgba(0,0,0,.42);
+  }
+  html[data-cb="on"][data-theme="light"] .nav-links a, html[data-cb="on"][data-theme="light"] .btn:not(.solid), html[data-cb="on"][data-theme="light"] .lang,
+  html[data-cb="on"][data-theme="light"] .theme-btn, html[data-cb="on"][data-theme="light"] .menu-btn, html[data-cb="on"][data-theme="light"] .hero > .tag {
+    background: #fff; border-color: rgba(0,0,0,.5); color: #000;
+  }
+   html[data-cb="on"][data-theme="light"] td,
+  html[data-cb="on"][data-theme="light"] .row p.desc, html[data-cb="on"][data-theme="light"] .feature li, html[data-cb="on"][data-theme="light"] .plain li, html[data-cb="on"][data-theme="light"] .edu p { color: #1A1A1A; }
+  html[data-cb="on"][data-theme="dark"] { --ink-soft: #CFCFCF; --soft: #CFCFCF; --dim: #A6A6A6; --line: rgba(255,255,255,.36); }
+  html[data-cb="on"][data-theme="dark"] .feature, html[data-cb="on"][data-theme="dark"] .project, html[data-cb="on"][data-theme="dark"] .edu > div,
+  html[data-cb="on"][data-theme="dark"] .panel, html[data-cb="on"][data-theme="dark"] .sim,
+  html[data-cb="on"][data-theme="dark"] .nav-links a, html[data-cb="on"][data-theme="dark"] .btn:not(.solid), html[data-cb="on"][data-theme="dark"] .theme-btn { border-color: rgba(255,255,255,.5); }
+
+  html[data-cb="on"][data-theme="light"] .thumb { background: #E9EAEC; border-color: rgba(0,0,0,.3); }
+  html[data-cb="on"][data-theme="light"] .thumb [stroke="#fff"] { stroke: #000; } html[data-cb="on"][data-theme="light"] .thumb [fill="#fff"] { fill: #000; }
+  html[data-cb="on"][data-theme="light"] .thumb [fill="#000"] { fill: #E9EAEC; } html[data-cb="on"][data-theme="light"] .thumb [fill="#8a8a8a"] { fill: #444; }
+  html[data-cb="on"][data-theme="light"] .project .built, html[data-cb="on"][data-theme="light"] .feature .built, html[data-cb="on"][data-theme="light"] .sim small,
+  html[data-cb="on"][data-theme="light"] .coursework .built, html[data-cb="on"][data-theme="light"] footer { color: #3A3A3A !important; }
+
+  /* make colorblind mode obvious: a yellow bar across the top, a yellow eye button, and a pale yellow page in the light theme */
+  html[data-cb="on"][data-theme="light"] { --navy: #FFF7D6; --mist: #FFF7D6; }
+  html[data-cb="on"][data-theme="light"] body, html[data-cb="on"][data-theme="light"] body::before { background: #FFF7D6; }
+  html[data-cb="on"][data-theme="light"] .hero > .nav { background: rgba(255,247,214,.94); }
+  .cb-toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 12px); z-index: 70; padding: 12px 20px; border-radius: 999px; background: #FFD400; color: #000; border: 1.5px solid #000;
+    font-size: .9rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; white-space: nowrap; max-width: calc(100vw - 32px); overflow: hidden; text-overflow: ellipsis; }
+  .cb-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* colorblind mode, light theme: the same frosted-glass look as the green theme, in white and yellow */
+  html[data-cb="on"][data-theme="light"] { --navy: #FFF3C2; --mist: #FFF3C2; --line: rgba(90,65,0,.34); }
+  html[data-cb="on"][data-theme="light"] body { background: #FFF3C2; }
+  html[data-cb="on"][data-theme="light"] body::before { background: radial-gradient(130% 100% at 50% 28%, #FFFCEB 0%, #FFF3C2 48%, #FFE9A0 100%); }
+  html[data-cb="on"][data-theme="light"] .hero > .nav { background: rgba(255,246,208,.82); border-bottom-color: rgba(110,80,0,.3); }
+  html[data-cb="on"][data-theme="light"] .feature, html[data-cb="on"][data-theme="light"] .project, html[data-cb="on"][data-theme="light"] .edu > div,
+  html[data-cb="on"][data-theme="light"] .panel, html[data-cb="on"][data-theme="light"] .sim,
+  html[data-cb="on"][data-theme="light"] .portrait {
+    background: linear-gradient(135deg, rgba(255,255,255,.84) 0%, rgba(255,255,255,.58) 100%); border: 1px solid rgba(255,255,255,.95);
+    box-shadow: inset 0 1px 1px #fff, 0 0 0 1px rgba(110,80,0,.40), 0 22px 48px rgba(120,90,0,.20);      /* white rim, plus a darker outline so the panel edge is never white on pale */
+  }
+  html[data-cb="on"][data-theme="light"] .nav-links a, html[data-cb="on"][data-theme="light"] .btn:not(.solid), html[data-cb="on"][data-theme="light"] .lang,
+  html[data-cb="on"][data-theme="light"] .theme-btn, html[data-cb="on"][data-theme="light"] .menu-btn, html[data-cb="on"][data-theme="light"] .hero > .tag {
+    background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.62)); border-color: rgba(110,80,0,.5); color: #000; box-shadow: inset 0 1px 1px #fff, 0 4px 14px rgba(120,90,0,.16);
+  }
+  /* the eye button when on: a flat yellow disc, with no highlight or shadow to push the fill off centre */
+  .theme-btn svg { margin: 0; }
+
+  /* colorblind mode keeps the site's glass look. The eye button fills in (black on light, white on dark) to show it is on. */
+  html[data-cb="on"]:root .theme-btn.cb-btn[aria-pressed="true"] { background: #000; color: #fff; border-color: #000; box-shadow: none; }
+  html[data-cb="on"][data-theme="dark"]:root .theme-btn.cb-btn[aria-pressed="true"] { background: #fff; color: #000; border-color: #fff; }
+  html[data-cb="on"][data-theme="light"] .btn.solid, html[data-cb="on"][data-theme="light"] .lang::before { box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(110,80,0,.45), 0 3px 10px rgba(120,90,0,.16); }
+  .cb-toast { background: #000; color: #fff; border-color: rgba(255,255,255,.5); }
+
+  /* the note shown when colorblind mode is switched: brushed silver in the light theme, dark glass in the dark theme */
+  .cb-toast { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; padding: 14px 22px; border-width: 1px; }
+  html[data-theme="light"] .cb-toast { color: #1F2422; border-color: rgba(255,255,255,.85);
+    background: linear-gradient(180deg, #F6F7F7 0%, #E6E8E9 49%, #DDE0E1 52%, #EAECED 100%); box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(0,0,0,.18), 0 10px 26px rgba(0,0,0,.18); }
+  html[data-theme="dark"] .cb-toast { color: #fff; border-color: rgba(255,255,255,.26);
+    background: linear-gradient(135deg, rgba(60,60,60,.62), rgba(24,24,24,.62)); -webkit-backdrop-filter: blur(16px) saturate(160%); backdrop-filter: blur(16px) saturate(160%);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.22), 0 10px 30px rgba(0,0,0,.5); }
+
+  /* colorblind mode, light theme: the early light-theme palette, a pale green with a yellow hue, as one smooth wash */
+  html[data-cb="on"][data-theme="light"] { --navy: #E9EDCB; --mist: #E9EDCB; --line: rgba(70,80,20,.34); }
+  html[data-cb="on"][data-theme="light"] body { background: #E9EDCB; }
+  html[data-cb="on"][data-theme="light"] body::before { background: radial-gradient(130% 100% at 50% 28%, #F5F7E8 0%, #E9EDCB 48%, #D9E1A8 100%); }
+  html[data-cb="on"][data-theme="light"] .hero > .nav { background: rgba(240,243,222,.82); border-bottom-color: rgba(70,80,20,.28); }
+  html[data-cb="on"][data-theme="light"] .feature, html[data-cb="on"][data-theme="light"] .project, html[data-cb="on"][data-theme="light"] .edu > div,
+  html[data-cb="on"][data-theme="light"] .panel, html[data-cb="on"][data-theme="light"] .sim,
+  html[data-cb="on"][data-theme="light"] .portrait {
+    background: linear-gradient(180deg, rgba(255,255,255,.86) 0%, rgba(253,254,244,.66) 55%, rgba(243,246,200,.60) 100%);     /* white glass with a little yellow pooling at the base */
+    box-shadow: inset 0 1.5px 0 #fff, inset 0 -22px 36px rgba(226,232,160,.22), 0 0 0 1px rgba(70,80,20,.40), 0 24px 52px rgba(80,96,40,.20);
+  }
+  html[data-cb="on"][data-theme="light"] .nav-links a, html[data-cb="on"][data-theme="light"] .btn:not(.solid), html[data-cb="on"][data-theme="light"] .lang,
+  html[data-cb="on"][data-theme="light"] .theme-btn, html[data-cb="on"][data-theme="light"] .menu-btn, html[data-cb="on"][data-theme="light"] .hero > .tag {
+    border-color: rgba(70,80,20,.5); box-shadow: inset 0 1px 1px #fff, 0 4px 14px rgba(80,96,40,.16);
+  }
+  html[data-cb="on"][data-theme="light"] .btn.solid, html[data-cb="on"][data-theme="light"] .lang::before { box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(70,80,20,.45), 0 3px 10px rgba(80,96,40,.16); }
+  html[data-cb="on"][data-theme="light"] .thumb { background: linear-gradient(180deg, #EEF1DC, #DCE2BC); border-color: rgba(70,80,20,.3); }
+  html[data-cb="on"][data-theme="light"] .thumb [fill="#000"] { fill: #E6EACD; }
 </style>
 </head>
 <body>
@@ -681,6 +776,9 @@
       <button class="theme-btn" type="button" aria-label="Switch between light and dark">
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      </button>
+      <button class="theme-btn cb-btn" type="button" aria-pressed="false" aria-label="Colorblind-friendly colors" title="Colorblind-friendly colors">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
     </div>
@@ -941,7 +1039,9 @@
    ============================================================ */
 function LIGHT() { return document.documentElement.getAttribute('data-theme') === 'light'; }
 function FG() { return LIGHT() ? '27,40,32' : '255,255,255'; }
-function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matrix phosphor green, dark: steel blue */
+function CB() { return document.documentElement.getAttribute('data-cb') === 'on'; }                    /* colorblind-friendly mode */
+function ACC() { return LIGHT() ? (CB() ? '0,114,178' : '0,230,64') : '91,159,224'; }   /* light: phosphor green (blue in colorblind mode), dark: steel blue */
+function DOWNCOL() { return '213,94,0'; }                                    /* orange, used for "down" in colorblind mode */
 (function () {
   var root = document.documentElement, meta = document.querySelector('meta[name="theme-color"]');
   function byHour() { var h = new Date().getHours(); return h >= 7 && h < 19 ? 'light' : 'dark'; }
@@ -966,12 +1066,25 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       try { sessionStorage.setItem('theme', next + '|' + byHour()); } catch (e) {}
       apply(next);
     });
+    var cbBtn = document.querySelector('.cb-btn');
+    cbBtn.setAttribute('aria-pressed', String(root.getAttribute('data-cb') === 'on'));
+    cbBtn.addEventListener('click', function () {
+      var on = root.getAttribute('data-cb') !== 'on';
+      if (on) root.setAttribute('data-cb', 'on'); else root.removeAttribute('data-cb');
+      cbBtn.setAttribute('aria-pressed', String(on));
+      try { localStorage.setItem('cb', on ? 'on' : 'off'); } catch (e) {}
+      window.dispatchEvent(new Event('themechange'));                  /* every chart redraws in the new colors */
+      var toast = document.querySelector('.cb-toast'), es = root.lang === 'es';              /* say what just changed */
+      if (!toast) { toast = document.createElement('div'); toast.className = 'cb-toast'; toast.setAttribute('role', 'status'); document.body.appendChild(toast); }
+      toast.textContent = on ? (es ? 'Colores para daltonismo activados' : 'Colorblind-friendly colors on') : (es ? 'Colores est\u00e1ndar restaurados' : 'Standard colors restored');
+      void toast.offsetWidth; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+    });
     setInterval(function () { if (!chosen()) apply(byHour()); }, 60000);   /* follows the clock while the page stays open */
   });
 })();
 
 var CONTACT = {
-  email:    '',
+  email:    'ldiazbusquets@bryant.edu',
   linkedin: 'https://www.linkedin.com/in/luis-diaz-busquets',
   handshake: 'https://app.joinhandshake.com/profiles/ldiaz',
   github:   'https://github.com/ldiazbusquets',
@@ -1103,7 +1216,7 @@ var CONTACT = {
     o.beginPath();
     bands.at.forEach(function (s, j) { j ? o.lineTo(X(s), Y(bands.p50[j])) : o.moveTo(X(s), Y(bands.p50[j])); });
     o.lineWidth = 2.5; o.strokeStyle = 'rgb(' + ACC() + ')'; o.lineJoin = 'round';
-    if (LIGHT()) { o.shadowColor = 'rgba(0,255,65,0.9)'; o.shadowBlur = 10; }
+    if (LIGHT()) { o.shadowColor = CB() ? 'rgba(0,114,178,0.5)' : 'rgba(0,255,65,0.9)'; o.shadowBlur = 10; }
     o.stroke(); o.shadowBlur = 0;
     o.beginPath(); o.arc(X(0), Y(Math.log(START)), 4.5, 0, Math.PI * 2); o.fillStyle = 'rgb(' + ACC() + ')'; o.fill();
 
@@ -1139,7 +1252,7 @@ var CONTACT = {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var sw = Math.max(1, Math.floor(off.width * e));
-    ctx.drawImage(off, 0, 0, sw, off.height, 0, 0, sw, off.height);
+    if (off.width > 0 && off.height > 0) ctx.drawImage(off, 0, 0, sw, off.height, 0, 0, sw, off.height);
     ctx.setTransform(geo.dpr, 0, 0, geo.dpr, 0, 0);
 
     var pts = trackers.map(function (tr) {
@@ -1267,7 +1380,7 @@ var CONTACT = {
     var last = candles[n - 1]; last.c = last.h = last.l = target = last.o; last.v = 0.1;
     born = performance.now(); lo = 0; hi = 0;
   }
-  function liveCol(k) { return k.c >= k.o ? ACC() : (LIGHT() ? '226,54,54' : '255,255,255'); }
+  function liveCol(k) { return k.c >= k.o ? ACC() : CB() ? DOWNCOL() : (LIGHT() ? '226,54,54' : '255,255,255'); }
   function pill(px, py, text, strong) {
     x.font = '600 11px Manrope, Helvetica, Arial, sans-serif'; x.textBaseline = 'middle'; x.textAlign = 'center';
     var tw = x.measureText(text).width + 16, hh = 20, left = px - tw / 2, rr = 6;
@@ -1275,7 +1388,7 @@ var CONTACT = {
     x.arcTo(left + tw, py + hh / 2, left, py + hh / 2, rr); x.arcTo(left, py + hh / 2, left, py - hh / 2, rr); x.arcTo(left, py - hh / 2, left + tw, py - hh / 2, rr); x.closePath();
     x.fillStyle = strong ? 'rgb(' + strong + ')' : (LIGHT() ? 'rgba(255,255,255,0.92)' : 'rgba(20,20,20,0.9)'); x.fill();
     if (!strong) { x.strokeStyle = 'rgba(' + FG() + ',0.25)'; x.lineWidth = 1; x.stroke(); }
-    x.fillStyle = strong ? (strong === '226,54,54' ? '#fff' : '#000') : 'rgba(' + FG() + ',0.8)'; x.fillText(text, px, py + 0.5);
+    x.fillStyle = strong ? (strong === '226,54,54' || strong === '0,114,178' ? '#fff' : '#000') : 'rgba(' + FG() + ',0.8)'; x.fillText(text, px, py + 0.5);
   }
   function drawMarket() {
     var now = performance.now(), need = Math.ceil(w / STEP) + 3, i, k, n;
