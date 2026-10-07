@@ -750,6 +750,11 @@
   html[data-cb="on"][data-theme="light"] .btn.solid, html[data-cb="on"][data-theme="light"] .lang::before { box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(70,80,20,.45), 0 3px 10px rgba(80,96,40,.16); }
   html[data-cb="on"][data-theme="light"] .thumb { background: linear-gradient(180deg, #EEF1DC, #DCE2BC); border-color: rgba(70,80,20,.3); }
   html[data-cb="on"][data-theme="light"] .thumb [fill="#000"] { fill: #E6EACD; }
+
+  /* Header links: every section lands with its label the same distance below the fixed header */
+  section { scroll-margin-top: calc(104px - clamp(72px, 10vw, 140px)); }
+  #experience { scroll-margin-top: 104px; }
+  #contact { scroll-margin-top: 56px; }
 </style>
 </head>
 <body>
