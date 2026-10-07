@@ -695,6 +695,13 @@
   /* breathing room between a panel and the note beneath it */
   .chapter .note { margin-top: 26px; }
   .hero.page .note { margin-top: 22px; }
+
+  /* dark mode glow as a plain gradient: same soft light, without three large blurred layers to redraw */
+  .glow i { display: none; }
+  .glow { background:
+    radial-gradient(42vmax 42vmax at 12% 30%, rgba(232,238,245,.06), rgba(232,238,245,0) 70%),
+    radial-gradient(34vmax 34vmax at 88% 50%, rgba(232,238,245,.04), rgba(232,238,245,0) 70%),
+    radial-gradient(32vmax 32vmax at 45% 100%, rgba(232,238,245,.05), rgba(232,238,245,0) 70%); }
 </style>
 
 <style>
@@ -714,8 +721,47 @@
   .lock { fill: none; stroke: var(--brass); stroke-width: 1.6; opacity: 0; }
   .node.focus .lock { opacity: 1; animation: lockon 1s cubic-bezier(.2,.8,.2,1) both; transform-box: fill-box; transform-origin: center; }
   @keyframes lockon { from { transform: scale(1.22); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .pulse { fill: var(--brass); }
+  .pulse { fill: var(--trace); }
+  /* power-up: a spark runs along each connection and around each box, leaving a lit line; all glows breathe together */
+  .stage { --trace: #5B9FE0; --spark: #FFFFFF; } html[data-theme="light"] .stage { --trace: #00C236; --spark: #EFFFF2; }
+  .stage .node rect.lock { display: none; }
+  .stage .node rect.trace, .stage .node rect.halo, .stage .node rect.spark, .stage .eflow, .stage .ehalo, .stage .espark {
+    fill: none; stroke: var(--trace); stroke-opacity: 1; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); opacity: 0; pointer-events: none;
+  }
+  .stage .node rect.trace, .stage .eflow { stroke-width: 1.8; }
+  .stage .node rect.halo, .stage .ehalo { stroke-width: 7; }
+  .stage .node rect.spark, .stage .espark { stroke: var(--spark); stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 16 var(--len); stroke-dashoffset: 16; }
+  .stage .node rect.fillfx { fill: var(--trace); stroke: none; opacity: 0; pointer-events: none; }
+  .stage .node.on rect.trace { opacity: 1; animation: powerOn .95s cubic-bezier(.3,.6,.2,1) var(--d, 0s) both; }
+  .stage .node.on rect.halo { animation: powerOn .95s cubic-bezier(.3,.6,.2,1) var(--d, 0s) both, surge 2.8s ease-in-out var(--sync, 0s) infinite; }
+  .stage .node.on rect.spark { animation: sparkRun .95s cubic-bezier(.3,.6,.2,1) var(--d, 0s) both; }
+  .stage .node.on rect.fillfx { animation: flash 1.5s ease-out var(--d, 0s) both; }
+  .stage .eflow.on { opacity: 1; animation: powerOn .6s ease-out both; }
+  .stage .ehalo.on { animation: powerOn .6s ease-out both, surge 2.8s ease-in-out var(--sync, 0s) infinite; }
+  .stage .espark.on { animation: sparkRun .6s ease-out both; }
+  /* thinking: the box charges up again and again, like a progress ring, while the agent works on its own */
+  .stage .node.on.thinking rect.trace { animation: thinkTrace 2.3s cubic-bezier(.4,.1,.3,1) infinite; }
+  .stage .node.on.thinking rect.halo { animation: thinkTrace 2.3s cubic-bezier(.4,.1,.3,1) infinite; }
+  .stage .node.on.thinking rect.spark { animation: thinkSpark 2.3s cubic-bezier(.4,.1,.3,1) infinite; }
+  .stage .node.on.thinking rect.fillfx { animation: thinkFill 2.3s ease-out infinite; }
+  .stage .node.thinking text.s { fill: var(--trace); }
+  @keyframes thinkTrace { 0% { stroke-dashoffset: var(--len); opacity: 1; } 62% { stroke-dashoffset: 0; opacity: 1; } 84% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+  @keyframes thinkSpark { 0% { stroke-dashoffset: 16; opacity: 1; } 56% { opacity: 1; } 62% { stroke-dashoffset: var(--nlen); opacity: 0; } 100% { stroke-dashoffset: var(--nlen); opacity: 0; } }
+  @keyframes thinkFill { 0%, 55% { opacity: .06; } 68% { opacity: .34; } 100% { opacity: .06; } }
+  @keyframes powerOn { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+  @keyframes sparkRun { 0% { stroke-dashoffset: 16; opacity: 1; } 88% { opacity: 1; } 100% { stroke-dashoffset: var(--nlen); opacity: 0; } }
+  @keyframes flash { 0% { opacity: 0; } 62% { opacity: 0; } 76% { opacity: .34; } 100% { opacity: .08; } }
+  @keyframes surge { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .stage .node.on rect.trace, .stage .node.on rect.halo, .stage .eflow.on, .stage .ehalo.on { animation: none; stroke-dashoffset: 0; opacity: .8; }
+    .stage .node.on rect.spark, .stage .espark.on, .stage .node.on rect.fillfx { animation: none; }
+    .stage .node.on rect.fillfx { opacity: .08; }
+    .stage .node.on.thinking rect.trace, .stage .node.on.thinking rect.halo, .stage .node.on.thinking rect.spark, .stage .node.on.thinking rect.fillfx { animation: none; }
+  }
   .steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+  .steps button { position: relative; overflow: hidden; }
+  .steps.playing button[aria-current="step"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--brass); transform-origin: 0 50%; animation: stepTime 5.2s linear both; }
+  @keyframes stepTime { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   .steps button { text-align: left; font: inherit; color: var(--soft); background: none; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .25s, color .25s, background .25s; }
   .steps button i { display: block; font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: .12em; margin-bottom: 4px; }
   .steps button span { font-size: .86rem; font-weight: 600; line-height: 1.25; display: block; }
@@ -783,13 +829,13 @@
 <section class="chapter" id="how">
   <p class="eyebrow">01 How it works</p>
   <h2>Follow one piece of information <em>from the source to my screen.</em></h2>
-  <p>Pick an agent and step through what it does. The walkthrough plays once. Select any step to go back to it.</p>
+  <p>The walkthrough plays LADON, then HERETIC, then the two working together, and stops. Select any tab or step to jump to it.</p>
   <div class="panel flow">
-    <div class="tabs" role="tablist" aria-label="Agent"><button role="tab" id="tab-ladon" aria-selected="true">LADON</button><button role="tab" id="tab-heretic" aria-selected="false">HERETIC</button></div>
+    <div class="tabs" role="tablist" aria-label="Agent"><button role="tab" id="tab-ladon" aria-selected="true">LADON</button><button role="tab" id="tab-heretic" aria-selected="false">HERETIC</button><button role="tab" id="tab-together" aria-selected="false">Together</button></div>
     <div class="stage"><svg viewBox="0 0 1000 400" role="img" aria-label="Diagram: data sources feed a finance tool server, which serves two agents, LADON and HERETIC. LADON produces alerts and HERETIC produces research notes."><path class="edge" id="e-f" d="M190 95 C240 95 240 190 290 195"/><path class="edge" id="e-p" d="M190 205 L290 205"/><path class="edge" id="e-n" d="M190 315 C240 315 240 220 290 215"/><path class="edge" id="e-tl" d="M470 190 C520 190 520 145 570 145"/><path class="edge" id="e-th" d="M470 220 C520 220 520 305 570 305"/><path class="edge" id="e-wl" d="M660 54 L660 100"/><path class="edge" id="e-hl" d="M660 260 L660 190"/><path class="edge" id="e-la" d="M750 145 L850 145"/><path class="edge" id="e-hn" d="M750 305 L850 305"/><g class="node" id="n-f"><rect x="20" y="60" width="170" height="70" rx="14"/><rect class="lock" x="13" y="53" width="184" height="84" rx="4"/><text class="t" x="105.0" y="92.0" text-anchor="middle">Filings</text><text class="s" x="105.0" y="111.0" text-anchor="middle">10-K, 10-Q, 8-K</text></g><g class="node" id="n-p"><rect x="20" y="170" width="170" height="70" rx="14"/><rect class="lock" x="13" y="163" width="184" height="84" rx="4"/><text class="t" x="105.0" y="202.0" text-anchor="middle">Prices</text><text class="s" x="105.0" y="221.0" text-anchor="middle">and fundamentals</text></g><g class="node" id="n-n"><rect x="20" y="280" width="170" height="70" rx="14"/><rect class="lock" x="13" y="273" width="184" height="84" rx="4"/><text class="t" x="105.0" y="312.0" text-anchor="middle">News</text><text class="s" x="105.0" y="331.0" text-anchor="middle">and events</text></g><g class="node" id="n-tools"><rect x="290" y="140" width="180" height="130" rx="14"/><rect class="lock" x="283" y="133" width="194" height="144" rx="4"/><text class="t" x="380.0" y="202.0" text-anchor="middle">Finance tools</text><text class="s" x="380.0" y="221.0" text-anchor="middle">14 tools, one server</text></g><g class="node" id="n-w"><rect x="570" y="10" width="180" height="44" rx="14"/><rect class="lock" x="563" y="3" width="194" height="58" rx="4"/><text class="t" x="660.0" y="37.0" text-anchor="middle">Holdings and watchlist</text></g><g class="node" id="n-ladon"><rect x="570" y="100" width="180" height="90" rx="14"/><rect class="lock" x="563" y="93" width="194" height="104" rx="4"/><text class="t" x="660.0" y="142.0" text-anchor="middle">LADON</text><text class="s" x="660.0" y="161.0" text-anchor="middle">watches</text></g><g class="node" id="n-heretic"><rect x="570" y="260" width="180" height="90" rx="14"/><rect class="lock" x="563" y="253" width="194" height="104" rx="4"/><text class="t" x="660.0" y="302.0" text-anchor="middle">HERETIC</text><text class="s" x="660.0" y="321.0" text-anchor="middle">discovers</text></g><g class="node" id="n-a"><rect x="850" y="105" width="140" height="80" rx="14"/><rect class="lock" x="843" y="98" width="154" height="94" rx="4"/><text class="t" x="920.0" y="142.0" text-anchor="middle">Alerts</text><text class="s" x="920.0" y="161.0" text-anchor="middle">with sources</text></g><g class="node" id="n-r"><rect x="850" y="265" width="140" height="80" rx="14"/><rect class="lock" x="843" y="258" width="154" height="94" rx="4"/><text class="t" x="920.0" y="302.0" text-anchor="middle">Research notes</text><text class="s" x="920.0" y="321.0" text-anchor="middle">case for and against</text></g><circle class="pulse" id="pulse" r="5" opacity="0"/></svg></div>
     <div class="steps" id="steps"></div>
     <div class="explain"><div><h4>What happens</h4><p id="xWhat"></p></div><div><h4>Why it works this way</h4><p id="xWhy"></p></div></div>
-    <div class="flowbar"><span id="flowstate"></span><button class="btn" id="replay" type="button">Replay</button></div>
+    <div class="flowbar"><span id="flowstate"></span><button class="btn" id="replay" type="button">Replay from the start</button></div>
   </div>
   <p class="note">This is an illustration of the design. The agents are still being built, so there are no alerts, notes, or performance figures to show yet.</p>
 </section>
@@ -907,7 +953,7 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       { t: 'Compare with last time', n: ['tools', 'ladon'], e: ['tl'], f: 'ladon',
         what: 'It lines up the new data against what it recorded on its previous check and isolates what actually changed.',
         why: 'Most days, most things are unchanged. Comparing first means the expensive reading step only runs on the small part that is new.' },
-      { t: 'Decide if it matters', n: ['ladon'], e: [], f: 'ladon',
+      { t: 'Decide if it matters', n: ['ladon'], e: [], f: 'ladon', think: 'deciding\u2026',
         what: 'Each change is judged for significance: an earnings date, a material filing, or a sharp move matters. Routine noise does not.',
         why: 'An alert system that fires constantly gets ignored. The value is in staying quiet until something deserves attention.' },
       { t: 'Alert, with the source', n: ['ladon', 'a'], e: ['la'], f: 'a',
@@ -924,18 +970,58 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       { t: 'Read the filings in depth', n: ['f', 'tools', 'heretic'], e: ['f', 'th'], f: 'f',
         what: 'For each candidate it pulls the annual and quarterly reports, goes to the sections that matter, and reads them closely.',
         why: 'Filings have a known structure. Finding the right section first, then reading only that, is more accurate than handing a model three hundred pages.' },
-      { t: 'Build both sides', n: ['heretic'], e: [], f: 'heretic',
+      { t: 'Build both sides', n: ['heretic'], e: [], f: 'heretic', think: 'weighing both sides\u2026',
         what: 'It assembles the argument for the company and the argument against it, each tied to specific evidence from the filings.',
         why: 'The name is deliberate. Its job is to challenge the easy story, including my own, so the note has to argue against itself.' },
       { t: 'Write it up and hand off', n: ['heretic', 'r', 'ladon'], e: ['hn', 'hl'], f: 'r',
         what: 'It produces a research note for me to review. Names worth following are passed to LADON, which adds them to its watch.',
         why: 'The two agents form a loop: one finds ideas, the other keeps an eye on them. I make the decision in between.' }
+    ],
+    together: [
+      { t: 'HERETIC finds a name', n: ['f', 'p', 'n', 'tools', 'heretic'], e: ['f', 'p', 'n', 'th'], f: 'heretic',
+        what: 'It starts with a question from me. HERETIC screens the market, reads the filings, and comes back with a company that fits.',
+        why: 'Every name the system follows should enter through research, with a written reason for being there.' },
+      { t: 'I review the note', n: ['heretic', 'r'], e: ['hn'], f: 'r',
+        what: 'The research note arrives with the case for and the case against. I read it and decide whether the company is worth following.',
+        why: 'This is the one step that is not automated. The agents can inform a decision, but making it is my job.' },
+      { t: 'The name joins the watchlist', n: ['heretic', 'ladon', 'w'], e: ['hl', 'wl'], f: 'w',
+        what: 'If I say yes, HERETIC hands the company to LADON, and it is added to the list LADON checks.',
+        why: 'The handoff is what connects the two. Without it, a good idea is researched once and then forgotten.' },
+      { t: 'LADON keeps watch', n: ['w', 'f', 'p', 'n', 'tools', 'ladon', 'a'], e: ['wl', 'f', 'p', 'n', 'tl', 'la'], f: 'a',
+        what: 'From then on, LADON checks the company on every run and alerts me when a filing, a price move, or an event changes the picture.',
+        why: 'Research describes a company on one day. Monitoring is what keeps that research true as things change.' },
+      { t: 'One loop, running together', n: ['f', 'p', 'n', 'tools', 'w', 'ladon', 'heretic', 'a', 'r'], e: ['f', 'p', 'n', 'tl', 'th', 'wl', 'hl', 'la', 'hn'], f: 'heretic',
+        what: 'An alert from LADON can raise a new question for HERETIC, and a note from HERETIC gives LADON a new name to watch. Each agent feeds the other.',
+        why: 'Discovery without follow-up goes stale, and monitoring without discovery never finds anything new. I sit between the two and make the calls.' }
     ]
   };
+  var AGENTS = ['ladon', 'heretic', 'together'], NAMES = { ladon: 'LADON', heretic: 'HERETIC', together: 'Together' }, chain = false;
   var agent = 'ladon', step = 0, timer = 0, played = false, raf = 0;
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var stepsEl = document.getElementById('steps'), pulse = document.getElementById('pulse');
   function $(id) { return document.getElementById(id); }
+  /* build the glowing copies of every box outline and connection once */
+  (function () {
+    var NS = 'http://www.w3.org/2000/svg', svg = document.querySelector('.stage svg');
+    var defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = '<filter id="tglow" filterUnits="userSpaceOnUse" x="-20" y="-20" width="1040" height="440"><feGaussianBlur stdDeviation="5"/></filter>';
+    svg.insertBefore(defs, svg.firstChild);
+    function glowCopies(el, names, len) {
+      var after = el.nextSibling, out = [];
+      names.forEach(function (cls, k) {
+        var cp = el.cloneNode(false); cp.removeAttribute('id'); cp.setAttribute('class', cls); cp.style.setProperty('--len', len); cp.style.setProperty('--nlen', -len);
+        if (k === 0) cp.setAttribute('filter', 'url(#tglow)');
+        el.parentNode.insertBefore(cp, after); out.push(cp);
+      });
+      return out;
+    }
+    document.querySelectorAll('.stage .node').forEach(function (n) {
+      var base = n.querySelector('rect'), len = base.getTotalLength ? base.getTotalLength() : 2 * (+base.getAttribute('width') + +base.getAttribute('height'));
+      glowCopies(base, ['halo', 'fillfx', 'trace', 'spark'], Math.ceil(len));
+    });
+    document.querySelectorAll('.stage .edge').forEach(function (e) { e._fx = glowCopies(e, ['ehalo', 'eflow', 'espark'], Math.ceil(e.getTotalLength())); });
+    pulse.setAttribute('filter', ''); svg.appendChild(pulse);
+  })();
   function travel(ids) {
     cancelAnimationFrame(raf); pulse.setAttribute('opacity', 0);
     if (still || !ids.length) return;
@@ -948,75 +1034,121 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
       raf = requestAnimationFrame(frame);
     })(t0);
   }
+  var T0 = performance.now();
   function show(i, user) {
     step = i; var s = FLOWS[agent][i];
-    document.querySelectorAll('.stage .node').forEach(function (n) { var id = n.id.slice(2); n.classList.toggle('on', s.n.indexOf(id) >= 0); n.classList.remove('focus'); });
-    document.querySelectorAll('.stage .edge').forEach(function (e) { e.classList.toggle('on', s.e.indexOf(e.id.slice(2)) >= 0); });
+    var sync = -((performance.now() - T0) % 2800) + 'ms';              /* every glow follows one shared clock, so they pulse in unison */
+    document.querySelectorAll('.stage .node').forEach(function (n) {
+      var id = n.id.slice(2), now = s.n.indexOf(id) >= 0;
+      if (now && !n.classList.contains('on')) { n.style.setProperty('--d', id === s.f && s.e.length ? '.55s' : '0s'); n.style.setProperty('--sync', sync); }   /* the target box powers up as the line reaches it */
+      n.classList.toggle('on', now); n.classList.remove('focus');
+      var busy = !!s.think && id === s.f, sub = n.querySelector('text.s');       /* working inside itself: loop the charge-up and say so */
+      n.classList.toggle('thinking', busy);
+      if (sub) { if (sub._orig === undefined) sub._orig = sub.textContent; sub.textContent = busy ? s.think : sub._orig; }
+    });
+    document.querySelectorAll('.stage .edge').forEach(function (e) {
+      var now = s.e.indexOf(e.id.slice(2)) >= 0, fresh = now && !e.classList.contains('on'); e.classList.toggle('on', now);
+      (e._fx || []).forEach(function (cp) { if (fresh) cp.style.setProperty('--sync', sync); cp.classList.toggle('on', now); });
+    });
     var f = $('n-' + s.f); void f.getBoundingClientRect(); f.classList.add('focus');
     stepsEl.querySelectorAll('button').forEach(function (b, k) { if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
     $('xWhat').textContent = s.what; $('xWhy').textContent = s.why;
     travel(s.e);
-    if (user) { clearTimeout(timer); played = true; state(); }
+    if (user) { clearTimeout(timer); played = true; chain = false; stepsEl.classList.remove('playing'); state(); }
   }
-  function state() { $('flowstate').textContent = (agent === 'ladon' ? 'LADON' : 'HERETIC') + ', step ' + (step + 1) + ' of 5' + (played ? '' : ', playing'); }
-  function play() {
-    clearTimeout(timer); played = false; show(0); state();
-    if (still) { played = true; state(); return; }
-    (function next() { timer = setTimeout(function () { if (step < 4) { show(step + 1); state(); next(); } else { played = true; state(); } }, 5200); })();
+  function state() { $('flowstate').textContent = NAMES[agent] + ', step ' + (step + 1) + ' of 5' + (played ? '' : ', playing'); }
+  function play(all) {                       /* all = keep going through LADON, HERETIC, then Together */
+    chain = !!all; clearTimeout(timer); played = false; show(0); state();
+    if (still) { played = true; chain = false; state(); return; }
+    stepsEl.classList.add('playing');
+    (function next() {
+      timer = setTimeout(function () {
+        if (step < 4) { show(step + 1); state(); next(); return; }
+        var k = AGENTS.indexOf(agent);
+        if (chain && k < AGENTS.length - 1) { agent = AGENTS[k + 1]; build(); play(true); return; }
+        played = true; chain = false; stepsEl.classList.remove('playing'); state();
+      }, 5200);
+    })();
   }
   function build() {
     stepsEl.innerHTML = FLOWS[agent].map(function (s, i) { return '<button type="button"><i>0' + (i + 1) + '</i><span>' + s.t + '</span></button>'; }).join('');
     stepsEl.querySelectorAll('button').forEach(function (b, i) { b.addEventListener('click', function () { show(i, true); }); });
-    ['ladon', 'heretic'].forEach(function (a) { $('tab-' + a).setAttribute('aria-selected', String(a === agent)); });
+    AGENTS.forEach(function (a) { $('tab-' + a).setAttribute('aria-selected', String(a === agent)); });
   }
-  ['ladon', 'heretic'].forEach(function (a) { $('tab-' + a).addEventListener('click', function () { agent = a; build(); play(); }); });
-  $('replay').addEventListener('click', play);
+  AGENTS.forEach(function (a) { $('tab-' + a).addEventListener('click', function () { agent = a; build(); play(false); }); });
+  $('replay').addEventListener('click', function () { agent = 'ladon'; build(); play(true); });
   build(); show(0); state();
   var started = false;
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (en, io) { if (en[0].isIntersecting && !started) { started = true; play(); io.disconnect(); } }, { threshold: 0.35 }).observe(document.querySelector('.flow'));
-  else play();
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (en, io) { if (en[0].isIntersecting && !started) { started = true; play(true); io.disconnect(); } }, { threshold: 0.35 }).observe(document.querySelector('.flow'));
+  else play(true);
 })();
 </script>
 
 <script>
-/* ---------- Background: contour lines, drawn once and drifted by the graphics card (no per-frame work) ---------- */
+/* ---------- Background: contour lines that slowly reshape and rise under the cursor ---------- */
 (function () {
   var c = document.getElementById('waves'), x = c.getContext('2d');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var CASES = { 1: [3, 2], 2: [2, 1], 3: [3, 1], 4: [0, 1], 5: [0, 3, 2, 1], 6: [0, 2], 7: [0, 3], 8: [0, 3], 9: [0, 2], 10: [0, 1, 3, 2], 11: [0, 1], 12: [3, 1], 13: [2, 1], 14: [3, 2] };
-  var PAD = 70, seed = Math.random() * 1000;
-  function draw() {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = window.innerWidth + PAD * 2, h = window.innerHeight + PAD * 2, CELL = 8;
-    c.style.cssText = 'left:' + (-PAD) + 'px;top:' + (-PAD) + 'px;right:auto;bottom:auto;width:' + w + 'px;height:' + h + 'px';
-    c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var cols = Math.ceil(w / CELL) + 2, rows = Math.ceil(h / CELL) + 2, f = new Float32Array(cols * rows), i, j;
-    for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
-      var px = i * CELL + seed, py = j * CELL + seed * 0.7;
-      f[j * cols + i] = Math.sin(px * 0.0031) * Math.cos(py * 0.0037) + 0.5 * Math.sin((px + py) * 0.0052) + 0.5 * Math.cos((px - py) * 0.0043);
+  var L0 = -1.5, ST = 0.3, NL = 15, CELL = 14, maxDpr = 2, W = 0, H = 0, cols = 0, rows = 0, f, C, R;
+  var cost = 0, drawn = 0, frame = 0, tx = 0, ty = 0, hx = 0, hy = 0, hill = 0, hillTo = 0;
+  function size() {
+    var dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    W = window.innerWidth; H = window.innerHeight; c.style.cssText = ''; c.width = W * dpr; c.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(W / CELL) + 2; rows = Math.ceil(H / CELL) + 2; f = new Float32Array(cols * rows);
+    C = [0, 1, 2, 3, 4].map(function () { return new Float32Array(cols); }); R = [0, 1, 2, 3, 4].map(function () { return new Float32Array(rows); });
+  }
+  function draw(t) {
+    var i, j, k, p, q, m;
+    /* the height field is a sum of waves; splitting each wave into a column part and a row part keeps this cheap */
+    for (i = 0; i < cols; i++) { p = i * CELL; C[0][i] = Math.sin(p * 0.0031 + t * 0.00007); C[1][i] = Math.sin(p * 0.0052 + t * 0.00009); C[2][i] = Math.cos(p * 0.0052 + t * 0.00009); C[3][i] = Math.cos(p * 0.0043 - t * 0.00004); C[4][i] = Math.sin(p * 0.0043 - t * 0.00004); }
+    for (j = 0; j < rows; j++) { p = j * CELL; R[0][j] = Math.cos(p * 0.0037 - t * 0.00005); R[1][j] = Math.cos(p * 0.0052); R[2][j] = Math.sin(p * 0.0052); R[3][j] = Math.cos(p * 0.0043); R[4][j] = Math.sin(p * 0.0043); }
+    for (j = 0; j < rows; j++) for (i = 0, k = j * cols; i < cols; i++, k++) f[k] = C[0][i] * R[0][j] + 0.5 * (C[1][i] * R[1][j] + C[2][i] * R[2][j]) + 0.5 * (C[3][i] * R[3][j] + C[4][i] * R[4][j]);
+    if (hill > 0.01) {                                             /* a soft rise that follows the cursor */
+      var i0 = Math.max(0, Math.floor((hx - 480) / CELL)), i1 = Math.min(cols - 1, Math.ceil((hx + 480) / CELL)), j0 = Math.max(0, Math.floor((hy - 480) / CELL)), j1 = Math.min(rows - 1, Math.ceil((hy + 480) / CELL));
+      for (j = j0; j <= j1; j++) for (i = i0; i <= i1; i++) { var dx = i * CELL - hx, dy = j * CELL - hy; f[j * cols + i] += 1.15 * hill * Math.exp(-(dx * dx + dy * dy) / 52000); }
     }
-    x.clearRect(0, 0, w, h); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
-    var n = 0, fg = FG();
-    for (var lv = -1.5; lv <= 1.6; lv += 0.3, n++) {
-      x.strokeStyle = 'rgba(' + fg + ',' + (n % 4 === 0 ? 0.20 : 0.09) + ')'; x.beginPath();
-      for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
-        var a = f[j * cols + i], b = f[j * cols + i + 1], c2 = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
-        var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
+    var minor = new Path2D(), major = new Path2D();
+    for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
+      var a = f[j * cols + i], b = f[j * cols + i + 1], c2 = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
+      var mn = Math.min(a, b, c2, d), mx = Math.max(a, b, c2, d), k0 = Math.max(0, Math.ceil((mn - L0) / ST)), k1 = Math.min(NL - 1, Math.floor((mx - L0) / ST));
+      for (k = k0; k <= k1; k++) {                                 /* only the contour levels that cross this cell */
+        var lv = L0 + k * ST, idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
         if (idx === 0 || idx === 15) continue;
-        var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx];
-        for (var q = 0; q < e.length; q += 2) for (var m = 0; m < 2; m++) {
+        var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx], path = k % 4 === 0 ? major : minor;
+        for (q = 0; q < e.length; q += 2) for (m = 0; m < 2; m++) {
           var ed = e[q + m], ex, ey;
           if (ed === 0) { ex = X0 + CELL * (lv - a) / (b - a); ey = Y0; }
           else if (ed === 1) { ex = X0 + CELL; ey = Y0 + CELL * (lv - b) / (c2 - b); }
           else if (ed === 2) { ex = X0 + CELL * (lv - d) / (c2 - d); ey = Y0 + CELL; }
           else { ex = X0; ey = Y0 + CELL * (lv - a) / (d - a); }
-          m ? x.lineTo(ex, ey) : x.moveTo(ex, ey);
+          m ? path.lineTo(ex, ey) : path.moveTo(ex, ey);
         }
       }
-      x.stroke();
+    }
+    var fg = FG();
+    x.clearRect(0, 0, W, H); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
+    x.strokeStyle = 'rgba(' + fg + ',0.09)'; x.stroke(minor);
+    x.strokeStyle = 'rgba(' + fg + ',0.20)'; x.stroke(major);
+  }
+  function loop(now) {
+    requestAnimationFrame(loop);
+    if (document.hidden || (++frame & 1)) return;                  /* about 30 redraws a second */
+    hill += (hillTo - hill) * 0.06; hx += (tx - hx) * 0.08; hy += (ty - hy) * 0.08;
+    var t0 = performance.now(); draw(now); cost = cost ? cost * 0.9 + (performance.now() - t0) * 0.1 : performance.now() - t0;
+    if (++drawn % 45 === 0 && cost > 9) {                          /* slow device: use a coarser grid, then a lower resolution */
+      if (CELL < 26) { CELL += 4; cost = 0; size(); } else if (maxDpr > 1) { maxDpr = 1; cost = 0; size(); }
     }
   }
-  draw();
-  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(draw, 200); });
-  window.addEventListener('themechange', draw);
+  window.addEventListener('pointermove', function (ev) {
+    if (ev.pointerType === 'touch') return;
+    tx = ev.clientX; ty = ev.clientY; if (hillTo === 0 && hill < 0.02) { hx = tx; hy = ty; } hillTo = 1;
+  });
+  document.documentElement.addEventListener('pointerleave', function () { hillTo = 0; });
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(function () { size(); if (reduce) draw(0); }, 150); });
+  window.addEventListener('themechange', function () { if (reduce) draw(0); });
+  size();
+  if (reduce) draw(0); else requestAnimationFrame(loop);
 })();
 </script>
 </body>
