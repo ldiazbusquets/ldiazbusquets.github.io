@@ -695,6 +695,13 @@
   /* breathing room between a panel and the note beneath it */
   .chapter .note { margin-top: 26px; }
   .hero.page .note { margin-top: 22px; }
+
+  /* dark mode glow as a plain gradient: same soft light, without three large blurred layers to redraw */
+  .glow i { display: none; }
+  .glow { background:
+    radial-gradient(42vmax 42vmax at 12% 30%, rgba(232,238,245,.06), rgba(232,238,245,0) 70%),
+    radial-gradient(34vmax 34vmax at 88% 50%, rgba(232,238,245,.04), rgba(232,238,245,0) 70%),
+    radial-gradient(32vmax 32vmax at 45% 100%, rgba(232,238,245,.05), rgba(232,238,245,0) 70%); }
 </style>
 
 <style>
@@ -915,44 +922,70 @@ function ACC() { return LIGHT() ? '0,230,64' : '91,159,224'; }   /* light: Matri
 </script>
 
 <script>
-/* ---------- Background: contour lines, drawn once and drifted by the graphics card (no per-frame work) ---------- */
+/* ---------- Background: contour lines that slowly reshape and rise under the cursor ---------- */
 (function () {
   var c = document.getElementById('waves'), x = c.getContext('2d');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var CASES = { 1: [3, 2], 2: [2, 1], 3: [3, 1], 4: [0, 1], 5: [0, 3, 2, 1], 6: [0, 2], 7: [0, 3], 8: [0, 3], 9: [0, 2], 10: [0, 1, 3, 2], 11: [0, 1], 12: [3, 1], 13: [2, 1], 14: [3, 2] };
-  var PAD = 70, seed = Math.random() * 1000;
-  function draw() {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = window.innerWidth + PAD * 2, h = window.innerHeight + PAD * 2, CELL = 8;
-    c.style.cssText = 'left:' + (-PAD) + 'px;top:' + (-PAD) + 'px;right:auto;bottom:auto;width:' + w + 'px;height:' + h + 'px';
-    c.width = w * dpr; c.height = h * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var cols = Math.ceil(w / CELL) + 2, rows = Math.ceil(h / CELL) + 2, f = new Float32Array(cols * rows), i, j;
-    for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
-      var px = i * CELL + seed, py = j * CELL + seed * 0.7;
-      f[j * cols + i] = Math.sin(px * 0.0031) * Math.cos(py * 0.0037) + 0.5 * Math.sin((px + py) * 0.0052) + 0.5 * Math.cos((px - py) * 0.0043);
+  var L0 = -1.5, ST = 0.3, NL = 15, CELL = 14, maxDpr = 2, W = 0, H = 0, cols = 0, rows = 0, f, C, R;
+  var cost = 0, drawn = 0, frame = 0, tx = 0, ty = 0, hx = 0, hy = 0, hill = 0, hillTo = 0;
+  function size() {
+    var dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+    W = window.innerWidth; H = window.innerHeight; c.style.cssText = ''; c.width = W * dpr; c.height = H * dpr; x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cols = Math.ceil(W / CELL) + 2; rows = Math.ceil(H / CELL) + 2; f = new Float32Array(cols * rows);
+    C = [0, 1, 2, 3, 4].map(function () { return new Float32Array(cols); }); R = [0, 1, 2, 3, 4].map(function () { return new Float32Array(rows); });
+  }
+  function draw(t) {
+    var i, j, k, p, q, m;
+    /* the height field is a sum of waves; splitting each wave into a column part and a row part keeps this cheap */
+    for (i = 0; i < cols; i++) { p = i * CELL; C[0][i] = Math.sin(p * 0.0031 + t * 0.00007); C[1][i] = Math.sin(p * 0.0052 + t * 0.00009); C[2][i] = Math.cos(p * 0.0052 + t * 0.00009); C[3][i] = Math.cos(p * 0.0043 - t * 0.00004); C[4][i] = Math.sin(p * 0.0043 - t * 0.00004); }
+    for (j = 0; j < rows; j++) { p = j * CELL; R[0][j] = Math.cos(p * 0.0037 - t * 0.00005); R[1][j] = Math.cos(p * 0.0052); R[2][j] = Math.sin(p * 0.0052); R[3][j] = Math.cos(p * 0.0043); R[4][j] = Math.sin(p * 0.0043); }
+    for (j = 0; j < rows; j++) for (i = 0, k = j * cols; i < cols; i++, k++) f[k] = C[0][i] * R[0][j] + 0.5 * (C[1][i] * R[1][j] + C[2][i] * R[2][j]) + 0.5 * (C[3][i] * R[3][j] + C[4][i] * R[4][j]);
+    if (hill > 0.01) {                                             /* a soft rise that follows the cursor */
+      var i0 = Math.max(0, Math.floor((hx - 480) / CELL)), i1 = Math.min(cols - 1, Math.ceil((hx + 480) / CELL)), j0 = Math.max(0, Math.floor((hy - 480) / CELL)), j1 = Math.min(rows - 1, Math.ceil((hy + 480) / CELL));
+      for (j = j0; j <= j1; j++) for (i = i0; i <= i1; i++) { var dx = i * CELL - hx, dy = j * CELL - hy; f[j * cols + i] += 1.15 * hill * Math.exp(-(dx * dx + dy * dy) / 52000); }
     }
-    x.clearRect(0, 0, w, h); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
-    var n = 0, fg = FG();
-    for (var lv = -1.5; lv <= 1.6; lv += 0.3, n++) {
-      x.strokeStyle = 'rgba(' + fg + ',' + (n % 4 === 0 ? 0.20 : 0.09) + ')'; x.beginPath();
-      for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
-        var a = f[j * cols + i], b = f[j * cols + i + 1], c2 = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
-        var idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
+    var minor = new Path2D(), major = new Path2D();
+    for (j = 0; j < rows - 1; j++) for (i = 0; i < cols - 1; i++) {
+      var a = f[j * cols + i], b = f[j * cols + i + 1], c2 = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
+      var mn = Math.min(a, b, c2, d), mx = Math.max(a, b, c2, d), k0 = Math.max(0, Math.ceil((mn - L0) / ST)), k1 = Math.min(NL - 1, Math.floor((mx - L0) / ST));
+      for (k = k0; k <= k1; k++) {                                 /* only the contour levels that cross this cell */
+        var lv = L0 + k * ST, idx = (a > lv ? 8 : 0) | (b > lv ? 4 : 0) | (c2 > lv ? 2 : 0) | (d > lv ? 1 : 0);
         if (idx === 0 || idx === 15) continue;
-        var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx];
-        for (var q = 0; q < e.length; q += 2) for (var m = 0; m < 2; m++) {
+        var X0 = i * CELL, Y0 = j * CELL, e = CASES[idx], path = k % 4 === 0 ? major : minor;
+        for (q = 0; q < e.length; q += 2) for (m = 0; m < 2; m++) {
           var ed = e[q + m], ex, ey;
           if (ed === 0) { ex = X0 + CELL * (lv - a) / (b - a); ey = Y0; }
           else if (ed === 1) { ex = X0 + CELL; ey = Y0 + CELL * (lv - b) / (c2 - b); }
           else if (ed === 2) { ex = X0 + CELL * (lv - d) / (c2 - d); ey = Y0 + CELL; }
           else { ex = X0; ey = Y0 + CELL * (lv - a) / (d - a); }
-          m ? x.lineTo(ex, ey) : x.moveTo(ex, ey);
+          m ? path.lineTo(ex, ey) : path.moveTo(ex, ey);
         }
       }
-      x.stroke();
+    }
+    var fg = FG();
+    x.clearRect(0, 0, W, H); x.lineWidth = 1; x.lineJoin = 'round'; x.lineCap = 'round';
+    x.strokeStyle = 'rgba(' + fg + ',0.09)'; x.stroke(minor);
+    x.strokeStyle = 'rgba(' + fg + ',0.20)'; x.stroke(major);
+  }
+  function loop(now) {
+    requestAnimationFrame(loop);
+    if (document.hidden || (++frame & 1)) return;                  /* about 30 redraws a second */
+    hill += (hillTo - hill) * 0.06; hx += (tx - hx) * 0.08; hy += (ty - hy) * 0.08;
+    var t0 = performance.now(); draw(now); cost = cost ? cost * 0.9 + (performance.now() - t0) * 0.1 : performance.now() - t0;
+    if (++drawn % 45 === 0 && cost > 9) {                          /* slow device: use a coarser grid, then a lower resolution */
+      if (CELL < 26) { CELL += 4; cost = 0; size(); } else if (maxDpr > 1) { maxDpr = 1; cost = 0; size(); }
     }
   }
-  draw();
-  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(draw, 200); });
-  window.addEventListener('themechange', draw);
+  window.addEventListener('pointermove', function (ev) {
+    if (ev.pointerType === 'touch') return;
+    tx = ev.clientX; ty = ev.clientY; if (hillTo === 0 && hill < 0.02) { hx = tx; hy = ty; } hillTo = 1;
+  });
+  document.documentElement.addEventListener('pointerleave', function () { hillTo = 0; });
+  var tm; window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(function () { size(); if (reduce) draw(0); }, 150); });
+  window.addEventListener('themechange', function () { if (reduce) draw(0); });
+  size();
+  if (reduce) draw(0); else requestAnimationFrame(loop);
 })();
 </script>
 </body>
