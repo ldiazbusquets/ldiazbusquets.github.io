@@ -756,6 +756,21 @@
   section { scroll-margin-top: calc(104px - clamp(72px, 10vw, 140px)); }
   #experience { scroll-margin-top: 104px; }
   #contact { scroll-margin-top: 56px; }
+
+  /* the doorway to the Lab: same glass as the ARGUS card, with ENTITY rising out of it */
+  .labcard { margin-top: 18px; text-decoration: none; position: relative; overflow: hidden; align-items: center; transition: transform .35s ease, border-color .35s ease; }
+  .labcard:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.22); }
+  .labcard .labk { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--soft); margin: 0 0 12px; }
+  .labcard .labfacts { margin-top: 22px; }
+  .labcard .labart { position: relative; align-self: stretch; min-height: 300px; }
+  .labcard .labart::before { content: ""; position: absolute; inset: 10% 8%; border-radius: 50%; background: radial-gradient(closest-side, rgba(150,175,195,.28), transparent); }
+  .labcard .labart .ent { position: absolute; left: 50%; bottom: calc(-1 * clamp(26px, 4.5vw, 56px)); transform: translateX(-50%); width: min(100%, 420px); height: auto; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .labcard:hover .labart .ent { transform: translateX(-50%) translateY(-6px); }
+  @media (max-width: 860px) { .labcard { grid-template-columns: minmax(0, 1fr); } .labcard .labart { min-height: 0; order: -1; margin: -6px auto -8px; width: min(78%, 320px); } .labcard .labart .ent { position: relative; left: auto; bottom: auto; transform: none; width: 100%; -webkit-mask: linear-gradient(180deg, #000 80%, transparent); mask: linear-gradient(180deg, #000 80%, transparent); } .labcard:hover .labart .ent { transform: none; } }
+  html[data-theme="light"] .labcard .labart::before { background: radial-gradient(closest-side, rgba(110,130,150,.25), transparent); }
+  .labcard .ent { aspect-ratio: 1; }
+  .labcard .ent img { width: 100%; height: 100%; display: block; }
+  .labcard .ent .visor { position: absolute; left: 29.1%; top: 37.5%; width: 42.19%; height: 10.74%; -webkit-mask: url(data:image/png;base64,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) center / 100% 100% no-repeat; mask: url(data:image/png;base64,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) center / 100% 100% no-repeat; }
 </style>
 </head>
 <body>
@@ -944,6 +959,22 @@
           <p class="more"><a class="btn" href="costco.html" data-es="Leer el análisis completo">Read the full research</a></p>
         </div>
       </div>
+
+      <a class="feature labcard" href="lab/" aria-label="Enter the LDB Lab">
+        <div>
+          <p class="labk" data-es="Laboratorio · IA aplicada">Lab · Applied AI</p>
+          <h3>LDB Lab</h3>
+          <p data-es="Un laboratorio de IA aplicada que corre por completo en tu navegador: un curso de 14 módulos, agentes que aprenden solos, herramientas financieras y detección de objetos en video real.">An applied-AI lab that runs entirely in your browser: a 14-module course, agents that teach themselves, finance tools and live object detection on real footage.</p>
+          <p class="built" data-es="JavaScript puro y modelos que corren en el dispositivo. Sin servidor.">Plain JavaScript and on-device models. No server.</p>
+          <ul class="labfacts">
+            <li data-es="<b>14</b> módulos, de una recta a los transformers"><b>14</b> modules, from a straight line to transformers</li>
+            <li data-es="<b>5</b> agentes entrenados en vivo"><b>5</b> learning agents, trained live</li>
+            <li data-es="Visión por computadora en tiempo real">Real-time computer vision</li>
+          </ul>
+          <p class="more" style="margin-top:22px"><span class="btn solid" data-es="Entrar al Lab">Enter the Lab</span></p>
+        </div>
+        <div class="labart"><div class="ent"><img src="entity.webp" alt="ENTITY, the Lab's helmeted guide" width="880" height="880" loading="lazy"><canvas class="visor" id="labVisor" aria-hidden="true"></canvas></div></div>
+      </a>
     </div>
   </section>
 
@@ -1516,6 +1547,91 @@ var CONTACT = {
   window.addEventListener('themechange', function () { dirty = true; });
   requestAnimationFrame(loop);
 })();
+</script>
+<script>
+/* ---------- the helmet's visor: a dot-matrix display drawn on a canvas, masked to the glass ---------- */
+(function () {
+  var cv = document.getElementById('labVisor'); if (!cv) return;
+  var x = cv.getContext('2d'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* 5 x 7 pixel font: each glyph is seven rows of five bits */
+  var F = { A: '0e11111f111111', B: '1e11111e11111e', C: '0e11101010110e', D: '1e11111111111e', E: '1f10101e10101f', F: '1f10101e101010', G: '0e11101711110f', H: '1111111f111111',
+    I: '0e04040404040e', J: '0702020202120c', K: '11121418141211', L: '1010101010101f', M: '111b1515111111', N: '11191513111111', O: '0e11111111110e', P: '1e11111e101010',
+    Q: '0e11111115120d', R: '1e11111e141211', S: '0f10100e01011e', T: '1f040404040404', U: '1111111111110e', V: '11111111110a04', W: '11111115151b11', X: '11110a040a1111',
+    Y: '11110a04040404', Z: '1f01020408101f', '0': '0e11131519110e', '1': '040c040404040e', '2': '0e11010204081f', '3': '1f02040201110e', '4': '02060a121f0202', '5': '1f101e0101110e',
+    '6': '0608101e11110e', '7': '1f010204080808', '8': '0e11110e11110e', '9': '0e11110f01020c', ' ': '00000000000000', '.': '0000000000000c', ':': '000c0c000c0c00', '-': '0000001f000000',
+    '/': '01010204081010', '%': '18190204081303', '>': '08040201020408', '·': '00000004000000' };
+  function glyph(c) { var h = F[c] || F[' '], r = []; for (var i = 0; i < 7; i++) r.push(parseInt(h.substr(i * 2, 2), 16)); return r; }
+  function textCols(s) { var cols = []; s.split('').forEach(function (c) { var g = glyph(c); for (var b = 4; b >= 0; b--) { var col = 0; for (var r = 0; r < 7; r++) if (g[r] >> b & 1) col |= 1 << r; cols.push(col); } cols.push(0); }); return cols; }
+  var ROWS = 11, COLS = 0, pitch = 0, W = 0, H = 0, dpr = 1, grid = null, PX = null, PY = null, PR = null;
+  /* the outline of the visor glass (in the helmet image's pixels), so the matrix bends with it instead of sitting in a flat box.
+     The nose bump is left out on purpose: the grid runs behind it, and the visor mask hides the dots the bump covers */
+  var GLASS = [[306,395],[722,395],[717,423],[705,450],[691,463],[680,468],[670,473],[660,477],[650,480],[640,483],[630,485],[620,487],[610,489],[600,490],[590,491],[560,491],[512,491],[470,491],[440,491],[430,490],[420,489],[410,487],[400,485],[390,483],[380,481],[370,478],[360,475],[347,470],[336,464],[322,450],[311,423]],
+    BX = 298, BY = 384, BW = 432, BH = 110;
+  function span(gx) {                                         /* top and bottom of the glass at one image column */
+    var lo = 1e9, hi = -1e9;
+    for (var i = 0; i < GLASS.length; i++) { var a = GLASS[i], b = GLASS[(i + 1) % GLASS.length];
+      if ((a[0] <= gx && b[0] >= gx) || (b[0] <= gx && a[0] >= gx)) { var y = a[0] === b[0] ? Math.min(a[1], b[1]) : a[1] + (b[1] - a[1]) * (gx - a[0]) / (b[0] - a[0]); if (y < lo) lo = y; if (y > hi) hi = y; } }
+    return hi > lo ? [lo, hi] : null;
+  }
+  function size() {
+    var r = cv.getBoundingClientRect(); if (r.width < 4) return;
+    dpr = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    var kx = W / BW, ky = H / BH, g0 = 313, g1 = 715, mid = span(512), inset = 3.5;
+    pitch = (mid[1] - mid[0] - inset) * ky / ROWS; COLS = Math.max(8, Math.round((g1 - g0) * kx / pitch)); grid = new Float32Array(COLS * ROWS);
+    PX = new Float32Array(COLS * ROWS); PY = new Float32Array(COLS * ROWS); PR = new Float32Array(COLS * ROWS);
+    for (var c = 0; c < COLS; c++) { var gx = g0 + (c + .5) / COLS * (g1 - g0), sp = span(gx) || mid, top = sp[0] + inset, bot = Math.max(top + 2, sp[1] + 3.5), lp = (bot - top) * ky / ROWS;
+      for (var r = 0; r < ROWS; r++) { var i = r * COLS + c; PX[i] = (gx - BX) * kx; PY[i] = (top + (r + .5) / ROWS * (bot - top) - BY) * ky; PR[i] = Math.max(.6, Math.min(pitch, lp) * .34); } }
+  }
+  function put(c, r, v) { if (c >= 0 && c < COLS && r >= 0 && r < ROWS) { var i = r * COLS + c; if (v > grid[i]) grid[i] = v; } }
+  function stamp(cols, c0, r0, v) { for (var i = 0; i < cols.length; i++) for (var r = 0; r < 7; r++) if (cols[i] >> r & 1) put(c0 + i, r0 + r, v); }
+  var WORD = textCols('LDB LAB'), NAME = textCols('ENTITY'), ONL = textCols('ONLINE'), TICK2 = textCols('APPLIED AI \u00b7 MODELS YOU CAN WATCH THINK');
+  function R0() { return Math.floor((ROWS - 7) / 2); }                                   /* text sits on the middle rows */
+  var SPD = 26;                                                                          /* ticker speed, columns per second */
+  function ticker(cols) { return { d: function () { return (COLS + cols.length) / SPD + .35; }, f: function (t) { stamp(cols, COLS - Math.floor(t * SPD), R0(), 1); } }; }
+  /* the scenes, played in a loop; each one runs exactly as long as it needs to finish */
+  /* the intro plays once: ENTITY ONLINE, the name, the tagline, LDB LAB and a wipe; then the visor idles on a slow spectrum */
+  var IDLE = { d: Infinity, f: function (t) {
+      var env = Math.min(1, t * .8);
+      for (var c = 0; c < COLS; c++) { var u = c / COLS, h = (.32 + .26 * Math.sin(u * 9 + t * 2.4) * Math.sin(u * 3.3 - t * 1.3) + .2 * Math.sin(u * 23 + t * 5.2)) * ROWS * env;
+        for (var r = 0; r < Math.min(ROWS, Math.max(0, h)); r++) put(c, ROWS - 1 - r, r > ROWS * .62 ? 1 : .7); } } };
+  var scenes = [IDLE];   /* the main site's Lab card: only the listening spectrum */
+  function dur(sc) { return typeof sc.d === 'function' ? sc.d() : sc.d; }
+  var si = 0, st = 0, last = 0, on = true, raf = 0;
+  function frame(now) {
+    raf = 0; if (!on) return;
+    var dt = Math.min(.05, (now - last) / 1000 || .016); last = now; st += dt;
+    if (!grid) size();
+    if (grid) {
+      for (var i = 0; i < grid.length; i++) grid[i] *= .45;                                                       /* LEDs fade, not snap */
+      if (reduce) { IDLE.f(2.5); }
+      else { if (st > dur(scenes[si]) && si < scenes.length - 1) { st = 0; si++; } scenes[si].f(st); }
+      draw(now / 1000);
+    }
+    if (!reduce) raf = requestAnimationFrame(frame);
+  }
+  function draw(tt) {
+    x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+
+    x.fillStyle = 'rgba(190,214,228,.07)';                                                                         /* the unlit matrix behind the glass */
+    for (var r = 0; r < ROWS; r++) for (var c = 0; c < COLS; c++) { var j = r * COLS + c; x.beginPath(); x.arc(PX[j], PY[j], PR[j] * .8, 0, 6.283); x.fill(); }
+    x.save(); x.shadowColor = 'rgba(160,220,232,.9)'; x.shadowBlur = pitch * 1.6;
+    for (var r2 = 0; r2 < ROWS; r2++) for (var c2 = 0; c2 < COLS; c2++) { var v = grid[r2 * COLS + c2]; if (v < .04) continue;
+      x.fillStyle = 'rgba(' + Math.round(200 + 40 * v) + ',' + Math.round(232 + 18 * v) + ',' + Math.round(240 + 12 * v) + ',' + Math.min(1, v * 1.1).toFixed(2) + ')';
+      var k2 = r2 * COLS + c2; x.beginPath(); x.arc(PX[k2], PY[k2], PR[k2], 0, 6.283); x.fill(); }
+    x.restore();
+    var g = x.createLinearGradient(0, 0, W * .6, H);                                                              /* a soft reflection across the glass */
+    g.addColorStop(0, 'rgba(255,255,255,.10)'); g.addColorStop(.35, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+  }
+  function go() { if (!raf && on) raf = requestAnimationFrame(frame); }
+  addEventListener('resize', function () { grid = null; if (reduce) go(); });
+  if ('ResizeObserver' in window) { var lastW = 0, lastH = 0; new ResizeObserver(function () { var r = cv.getBoundingClientRect(); if (Math.abs(r.width - lastW) > .5 || Math.abs(r.height - lastH) > .5) { lastW = r.width; lastH = r.height; grid = null; if (reduce) go(); } }).observe(cv); }
+  var himg = cv.parentNode.querySelector('img'); if (himg && !himg.complete) himg.addEventListener('load', function () { grid = null; });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { on = e[0].isIntersecting; if (on) { last = 0; go(); } }).observe(cv);
+  go();
+})();
+
 </script>
 </body>
 </html>
