@@ -625,6 +625,10 @@
   .coursework { margin-top: 14px; }
   .coursework > h3.second { margin-top: 34px; }
   .coursework > h3 { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--soft); margin-bottom: 8px; }
+  .coursework:not(.all) .xtra { display: none; }
+  .morec { margin-top: 22px; }
+  .hero-head .seek { margin: 18px 0 0; font-size: 15px; color: var(--soft); }
+  .hero-head .seek b { color: var(--ink, inherit); font-weight: 600; }
   .courselist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(28px, 4vw, 56px); }
   .courselist li { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px; padding: 18px 0; border-top: 1px solid var(--line); }
   .courselist .code { font-size: 11px; font-weight: 600; letter-spacing: .1em; color: var(--soft); padding-top: 4px; white-space: nowrap; }
@@ -861,9 +865,11 @@
   <div class="hero-head">
     <h1>Luis Diaz<br>Busquets</h1>
     <p class="lede" data-es="Estudiante de finanzas en Bryant University, practicante de gestión patrimonial y creador de herramientas de inversión. De San Juan, Puerto Rico.">Finance student at Bryant University, wealth management intern, and builder of investing tools. From San Juan, Puerto Rico.</p>
+    <p class="seek" data-es="<b>Busco:</b> un puesto a tiempo completo en gestión patrimonial, a partir de mayo de 2027"><b>Seeking:</b> a full-time wealth management role, from May 2027</p>
     <div class="cta">
-      <a class="btn solid" href="#work" data-es="Ver proyectos">View projects</a>
-      <a class="btn" href="#contact" data-es="Contacto">Get in touch</a>
+      <a class="btn solid" href="resume.pdf" target="_blank" rel="noopener" data-es="Résumé (PDF)">Résumé (PDF)</a>
+      <a class="btn" href="https://www.linkedin.com/in/luis-diaz-busquets" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="#work" data-es="Ver proyectos">View projects</a>
     </div>
   </div>
 
@@ -1103,10 +1109,10 @@
       <div class="panel coursework">
         <h3 data-es="Cursos de finanzas">Finance coursework</h3>
         <ul class="courselist">
-            <li><span class="code">FIN 201</span><div><b><span data-es="Gerencia Financiera">Financial Management</span></b><p data-es="Los fundamentos de las finanzas corporativas: valor del dinero en el tiempo, riesgo y rendimiento, valoración de valores, presupuesto de capital y cómo las empresas eligen su financiamiento.">The foundations of corporate finance: time value of money, risk and return, valuing securities, capital budgeting, and how firms choose their financing.</p></div></li>
+            <li class="xtra"><span class="code">FIN 201</span><div><b><span data-es="Gerencia Financiera">Financial Management</span></b><p data-es="Los fundamentos de las finanzas corporativas: valor del dinero en el tiempo, riesgo y rendimiento, valoración de valores, presupuesto de capital y cómo las empresas eligen su financiamiento.">The foundations of corporate finance: time value of money, risk and return, valuing securities, capital budgeting, and how firms choose their financing.</p></div></li>
             <li><span class="code">FIN 312</span><div><b><span data-es="Inversiones">Investments</span></b><p data-es="Cómo se valoran y negocian los valores, cómo se miden el riesgo y el rendimiento, y las bases del manejo de portafolios. Se ofrece en el Financial Markets Center de Bryant con datos de mercado en vivo.">How securities are priced and traded, how risk and return are measured, and the basics of portfolio management. Taught in Bryant's Financial Markets Center with live market data.</p></div></li>
-            <li><span class="code">FIN 315</span><div><b><span data-es="Instituciones y Mercados Financieros">Financial Institutions and Markets</span></b><p data-es="Cómo funciona el sistema financiero de Estados Unidos: bancos, aseguradoras y mercados de capital, y el marco económico y legal que los rodea.">How the U.S. financial system works: banks, insurers, and capital markets, and the economic and legal framework around them.</p></div></li>
-            <li><span class="code">FIN 368</span><div><b><span data-es="Finanzas Multinacionales">Multinational Finance</span></b><p data-es="Gerencia financiera a nivel internacional: mercados de divisas, financiamiento del comercio, cobertura y arbitraje, y presupuesto de capital para inversión extranjera.">Financial management across borders: currency markets, trade financing, hedging and arbitrage, and capital budgeting for foreign investment.</p></div></li>
+            <li class="xtra"><span class="code">FIN 315</span><div><b><span data-es="Instituciones y Mercados Financieros">Financial Institutions and Markets</span></b><p data-es="Cómo funciona el sistema financiero de Estados Unidos: bancos, aseguradoras y mercados de capital, y el marco económico y legal que los rodea.">How the U.S. financial system works: banks, insurers, and capital markets, and the economic and legal framework around them.</p></div></li>
+            <li class="xtra"><span class="code">FIN 368</span><div><b><span data-es="Finanzas Multinacionales">Multinational Finance</span></b><p data-es="Gerencia financiera a nivel internacional: mercados de divisas, financiamiento del comercio, cobertura y arbitraje, y presupuesto de capital para inversión extranjera.">Financial management across borders: currency markets, trade financing, hedging and arbitrage, and capital budgeting for foreign investment.</p></div></li>
             <li><span class="code">FIN 370</span><div><b><span data-es="Análisis de Estados Financieros">Financial Statement Analysis</span></b><p data-es="Lectura crítica de estados financieros para juzgar cuánto vale realmente una empresa. Es el curso detrás de mi <a href=&quot;costco.html&quot;>análisis de Costco</a>.">Reading financial statements critically to judge what a company is really worth. This is the course behind my <a href="costco.html">Costco research</a>.</p></div></li>
             <li><span class="code">FIN 466</span><div><b><span data-es="Análisis de Datos para Finanzas">Data Analysis for Finance</span></b><p data-es="Trabajo con grandes conjuntos de datos financieros, numéricos y de texto, usando herramientas analíticas de código abierto para apoyar decisiones financieras.">Working with large financial datasets, both numbers and text, using open-source analytical tools to support financial decisions.</p></div></li>
             <li><span class="code">FIN 458</span><div><b><span data-es="Valores de Deuda, Derivados e Inversión">Debt Securities, Derivatives and Investing</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Análisis de renta fija: valoración y manejo de bonos, con conceptos de opciones y futuros aplicados a la valoración y al manejo de riesgo.">Fixed income analysis: pricing and managing bonds, with options and futures concepts applied to pricing and risk management.</p></div></li>
@@ -1114,12 +1120,13 @@
         </ul>
                 <h3 class="second" data-es="Cursos de derecho">Law coursework</h3>
         <ul class="courselist">
-            <li><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
-            <li><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
-            <li><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
+            <li class="xtra"><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
+            <li class="xtra"><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
+            <li class="xtra"><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
             <li><span class="code">LGLS 412</span><div><b><span data-es="Derecho de las Instituciones Financieras">Law of Financial Institutions</span></b><p data-es="Las leyes y regulaciones que rigen a los bancos y otras instituciones financieras.">The laws and regulations that govern banks and other financial institutions.</p></div></li>
-            <li><span class="code">LGLS 451</span><div><b><span data-es="Derecho Mercantil Internacional">International Business Law</span></b><p data-es="Las reglas legales detrás de los negocios internacionales: contratos, comercio y resolución de disputas entre países.">The legal rules behind doing business across borders: contracts, trade, and resolving disputes between countries.</p></div></li>
+            <li class="xtra"><span class="code">LGLS 451</span><div><b><span data-es="Derecho Mercantil Internacional">International Business Law</span></b><p data-es="Las reglas legales detrás de los negocios internacionales: contratos, comercio y resolución de disputas entre países.">The legal rules behind doing business across borders: contracts, trade, and resolving disputes between countries.</p></div></li>
         </ul>
+        <button type="button" class="btn morec" id="moreCourses" data-es="Ver los 13 cursos">Show all 13 courses</button>
         <p class="built"><a href="https://catalog.bryant.edu/undergraduate/coursedescriptions/" target="_blank" rel="noopener" data-es="Catálogo académico de Bryant">Bryant's academic catalog</a></p>
       </div>
     </div>
@@ -1131,11 +1138,11 @@
       <h2 data-es="Hablemos.">Let's talk.</h2>
       <p data-es="Estoy disponible para puestos a tiempo completo en gestión patrimonial a partir de mayo de 2027, y siempre con ganas de conversar sobre mercados o sobre lo que estoy construyendo.">I'm available for full-time wealth management roles starting after May 2027, and always glad to talk markets or what I'm building.</p>
       <div class="actions">
-        <a class="btn solid" id="cEmail" hidden data-es="Escríbeme">Email me</a>
-        <a class="btn solid" id="cLinkedIn" hidden target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" id="cHandshake" hidden target="_blank" rel="noopener">Handshake</a>
-        <a class="btn" id="cGitHub" hidden target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" id="cResume" hidden target="_blank" rel="noopener" data-es="Descargar résumé">Download resume</a>
+        <a class="btn solid" id="cEmail" href="mailto:ldiazbusquets@bryant.edu" data-es="Escríbeme">Email me</a>
+        <a class="btn solid" id="cLinkedIn" href="https://www.linkedin.com/in/luis-diaz-busquets" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" id="cHandshake" href="https://app.joinhandshake.com/profiles/ldiaz" target="_blank" rel="noopener">Handshake</a>
+        <a class="btn" id="cGitHub" href="https://github.com/ldiazbusquets" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" id="cResume" href="resume.pdf" target="_blank" rel="noopener" data-es="Descargar résumé">Download resume</a>
       </div>
     </div></div>
   </section>
@@ -1198,6 +1205,12 @@ function DOWNCOL() { return '213,94,0'; }                                    /* 
     });
     setInterval(function () { if (!chosen()) apply(byHour()); }, 60000);   /* follows the clock while the page stays open */
   });
+})();
+
+(function () {
+  var b = document.getElementById('moreCourses'), p = b && b.closest('.coursework'); if (!b) return;
+  b.addEventListener('click', function () { var all = p.classList.toggle('all'); var es = document.documentElement.lang === 'es';
+    b.textContent = all ? (es ? 'Ver menos' : 'Show fewer') : (es ? 'Ver los 13 cursos' : 'Show all 13 courses'); });
 })();
 
 var CONTACT = {

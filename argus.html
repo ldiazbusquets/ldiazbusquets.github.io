@@ -736,7 +736,7 @@
       <div class="call"><b>1,500</b><span>Simulated paths per run</span></div>
       <div><b>98 years</b><span>Of history in the backtest</span></div>
       <div><b>13 tabs</b><span>One per kind of analysis</span></div>
-      <div><b>4,100+</b><span>Lines of code, one file</span></div>
+      <div><b>0</b><span>Holdings stored on a server</span></div>
     </div>
   </div>
 </header>
@@ -789,8 +789,8 @@
 
 <section class="chapter" id="built">
   <p class="eyebrow">03 How it is built</p>
-  <h2>One file, <em>and nothing leaves the browser.</em></h2>
-  <p>ARGUS is a single React application of more than 4,100 lines. All of the analysis runs on the user's own device, so portfolio data is never sent to a server. The price refresh and the assistant are the only parts that call out, and only when asked.</p>
+  <h2>Calculations on your device, <em>by design.</em></h2>
+  <p>ARGUS is a React application whose analysis runs entirely in the browser: the simulations, the backtest and every chart are computed on the user's own device, and holdings are never stored on a server. Two optional features go online, and only when the user presses them: the price refresh, which looks up current prices, and the assistant, which sends the question to an AI model.</p>
   <h3>Why I built it</h3>
   <p>The planning software used in wealth management is powerful and expensive, and a student or a first-time investor never sees it. I wanted to understand how those tools reach their answers by building the calculations myself, and to make something useful that anyone could open for free.</p>
   <p class="takeaway"><b>What it taught me.</b> A simulation is only as honest as its assumptions. Most of the work was in deciding what to assume and showing those assumptions to the user, not in the math.</p>
