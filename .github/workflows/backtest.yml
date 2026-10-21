@@ -1,5 +1,5 @@
 # Runs the bot's year-to-date backtest on GitHub's servers and publishes the result to the site.
-# Location in the repo:  .github/workflows/backtest.yml
+# Lives in .github/workflows so GitHub runs it.
 name: Update backtest
 
 on:
