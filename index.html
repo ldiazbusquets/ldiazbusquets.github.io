@@ -124,7 +124,7 @@
   .mobile-menu a { display: block; padding: 14px 16px; border-radius: 12px; text-decoration: none; font-size: 1.1rem; font-weight: 600; }
   .mobile-menu a:active, .mobile-menu a:hover { background: rgba(255,255,255,.08); }
   @media (min-width: 821px) { .mobile-menu { display: none; } }
-  .hero-head { padding: calc(64px + clamp(24px, 6vh, 72px)) var(--g) 0; }
+  .hero-head { padding: calc(64px + clamp(24px, 6vh, 72px)) var(--g) clamp(110px, 16vh, 170px); }   /* room under the buttons for the simulation to start */
   h1 {
     margin: 0; font-stretch: 125%; font-weight: 800; line-height: .92; letter-spacing: -.02em;
     font-size: clamp(2.5rem, 9.4vw, 9rem);
@@ -627,6 +627,7 @@
   .coursework > h3 { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--soft); margin-bottom: 8px; }
   .coursework:not(.all) .xtra { display: none; }
   .morec { margin-top: 22px; }
+  @media (max-width: 520px) { .hero-head .cta .vp { display: none; } }   /* one row of buttons on phones; the projects are a scroll away */
   .hero-head .seek { margin: 18px 0 0; font-size: 15px; color: var(--soft); }
   .hero-head .seek b { color: var(--ink, inherit); font-weight: 600; }
   .courselist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(28px, 4vw, 56px); }
@@ -867,9 +868,9 @@
     <p class="lede" data-es="Estudiante de finanzas en Bryant University, practicante de gestión patrimonial y creador de herramientas de inversión. De San Juan, Puerto Rico.">Finance student at Bryant University, wealth management intern, and builder of investing tools. From San Juan, Puerto Rico.</p>
     <p class="seek" data-es="<b>Busco:</b> un puesto a tiempo completo en gestión patrimonial, a partir de mayo de 2027"><b>Seeking:</b> a full-time wealth management role, from May 2027</p>
     <div class="cta">
-      <a class="btn solid" href="resume.pdf" target="_blank" rel="noopener" data-es="Résumé (PDF)">Résumé (PDF)</a>
+      <a class="btn solid" href="resume.pdf" target="_blank" rel="noopener" data-es="Currículum (PDF)">Resume (PDF)</a>
       <a class="btn" href="https://www.linkedin.com/in/luis-diaz-busquets" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href="#work" data-es="Ver proyectos">View projects</a>
+      <a class="btn vp" href="#work" data-es="Ver proyectos">View projects</a>
     </div>
   </div>
 
@@ -1142,7 +1143,7 @@
         <a class="btn solid" id="cLinkedIn" href="https://www.linkedin.com/in/luis-diaz-busquets" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" id="cHandshake" href="https://app.joinhandshake.com/profiles/ldiaz" target="_blank" rel="noopener">Handshake</a>
         <a class="btn" id="cGitHub" href="https://github.com/ldiazbusquets" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" id="cResume" href="resume.pdf" target="_blank" rel="noopener" data-es="Descargar résumé">Download resume</a>
+        <a class="btn" id="cResume" href="resume.pdf" target="_blank" rel="noopener" data-es="Descargar currículum">Download resume</a>
       </div>
     </div></div>
   </section>
