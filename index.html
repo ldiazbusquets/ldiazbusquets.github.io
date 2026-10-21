@@ -767,6 +767,9 @@
   .fincard .labfacts li b { color: #D9A06B; }
   .fincard .btn.solid { background: linear-gradient(135deg, #8C593A 0%, #723F20 55%, #855233 100%); color: #FFF8EF; border-color: rgba(255,248,239,.14); }
   html[data-theme="light"] .fincard .btn.solid { background: linear-gradient(135deg, #8C593A 0%, #723F20 55%, #855233 100%); color: #FFF8EF; border-color: transparent; }
+  /* copper, not silver: no white top highlight, a warm shadow instead of a grey one */
+  .fincard .btn.solid, html[data-theme="light"] .fincard .btn.solid { box-shadow: 0 8px 22px rgba(114,63,32,.28); transition: box-shadow .25s ease, filter .25s ease; }
+  .fincard:hover .btn.solid, html[data-theme="light"] .fincard:hover .btn.solid { filter: brightness(1.08); box-shadow: 0 10px 28px rgba(114,63,32,.36); }
   html[data-theme="light"] .fincard .labfacts li b { color: #7A4526; }
 
   /* card art: the real site in a tilted browser window, with a live panel floating in front */
