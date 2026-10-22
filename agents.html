@@ -781,8 +781,8 @@
     <div class="tabs" role="tablist" aria-label="Agent"><button role="tab" id="tab-ladon" aria-selected="true">LADON</button><button role="tab" id="tab-heretic" aria-selected="false">HERETIC</button><button role="tab" id="tab-together" aria-selected="false">Together</button></div>
     <div class="stage"><svg viewBox="0 0 1000 400" role="img" aria-label="Diagram: data sources feed a finance tool server, which serves two agents, LADON and HERETIC. LADON produces alerts and HERETIC produces research notes."><path class="edge" id="e-f" d="M190 95 C240 95 240 190 290 195"/><path class="edge" id="e-p" d="M190 205 L290 205"/><path class="edge" id="e-n" d="M190 315 C240 315 240 220 290 215"/><path class="edge" id="e-tl" d="M470 190 C520 190 520 145 570 145"/><path class="edge" id="e-th" d="M470 220 C520 220 520 305 570 305"/><path class="edge" id="e-wl" d="M660 54 L660 100"/><path class="edge" id="e-hl" d="M660 260 L660 190"/><path class="edge" id="e-la" d="M750 145 L850 145"/><path class="edge" id="e-hn" d="M750 305 L850 305"/><g class="node" id="n-f"><rect x="20" y="60" width="170" height="70" rx="14"/><rect class="lock" x="13" y="53" width="184" height="84" rx="4"/><text class="t" x="105.0" y="92.0" text-anchor="middle">Filings</text><text class="s" x="105.0" y="111.0" text-anchor="middle">10-K, 10-Q, 8-K</text></g><g class="node" id="n-p"><rect x="20" y="170" width="170" height="70" rx="14"/><rect class="lock" x="13" y="163" width="184" height="84" rx="4"/><text class="t" x="105.0" y="202.0" text-anchor="middle">Prices</text><text class="s" x="105.0" y="221.0" text-anchor="middle">and fundamentals</text></g><g class="node" id="n-n"><rect x="20" y="280" width="170" height="70" rx="14"/><rect class="lock" x="13" y="273" width="184" height="84" rx="4"/><text class="t" x="105.0" y="312.0" text-anchor="middle">News</text><text class="s" x="105.0" y="331.0" text-anchor="middle">and events</text></g><g class="node" id="n-tools"><rect x="290" y="140" width="180" height="130" rx="14"/><rect class="lock" x="283" y="133" width="194" height="144" rx="4"/><text class="t" x="380.0" y="202.0" text-anchor="middle">Finance tools</text><text class="s" x="380.0" y="221.0" text-anchor="middle">14 tools, one server</text></g><g class="node" id="n-w"><rect x="570" y="10" width="180" height="44" rx="14"/><rect class="lock" x="563" y="3" width="194" height="58" rx="4"/><text class="t" x="660.0" y="37.0" text-anchor="middle">Holdings and watchlist</text></g><g class="node" id="n-ladon"><rect x="570" y="100" width="180" height="90" rx="14"/><rect class="lock" x="563" y="93" width="194" height="104" rx="4"/><text class="t" x="660.0" y="142.0" text-anchor="middle">LADON</text><text class="s" x="660.0" y="161.0" text-anchor="middle">watches</text></g><g class="node" id="n-heretic"><rect x="570" y="260" width="180" height="90" rx="14"/><rect class="lock" x="563" y="253" width="194" height="104" rx="4"/><text class="t" x="660.0" y="302.0" text-anchor="middle">HERETIC</text><text class="s" x="660.0" y="321.0" text-anchor="middle">discovers</text></g><g class="node" id="n-a"><rect x="850" y="105" width="140" height="80" rx="14"/><rect class="lock" x="843" y="98" width="154" height="94" rx="4"/><text class="t" x="920.0" y="142.0" text-anchor="middle">Alerts</text><text class="s" x="920.0" y="161.0" text-anchor="middle">with sources</text></g><g class="node" id="n-r"><rect x="850" y="265" width="140" height="80" rx="14"/><rect class="lock" x="843" y="258" width="154" height="94" rx="4"/><text class="t" x="920.0" y="302.0" text-anchor="middle">Research notes</text><text class="s" x="920.0" y="321.0" text-anchor="middle">case for and against</text></g><circle class="pulse" id="pulse" r="5" opacity="0"/></svg></div>
     <div class="steps" id="steps"></div>
-    <div class="explain"><div><h4>What happens</h4><p id="xWhat"></p></div><div><h4>Why it works this way</h4><p id="xWhy"></p></div></div>
-    <div class="flowbar"><span id="flowstate"></span><button class="btn" id="replay" type="button">Replay from the start</button></div>
+    <div class="explain"><div><h4>What Happens</h4><p id="xWhat"></p></div><div><h4>Why It Works This Way</h4><p id="xWhy"></p></div></div>
+    <div class="flowbar"><span id="flowstate"></span><button class="btn" id="replay" type="button">Replay from the Start</button></div>
   </div>
   <p class="note">This is an illustration of the design. The agents are still being built, so there are no alerts, notes, or performance figures to show yet.</p>
 </section>
@@ -790,7 +790,7 @@
 <section class="chapter" id="why">
   <p class="eyebrow">02 Why it is built this way</p>
   <h2>Four decisions <em>that shape everything else.</em></h2>
-  <h3>Match the tool to the type of data</h3>
+  <h3>Match the Tool to the Type of Data</h3>
   <p>This is the most important rule in the design. Sending everything through a language model is slow, costly, and unreliable with numbers. Each kind of data gets the method that handles it best.</p>
   <div class="tablewrap"><table>
     <thead><tr><th>Type of data</th><th>Examples</th><th>How it is handled</th></tr></thead>
@@ -800,11 +800,11 @@
       <tr><td>Unstructured</td><td>News, commentary, management language</td><td>A language model, which is what it is good at: reading and summarizing text.</td></tr>
     </tbody>
   </table></div>
-  <h3>Two agents with different jobs</h3>
+  <h3>Two Agents with Different Jobs</h3>
   <p>Watching and discovering pull in opposite directions. Watching needs to be fast, frequent, and quiet unless something matters. Discovering needs to be slow and thorough. One agent asked to do both does neither well, so LADON is built for vigilance and HERETIC for depth. When HERETIC finds a name worth following, it hands it to LADON.</p>
-  <h3>Local and private</h3>
+  <h3>Local and Private</h3>
   <p>Both agents run on local models on my own computer, inside an open-source, self-hosted AI workspace. My holdings and research never leave the machine, and there is no usage bill, which matters on a student budget.</p>
-  <h3>The agents research. I decide.</h3>
+  <h3>The Agents Research. I Decide.</h3>
   <p>Neither agent places trades or gives a final verdict. LADON tells me what changed and shows the source. HERETIC lays out the case for and the case against. The judgment stays with a person, which is how I think this technology should be used in wealth management.</p>
 </section>
 

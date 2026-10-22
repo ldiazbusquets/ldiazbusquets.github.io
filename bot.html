@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paper trading bot | Luis Diaz Busquets</title>
+<title>Paper Trading Bot | Luis Diaz Busquets</title>
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -19,7 +19,7 @@
 })();
 </script>
 <meta name="description" content="A swing trading bot built in Python on the Alpaca paper trading API, with its rules running in a live simulation.">
-<meta property="og:title" content="Paper trading bot | Luis Diaz Busquets">
+<meta property="og:title" content="Paper Trading Bot | Luis Diaz Busquets">
 <meta property="og:description" content="A swing trading bot built in Python on the Alpaca paper trading API, with its rules running in a live simulation.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://ldiazbusquets.github.io/bot.html">
@@ -743,7 +743,7 @@
   <div class="hero-head">
     <a class="back" href="index.html#work">&larr; All projects</a>
     <p class="eyebrow">Personal project, Python and the Alpaca paper trading API</p>
-    <h1>Paper<br>trading bot</h1>
+    <h1>Paper<br>Trading Bot</h1>
     <p class="lede">A swing trading system I built to test whether a fixed set of rules can be followed without emotion. It buys pullbacks in uptrends, shorts failed rallies in downtrends, sizes every position from the stop distance, and manages exits on its own. It trades simulated money only.</p>
     <div class="panel verdict">
       <div class="call"><b>1%</b><span>Of equity risked per trade</span></div>
@@ -770,7 +770,7 @@
   <div class="simgrid">
     <div class="panel simchart">
       <canvas id="simc"></canvas>
-      <div class="simbar"><span id="simday">Day 0</span><div><button class="btn" id="simpause" type="button">Pause</button><button class="btn" id="simskip" type="button">Skip to end</button><button class="btn solid" id="simnew" type="button">New market</button></div></div>
+      <div class="simbar"><span id="simday">Day 0</span><div><button class="btn" id="simpause" type="button">Pause</button><button class="btn" id="simskip" type="button">Skip to End</button><button class="btn solid" id="simnew" type="button">New Market</button></div></div>
     </div>
     <div class="panel simside">
       <div class="kv">
@@ -783,7 +783,7 @@
     </div>
   </div>
   <div class="panel simsum" id="simsum" hidden>
-    <h3>This run, start to finish</h3>
+    <h3>This Run, Start to Finish</h3>
     <div class="figs" id="sumFigs"></div>
     <div class="tablewrap"><table>
       <thead><tr><th>#</th><th>Side</th><th>In</th><th>Out</th><th>Entry</th><th>Exit</th><th>Closed by</th><th>Result</th></tr></thead>
@@ -808,7 +808,7 @@
 <section class="chapter" id="rules">
   <p class="eyebrow">03 The rules</p>
   <h2>Every decision is written down <em>before the trade.</em></h2>
-  <h3>When it enters</h3>
+  <h3>When It Enters</h3>
   <p>It trades both directions. All five conditions must be true on the same day.</p>
   <div class="tablewrap"><table>
     <thead><tr><th>Check</th><th>Long</th><th>Short</th></tr></thead>
@@ -822,9 +822,9 @@
     </tbody>
   </table></div>
   <p>The market check means it only goes long when the broad market is rising and only shorts when it is falling. The simulation above trades a single made-up stock, so it skips that check.</p>
-  <h3>How much it trades</h3>
+  <h3>How Much It Trades</h3>
   <p>Shares = (account value &times; 1%) &divide; (distance from entry to stop). A wider stop means fewer shares, so every trade risks the same share of the account. Positions are capped at 20% of the account, with at most five open at once.</p>
-  <h3>When it exits</h3>
+  <h3>When It Exits</h3>
   <ul>
     <li><b>Stop:</b> 7% against the position, below a long or above a short, set at entry and stored with the trade.</li>
     <li><b>First target:</b> close half at 5% in its favor and move the stop to the entry price, so the rest cannot lose.</li>
@@ -838,7 +838,7 @@
   <p class="eyebrow">04 How it is built</p>
   <h2>Small Python modules, <em>one job each.</em></h2>
   <p>The bot is written in Python and places orders through Alpaca's paper trading API, which fills simulated orders at live market prices. Each part of the system lives in its own file: signal generation, a second-stage data filter, risk and position sizing, portfolio and exit logic, order execution, logging, and performance tracking.</p>
-  <h3>What a code review changed</h3>
+  <h3>What a Code Review Changed</h3>
   <p>Auditing the first version turned up two bugs that mattered. Exits were recalculating the stop as a flat 2% instead of using the stop the trade was sized on, which closed trades early, and the profit target was fixed at 2%, too small for a swing trade. The fixes were to store each trade's stop at entry and reload it when checking exits, make targets configurable by strategy, add the volume filter, and add a daily loss limit. The rules on this page are the corrected design.</p>
   <p class="takeaway"><b>What I took from it.</b> The hard part of a trading system is not finding signals. It is making sure the risk rules written on paper are the ones the code enforces.</p>
 </section>
