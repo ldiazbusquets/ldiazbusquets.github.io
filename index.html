@@ -1654,8 +1654,12 @@ var CONTACT = {
     spark(Y);
     var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], MS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     var pct = function (v, d) { return v.toFixed(d) + '%'; }, set = function (id, t) { document.getElementById(id).textContent = t; };
-    fetch('finance/data/markets.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+    var get = function (u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
+    Promise.all([get('finance/data/markets.json'), get('finance/data/co/prices.json')]).then(function (a) {
+      var j = a[0], gx = a[1] && a[1].px && a[1].px['^GSPC'];
       if (!j || !j.series || !j.series.SP500) return; var s = j.series, sp = s.SP500;
+      // FRED publishes the S&P 500 a day late: use the index's own close when newer, as LDB Finance does
+      if (gx && gx.p && sp.last && gx.d > sp.last.d) { sp.chgPct = (gx.p / (gx.pp || sp.last.v) - 1) * 100; sp.last = { d: gx.d, v: gx.p }; if (sp.y1) sp.y1.push([gx.d, gx.p]); }
       set('flSp', sp.last.v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
       var c = document.getElementById('flSpC'), cp = Math.round(sp.chgPct * 100) / 100;
       c.textContent = (cp > 0 ? '+' : cp < 0 ? '−' : '') + Math.abs(cp).toFixed(2) + '%'; c.className = cp < 0 ? 'dn' : 'up';
