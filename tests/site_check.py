@@ -45,7 +45,12 @@ def static_links(root, prefix):
     for page in pages(root):
         src = open(os.path.join(root, page), encoding='utf-8', errors='replace').read()
         src_wo_scripts = re.sub(r'<script\b[^>]*>.*?</script>', '', src, flags=re.S)
+        src_wo_scripts = re.sub(r'<base [^>]*>', '', src_wo_scripts)
         ids = set(re.findall(r'\bid="([^"]+)"', src)) | set(re.findall(r'\bname="([^"]+)"', src))
+        bm = re.search(r'<base href="([^"]*)"', src)
+        base_dir = os.path.normpath(os.path.join(os.path.dirname(page), bm.group(1))).replace(os.sep, '/') if bm else os.path.dirname(page)
+        if base_dir == '.':
+            base_dir = ''
         for attr, url in re.findall(r'\b(href|src)="([^"]*)"', src_wo_scripts):
             url = html.unescape(url).strip()
             if not url or url.startswith(('mailto:', 'tel:', 'javascript:', 'data:', 'blob:')):
@@ -62,7 +67,9 @@ def static_links(root, prefix):
                     continue                      # one of the sibling sites
                 path = u.path[len(prefix):]
             else:
-                path = os.path.normpath(os.path.join(os.path.dirname(page), u.path)).replace(os.sep, '/') if u.path else page
+                if not u.path and bm:
+                    errs.append(f'{page}: href="{url}" points at the <base> folder, not this page'); continue
+                path = os.path.normpath(os.path.join(base_dir, u.path)).replace(os.sep, '/') if u.path else page
             path = unquote(path)
             if prefix == '/' and (path + '/').startswith(SIBLINGS) or path in OPTIONAL:
                 continue
