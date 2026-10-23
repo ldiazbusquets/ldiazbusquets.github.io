@@ -1,0 +1,24 @@
+name: Site check
+
+# Every page loads without a script error, fits a phone screen, and every internal link resolves.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['data/**', 'backtest.json']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.48.0 && python -m playwright install --with-deps chromium
+      - run: python tests/site_check.py --prefix /
