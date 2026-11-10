@@ -787,10 +787,10 @@
   html[data-theme="light"] .shot .win .dk { display: none; }
   html[data-theme="light"] .shot .win .lt { display: block; }
   .shot .live { position: absolute; left: 0; bottom: 9%; width: min(74%, 310px); z-index: 2; padding: 16px 18px 15px; border-radius: 16px;
-    background: rgba(14,14,16,.74); border: 1px solid rgba(255,255,255,.13); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+    background: #0E0E10; border: 1px solid rgba(255,255,255,.13); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
     box-shadow: 0 24px 50px rgba(0,0,0,.45); font-family: var(--mono); color: #F2F2F2; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
   .labcard:hover .shot .live { transform: translateY(-4px); }
-  html[data-theme="light"] .shot .live { background: rgba(255,255,255,.80); border-color: rgba(0,0,0,.08); color: #18181B; box-shadow: 0 20px 44px rgba(30,30,30,.16); }
+  html[data-theme="light"] .shot .live { background: #FFFFFF; border-color: rgba(0,0,0,.08); color: #18181B; box-shadow: 0 20px 44px rgba(30,30,30,.16); }
   .live .lhd { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #8E8E94; }
   .live .lhd b { font-weight: 600; display: flex; align-items: center; gap: 7px; color: inherit; }
   .live .lhd b::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #7FB58A; box-shadow: 0 0 0 3px rgba(127,181,138,.18); animation: livedot 2.4s ease-in-out infinite; }
@@ -1687,8 +1687,9 @@ var CONTACT = {
       if (reduce) { frame(pts.length - 1); return; }
       frame(0);
       var card = $('finLive');
-      new IntersectionObserver(function (es) { on = es[0].isIntersecting && !document.hidden; if (on && !raf) { t0 = 0; raf = requestAnimationFrame(loop); } else if (!on) frame(pts.length - 1); }).observe(card);
-      document.addEventListener('visibilitychange', function () { on = !document.hidden; if (on && !raf) raf = requestAnimationFrame(loop); });
+      var vis = false;
+      new IntersectionObserver(function (es) { vis = es[0].isIntersecting; on = vis && !document.hidden; if (on && !raf) { t0 = 0; raf = requestAnimationFrame(loop); } else if (!vis) frame(0); }, { threshold: 0.6 }).observe(card);
+      document.addEventListener('visibilitychange', function () { on = vis && !document.hidden; if (on && !raf) raf = requestAnimationFrame(loop); });
     }).catch(function () {});
   })();
   /* LDB Lab: the Monte Carlo planner training, round by round */
@@ -1726,9 +1727,10 @@ var CONTACT = {
   addEventListener('resize', function () { size(); if (reduce) draw(R); });
   if (reduce) { draw(R); return; }
   draw(0);
-  new IntersectionObserver(function (es) { on = es[0].isIntersecting && !document.hidden; if (on && !raf) { t0 = 0; raf = requestAnimationFrame(loop); } }).observe(cv);
-  document.addEventListener('visibilitychange', function () { on = !document.hidden; if (on && !raf) raf = requestAnimationFrame(loop); });
-  new MutationObserver(function () { if (!raf) draw(R); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  var vis = false; on = false;
+  new IntersectionObserver(function (es) { vis = es[0].isIntersecting; on = vis && !document.hidden; if (on && !raf) { t0 = 0; raf = requestAnimationFrame(loop); } else if (!vis) draw(0); }, { threshold: 0.6 }).observe(cv.closest('.live') || cv);
+  document.addEventListener('visibilitychange', function () { on = vis && !document.hidden; if (on && !raf) raf = requestAnimationFrame(loop); });
+  new MutationObserver(function () { if (!raf) draw(reduce ? R : 0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
 </script>
 </body>
