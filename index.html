@@ -1029,10 +1029,10 @@
         <div class="labart shot" aria-hidden="true">
           <div class="win"><div class="bar"><i></i><i></i><i></i><span>ldiazbusquets.github.io/finance</span></div><img class="dk" src="fin-shot-dark.webp" alt="" width="1200" height="623" loading="lazy"><img class="lt" src="fin-shot-light.webp" alt="" width="1200" height="623" loading="lazy"></div>
           <div class="live" id="finLive">
-            <div class="lhd"><b data-es="Mercados · último cierre">Markets · latest close</b><span id="flDate">Oct 20</span></div>
-            <div class="lbig"><span>S&amp;P 500</span><div><em id="flSp">7,712.57</em><small class="up" id="flSpC">+0.28%</small></div></div>
+            <div class="lhd"><b data-es="Mercados · último cierre">Markets · latest close</b><span id="flDate"></span></div>
+            <div class="lbig"><span>S&amp;P 500</span><div><em id="flSp">—</em><small class="up" id="flSpC"></small></div></div>
             <svg id="flSpark" viewBox="0 0 300 58" preserveAspectRatio="none"><defs><linearGradient id="flG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C98B5A" stop-opacity=".35"/><stop offset="1" stop-color="#C98B5A" stop-opacity="0"/></linearGradient></defs><path id="flArea" fill="url(#flG)"/><path id="flLine" fill="none" stroke="#C98B5A" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>
-            <div class="lrow"><div><span data-es="Bono 10A">10Y</span><em id="flT10">5.15%</em></div><div><span data-es="Fed">Fed funds</span><em id="flFF">3.88%</em></div><div><span data-es="Inflación">CPI</span><em id="flCpi">3.7%</em></div></div>
+            <div class="lrow"><div><span data-es="Bono 10A">10Y</span><em id="flT10">—</em></div><div><span data-es="Fed">Fed funds</span><em id="flFF">—</em></div><div><span data-es="Inflación">CPI</span><em id="flCpi">—</em></div></div>
           </div>
         </div>
       </a>
@@ -1143,7 +1143,6 @@
         <a class="btn solid" id="cEmail" href="mailto:ldiazbusquets@bryant.edu" data-es="Escríbeme">Email me</a>
         <a class="btn solid" id="cLinkedIn" href="https://www.linkedin.com/in/luis-diaz-busquets" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" id="cHandshake" href="https://app.joinhandshake.com/profiles/ldiaz" target="_blank" rel="noopener">Handshake</a>
-        <a class="btn" id="cGitHub" href="https://github.com/ldiazbusquets" target="_blank" rel="noopener">GitHub</a>
         <a class="btn" id="cResume" href="resume.pdf" target="_blank" rel="noopener" data-es="Descargar currículum">Download resume</a>
       </div>
     </div></div>
@@ -1249,7 +1248,6 @@ var CONTACT = {
   link('cEmail', CONTACT.email ? 'mailto:' + CONTACT.email : '');
   link('cLinkedIn', CONTACT.linkedin);
   link('cHandshake', CONTACT.handshake);
-  link('cGitHub', CONTACT.github);
   link('cResume', CONTACT.resume);
 
   /* ---------- Language toggle ---------- */
@@ -1643,35 +1641,56 @@ var CONTACT = {
 /* ---------- card art: live panels ---------- */
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* LDB Finance: the same markets file the Finance site builds every weekday */
-  var Y = [6735,6738,6891,6840,6796,6832,6737,6617,6603,6813,6829,6870,6887,6817,6775,6910,6906,6858,6921,6977,6944,6876,6950,6969,6918,6932,6941,6843,6910,6946,6882,6831,6781,6632,6625,6581,6477,6529,6612,6825,6967,7126,7138,7174,7209,7259,7399,7444,7403,7446,7520,7600,7584,7387,7431,7420,7365,7354,7483,7504,7575,7572,7443,7408,7429,7490,7724,7753,7799,7692,7674,7676,7686,7748,7636,7620,7638,7765,7743,7652,7774,7765,7805,7659,7691];
-  function spark(v) {
-    var mn = Math.min.apply(null, v), mx = Math.max.apply(null, v), n = v.length - 1, d = '';
-    v.forEach(function (y, i) { d += (i ? 'L' : 'M') + (i * 300 / n).toFixed(1) + ' ' + (54 - (y - mn) / (mx - mn || 1) * 48).toFixed(1); });
-    document.getElementById('flLine').setAttribute('d', d);
-    document.getElementById('flArea').setAttribute('d', d + 'L300 58L0 58Z');
-  }
-  if (document.getElementById('finLive')) {
-    spark(Y);
+  /* LDB Finance: the same markets file the Finance site builds every weekday. The past year of S&P 500 closes
+     replays day by day (price and date ticking with the line), lands on the latest close, holds, and loops. */
+  if (document.getElementById('finLive')) (function () {
     var M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], MS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    var pct = function (v, d) { return v.toFixed(d) + '%'; }, set = function (id, t) { document.getElementById(id).textContent = t; };
+    var $ = function (id) { return document.getElementById(id); }, set = function (id, t) { $(id).textContent = t; };
+    var pct = function (v, d) { return v.toFixed(d) + '%'; };
+    var fmt = function (v) { return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+    var day = function (d) { var t = d.split('-'); return document.documentElement.lang === 'es' ? (+t[2]) + ' ' + MS[+t[1] - 1] : M[+t[1] - 1] + ' ' + (+t[2]); };
+    var chg = function (c) { var e = $('flSpC'), r = Math.round(c * 100) / 100; e.textContent = (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r).toFixed(2) + '%'; e.className = r < 0 ? 'dn' : 'up'; };
     var get = function (u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
+    var pts = [], mn = 0, mx = 1, last = null, lastChg = 0, on = true, raf = 0, t0 = 0;
+    function path(k) {
+      var n = pts.length - 1, d = '';
+      for (var i = 0; i <= k; i++) d += (i ? 'L' : 'M') + (i * 300 / n).toFixed(1) + ' ' + (54 - (pts[i][1] - mn) / (mx - mn || 1) * 48).toFixed(1);
+      $('flLine').setAttribute('d', d);
+      $('flArea').setAttribute('d', d + 'L' + (k * 300 / n).toFixed(1) + ' 58L0 58Z');
+    }
+    function frame(k) {
+      path(k);
+      if (k >= pts.length - 1) { set('flSp', fmt(last.v)); chg(lastChg); set('flDate', day(last.d)); return; }
+      set('flSp', fmt(pts[k][1])); set('flDate', day(pts[k][0]));
+      chg(k ? (pts[k][1] / pts[k - 1][1] - 1) * 100 : 0);
+    }
+    function loop(t) {
+      if (!on) { raf = 0; return; }
+      if (!t0) t0 = t;
+      var e = (t - t0) / 1000, n = pts.length - 1, k;
+      if (e < 11) k = Math.round(Math.min(1, e / 11) * n); else if (e < 17) k = n; else { t0 = t; k = 0; }
+      frame(k); raf = requestAnimationFrame(loop);
+    }
     Promise.all([get('finance/data/markets.json'), get('finance/data/co/prices.json')]).then(function (a) {
       var j = a[0], gx = a[1] && a[1].px && a[1].px['^GSPC'];
-      if (!j || !j.series || !j.series.SP500) return; var s = j.series, sp = s.SP500;
+      if (!j || !j.series || !j.series.SP500) return;
+      var s = j.series, sp = s.SP500;
       // FRED publishes the S&P 500 a day late: use the index's own close when newer, as LDB Finance does
       if (gx && gx.p && sp.last && gx.d > sp.last.d) { sp.chgPct = (gx.p / (gx.pp || sp.last.v) - 1) * 100; sp.last = { d: gx.d, v: gx.p }; if (sp.y1) sp.y1.push([gx.d, gx.p]); }
-      set('flSp', sp.last.v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-      var c = document.getElementById('flSpC'), cp = Math.round(sp.chgPct * 100) / 100;
-      c.textContent = (cp > 0 ? '+' : cp < 0 ? '−' : '') + Math.abs(cp).toFixed(2) + '%'; c.className = cp < 0 ? 'dn' : 'up';
-      var dt = sp.last.d.split('-'), es = document.documentElement.lang === 'es';
-      set('flDate', es ? (+dt[2]) + ' ' + MS[+dt[1] - 1] : M[+dt[1] - 1] + ' ' + (+dt[2]));
+      last = sp.last; lastChg = sp.chgPct || 0;
       if (s.DGS10) set('flT10', pct(s.DGS10.last.v, 2));
       if (s.DFF) set('flFF', pct(s.DFF.last.v, 2));
       if (s.CPI_YOY) set('flCpi', pct(s.CPI_YOY.last.v, 1));
-      if (sp.y1 && sp.y1.length > 20) spark(sp.y1.filter(function (p, i, a) { return i % 3 === 0 || i === a.length - 1; }).map(function (p) { return p[1]; }));
+      pts = (sp.y1 || []).filter(function (p) { return p && isFinite(p[1]); });
+      if (pts.length < 20) { set('flSp', fmt(last.v)); chg(lastChg); set('flDate', day(last.d)); return; }
+      var v = pts.map(function (p) { return p[1]; }); mn = Math.min.apply(null, v); mx = Math.max.apply(null, v);
+      if (reduce) { frame(pts.length - 1); return; }
+      frame(0);
+      var card = $('finLive');
+      new IntersectionObserver(function (es) { on = es[0].isIntersecting && !document.hidden; if (on && !raf) { t0 = 0; raf = requestAnimationFrame(loop); } else if (!on) frame(pts.length - 1); }).observe(card);
+      document.addEventListener('visibilitychange', function () { on = !document.hidden; if (on && !raf) raf = requestAnimationFrame(loop); });
     }).catch(function () {});
-  }
+  })();
   /* LDB Lab: the Monte Carlo planner training, round by round */
   var cv = document.getElementById('llCurve'); if (!cv || !cv.getContext) return;
   var x = cv.getContext('2d'), W = 0, H = 0, R = 400, pts = [], seed = 7, t0 = 0, on = true, raf = 0;
