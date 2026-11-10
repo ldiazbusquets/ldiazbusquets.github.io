@@ -770,7 +770,7 @@
   .labcard .labart { position: relative; align-self: stretch; min-height: 300px; }
 
   /* card art: the real site in a tilted browser window, with a live panel floating in front */
-  .labcard .labart.shot { min-height: 400px; margin: calc(-1 * clamp(26px, 4.5vw, 56px)) calc(-1 * clamp(26px, 4.5vw, 56px)) calc(-1 * clamp(26px, 4.5vw, 56px)) 0; overflow: hidden; }
+  .labcard .labart.shot { min-height: 400px; margin: calc(-1 * clamp(26px, 4.5vw, 56px)) calc(-1 * clamp(26px, 4.5vw, 56px)) calc(-1 * clamp(26px, 4.5vw, 56px)) 0; overflow: visible; } /* the card clips; clipping here cut the shadows into a hard vertical line */
   .shot .win { position: absolute; left: 14%; top: 12%; width: 128%; border-radius: 12px; overflow: hidden; background: #0C0C0D;
     box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.12);
     transform: perspective(1500px) rotateY(-16deg) rotateX(6deg) rotateZ(1.5deg); transform-origin: left center; transition: transform .7s cubic-bezier(.2,.7,.2,1); }
