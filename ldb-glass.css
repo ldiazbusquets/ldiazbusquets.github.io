@@ -1,0 +1,5 @@
+/* LDB glass, after Glisse (MIT, Kelvin Zhang): iOS's rim light and edge line over each glass surface */
+:root { --lg-edge: rgb(255 255 255 / 0.14); --lg-rim-shine: 0.30; --lg-lens-shine: 1; }
+html[data-theme="light"] { --lg-edge: rgb(0 0 0 / 0.08); --lg-rim-shine: 0.55; --lg-lens-shine: -1.5; }
+[data-lgx] { isolation: isolate; }
+.lgx-rim { position: absolute; inset: 0; border-radius: inherit; background-size: 100% 100%; background-repeat: no-repeat; pointer-events: none; z-index: 3; }

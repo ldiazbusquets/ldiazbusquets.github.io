@@ -822,6 +822,7 @@
   @media (max-width: 420px) { .shot .live .lrow > div:nth-child(3) { display: none; } .live .lrow { grid-template-columns: 1fr 1fr; } }
   @media (prefers-reduced-motion: reduce) { .shot .win, .shot .live { transition: none; } .live .lhd b::before { animation: none; } }
 </style>
+<link rel="stylesheet" href="ldb-glass.css">
 </head>
 <body>
 <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -1733,5 +1734,7 @@ var CONTACT = {
   new MutationObserver(function () { if (!raf) draw(reduce ? R : 0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
 </script>
+<script src="ldb-glass.js"></script>
+<script>LDBGlass.glassifyAll(".feature, .project, .edu > div, .panel, .sim, .nav-links a, .btn:not(.solid), .lang, .theme-btn, .menu-btn, .hero > .tag");</script>
 </body>
 </html>
