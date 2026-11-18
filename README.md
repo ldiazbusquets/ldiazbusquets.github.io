@@ -21,6 +21,7 @@ The personal site of a finance student at Bryant University (graduating May 2027
 | `agents.html` | LADON and HERETIC, automated portfolio research agents |
 | `bot.html` | A paper-trading bot's rules, with a year-to-date backtest on real prices |
 | `costco.html` | Costco (COST) equity research, FIN 370 coursework |
+| `presentations.html` | Group presentations: BlackRock and Intuit (FIN 315), Hilti strategy recommendation (BUS 400); slide images in `slides/`, PDFs in `decks/` |
 | `excel.html` | An Excel reference guide |
 
 ## How it works
