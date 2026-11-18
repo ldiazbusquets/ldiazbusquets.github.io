@@ -513,6 +513,7 @@
   .strip button[aria-current="true"] { opacity: 1; box-shadow: 0 0 0 2px var(--brass); }
   .deckactions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 </style>
+<link rel="stylesheet" href="ldb-glass.css">
 </head>
 <body>
 <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -786,5 +787,7 @@ function DOWNCOL() { return '213,94,0'; }                                    /* 
   });
 })();
 </script>
+<script src="ldb-glass.js?v=2"></script>
+<script>LDBGlass.glassifyAll(".panel, .figs > div, .cell, .viewer, .nav-links a, .btn:not(.solid), .theme-btn, .menu-btn", { refract: false });   /* lit glass rims; the background animates, so no live refraction */</script>
 </body>
 </html>
