@@ -625,8 +625,15 @@
   .coursework { margin-top: 14px; }
   .coursework > h3.second { margin-top: 34px; }
   .coursework > h3 { font-family: var(--mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--soft); margin-bottom: 8px; }
-  .coursework:not(.all) .xtra { display: none; }
-  .morec { margin-top: 22px; }
+  .ctabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .ctabs button { font: inherit; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; padding: 9px 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: transparent; color: var(--soft); cursor: pointer; transition: color .2s ease, border-color .2s ease, background-color .2s ease; }
+  .ctabs button i { font-style: normal; margin-left: 4px; opacity: .6; font-variant-numeric: tabular-nums; }
+  .ctabs button:hover { color: var(--ink); }
+  .ctabs button[aria-selected="true"] { color: var(--ink); border-color: var(--brass); background: rgba(124,169,212,.10); }
+  .courselist[hidden] { display: none; }
+  .courselist .proj { margin-top: 8px; font-size: .86rem; color: var(--soft); }
+  .courselist .proj a { color: var(--brass); text-underline-offset: 3px; }
   @media (max-width: 520px) { .hero-head .cta .vp { display: none; } }   /* one row of buttons on phones; the projects are a scroll away */
   .hero-head .seek { margin: 18px 0 0; font-size: 15px; color: var(--soft); }
   .hero-head .seek b { color: var(--ink, inherit); font-weight: 600; }
@@ -1120,26 +1127,35 @@ html:not([data-theme="light"]) .glow i { animation: none; filter: none; backgrou
         </div>
       </div>
       <div class="panel coursework">
-        <h3 data-es="Cursos de finanzas">Finance Coursework</h3>
-        <ul class="courselist">
-            <li class="xtra"><span class="code">FIN 201</span><div><b><span data-es="Gerencia Financiera">Financial Management</span></b><p data-es="Los fundamentos de las finanzas corporativas: valor del dinero en el tiempo, riesgo y rendimiento, valoración de valores, presupuesto de capital y cómo las empresas eligen su financiamiento.">The foundations of corporate finance: time value of money, risk and return, valuing securities, capital budgeting, and how firms choose their financing.</p></div></li>
+        <div class="ctabs" role="tablist" aria-label="Coursework by subject">
+          <button type="button" role="tab" id="ct-fin" aria-controls="cp-fin" aria-selected="true"><span data-es="Finanzas">Finance</span> <i>8</i></button>
+          <button type="button" role="tab" id="ct-law" aria-controls="cp-law" aria-selected="false" tabindex="-1"><span data-es="Derecho">Law</span> <i>5</i></button>
+          <button type="button" role="tab" id="ct-oth" aria-controls="cp-oth" aria-selected="false" tabindex="-1"><span data-es="IA y negocios">AI &amp; Business</span> <i>5</i></button>
+        </div>
+        <ul class="courselist" role="tabpanel" id="cp-fin" aria-labelledby="ct-fin">
+            <li><span class="code">FIN 201</span><div><b><span data-es="Gerencia Financiera">Financial Management</span></b><p data-es="Los fundamentos de las finanzas corporativas: valor del dinero en el tiempo, riesgo y rendimiento, valoración de valores, presupuesto de capital y cómo las empresas eligen su financiamiento.">The foundations of corporate finance: time value of money, risk and return, valuing securities, capital budgeting, and how firms choose their financing.</p></div></li>
             <li><span class="code">FIN 312</span><div><b><span data-es="Inversiones">Investments</span></b><p data-es="Cómo se valoran y negocian los valores, cómo se miden el riesgo y el rendimiento, y las bases del manejo de portafolios. Se ofrece en el Financial Markets Center de Bryant con datos de mercado en vivo.">How securities are priced and traded, how risk and return are measured, and the basics of portfolio management. Taught in Bryant's Financial Markets Center with live market data.</p></div></li>
-            <li class="xtra"><span class="code">FIN 315</span><div><b><span data-es="Instituciones y Mercados Financieros">Financial Institutions and Markets</span></b><p data-es="Cómo funciona el sistema financiero de Estados Unidos: bancos, aseguradoras y mercados de capital, y el marco económico y legal que los rodea.">How the U.S. financial system works: banks, insurers, and capital markets, and the economic and legal framework around them.</p></div></li>
-            <li class="xtra"><span class="code">FIN 368</span><div><b><span data-es="Finanzas Multinacionales">Multinational Finance</span></b><p data-es="Gerencia financiera a nivel internacional: mercados de divisas, financiamiento del comercio, cobertura y arbitraje, y presupuesto de capital para inversión extranjera.">Financial management across borders: currency markets, trade financing, hedging and arbitrage, and capital budgeting for foreign investment.</p></div></li>
+            <li><span class="code">FIN 315</span><div><b><span data-es="Instituciones y Mercados Financieros">Financial Institutions and Markets</span></b><p data-es="Cómo funciona el sistema financiero de Estados Unidos: bancos, aseguradoras y mercados de capital, y el marco económico y legal que los rodea.">How the U.S. financial system works: banks, insurers, and capital markets, and the economic and legal framework around them.</p><p class="proj"><span data-es="Presentaciones:">Presentations:</span> <a href="presentations.html#blackrock">BlackRock</a> · <a href="presentations.html#intuit">Intuit</a></p></div></li>
+            <li><span class="code">FIN 368</span><div><b><span data-es="Finanzas Multinacionales">Multinational Finance</span></b><p data-es="Gerencia financiera a nivel internacional: mercados de divisas, financiamiento del comercio, cobertura y arbitraje, y presupuesto de capital para inversión extranjera.">Financial management across borders: currency markets, trade financing, hedging and arbitrage, and capital budgeting for foreign investment.</p></div></li>
             <li><span class="code">FIN 370</span><div><b><span data-es="Análisis de Estados Financieros">Financial Statement Analysis</span></b><p data-es="Lectura crítica de estados financieros para juzgar cuánto vale realmente una empresa. Es el curso detrás de mi <a href=&quot;costco.html&quot;>análisis de Costco</a>.">Reading financial statements critically to judge what a company is really worth. This is the course behind my <a href="costco.html">Costco research</a>.</p></div></li>
             <li><span class="code">FIN 466</span><div><b><span data-es="Análisis de Datos para Finanzas">Data Analysis for Finance</span></b><p data-es="Trabajo con grandes conjuntos de datos financieros, numéricos y de texto, usando herramientas analíticas de código abierto para apoyar decisiones financieras.">Working with large financial datasets, both numbers and text, using open-source analytical tools to support financial decisions.</p></div></li>
             <li><span class="code">FIN 458</span><div><b><span data-es="Valores de Deuda, Derivados e Inversión">Debt Securities, Derivatives and Investing</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Análisis de renta fija: valoración y manejo de bonos, con conceptos de opciones y futuros aplicados a la valoración y al manejo de riesgo.">Fixed income analysis: pricing and managing bonds, with options and futures concepts applied to pricing and risk management.</p></div></li>
             <li><span class="code">FIN 414</span><div><b><span data-es="Aplicaciones de IA en Finanzas">AI Applications in Finance</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Usos prácticos de la IA en finanzas, incluyendo robo-asesores, análisis de sentimiento en texto y trabajo con modelos de IA mediante APIs.">Practical uses of AI in finance, including robo-advisors, sentiment analysis of text, and working with AI models through APIs.</p></div></li>
         </ul>
-                <h3 class="second" data-es="Cursos de derecho">Law Coursework</h3>
-        <ul class="courselist">
-            <li class="xtra"><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
-            <li class="xtra"><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
-            <li class="xtra"><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
+        <ul class="courselist" role="tabpanel" id="cp-law" aria-labelledby="ct-law" hidden>
+            <li><span class="code">LGLS 211</span><div><b><span data-es="El Entorno Legal de los Negocios">The Legal Environment of Business</span></b><p data-es="Cómo funcionan los sistemas y procesos legales, y cómo el derecho moldea la operación de los negocios.">How legal systems and processes work, and how law shapes the way businesses operate.</p></div></li>
+            <li><span class="code">LGLS 230</span><div><b><span data-es="Sistema Legal">Legal System</span></b><p data-es="La estructura del sistema legal de Estados Unidos y su comparación con el derecho internacional y los sistemas legales de otros países.">The structure of the U.S. legal system and how it compares with international law and the legal systems of other countries.</p></div></li>
+            <li><span class="code">LGLS 330</span><div><b><span data-es="Derecho y Procedimiento Penal">Criminal Law and Procedure</span></b><p data-es="Los principios del derecho penal y los procedimientos que rigen el curso de los casos en el sistema de justicia.">The principles of criminal law and the procedures that govern how cases move through the justice system.</p></div></li>
             <li><span class="code">LGLS 412</span><div><b><span data-es="Derecho de las Instituciones Financieras">Law of Financial Institutions</span></b><p data-es="Las leyes y regulaciones que rigen a los bancos y otras instituciones financieras.">The laws and regulations that govern banks and other financial institutions.</p></div></li>
-            <li class="xtra"><span class="code">LGLS 451</span><div><b><span data-es="Derecho Mercantil Internacional">International Business Law</span></b><p data-es="Las reglas legales detrás de los negocios internacionales: contratos, comercio y resolución de disputas entre países.">The legal rules behind doing business across borders: contracts, trade, and resolving disputes between countries.</p></div></li>
+            <li><span class="code">LGLS 451</span><div><b><span data-es="Derecho Mercantil Internacional">International Business Law</span></b><p data-es="Las reglas legales detrás de los negocios internacionales: contratos, comercio y resolución de disputas entre países.">The legal rules behind doing business across borders: contracts, trade, and resolving disputes between countries.</p></div></li>
         </ul>
-        <button type="button" class="btn morec" id="moreCourses" data-es="Ver los 13 cursos">Show All 13 Courses</button>
+        <ul class="courselist" role="tabpanel" id="cp-oth" aria-labelledby="ct-oth" hidden>
+            <li><span class="code">BUS 400</span><div><b><span data-es="Política de Negocios">Business Policy</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="El curso integrador de negocios: cómo la alta gerencia analiza una industria, encuentra una ventaja competitiva y pone la estrategia en práctica, a través de casos.">The business capstone: how top managers analyze an industry, find a competitive advantage and put strategy into practice, taught through cases.</p><p class="proj"><span data-es="Presentación:">Presentation:</span> <a href="presentations.html#hilti" data-es="Recomendación estratégica para Hilti">Hilti strategy recommendation</a></p></div></li>
+            <li><span class="code">AI 201</span><div><b><span data-es="Introducción a la Inteligencia Artificial">Introduction to Artificial Intelligence</span> <span class="status" data-es="En curso">In progress</span></b><p data-es="Los fundamentos de la IA, desde el aprendizaje automático y profundo hasta el procesamiento de lenguaje natural y la IA generativa, con ingeniería de prompts, herramientas de poco código y una aplicación de IA hecha en equipo.">The foundations of AI, from machine learning and deep learning to natural language processing and generative AI, with prompt engineering, low-code tools and a team-built AI application.</p></div></li>
+            <li><span class="code">AI 202</span><div><b><span data-es="Aplicaciones y Ética de la Inteligencia Artificial">Artificial Intelligence Applications and Ethics</span> <span class="status" data-es="Primavera 2027">Spring 2027</span></b><p data-es="Cómo la IA crea valor en distintas industrias y las preguntas éticas que plantea, con casos, conferenciantes invitados y un proyecto en equipo de todo el semestre sobre una industria.">How AI creates value across industries and the ethical questions it raises, through cases, guest speakers and a semester-long team project on one industry.</p></div></li>
+            <li><span class="code">SCI 359</span><div><b><span data-es="Inteligencia Artificial en el Cuidado de la Salud">Artificial Intelligence in Healthcare</span> <span class="status" data-es="Primavera 2027">Spring 2027</span></b><p data-es="Cómo se está aplicando la inteligencia artificial en el cuidado de la salud.">How artificial intelligence is being applied across healthcare.</p><p class="proj"><span data-es="Proyecto:">Project:</span> <a href="health/" target="_blank" rel="noopener">LDB Health</a></p></div></li>
+            <li><span class="code">GEN 390</span><div><b><span data-es="Proyecto Integrador de Educación General">General Education Capstone</span> <span class="status" data-es="Primavera 2027">Spring 2027</span></b><p data-es="El cierre del programa de educación general: aplicar destrezas de todo el currículo, los Objetivos de Desarrollo Sostenible de la ONU y el proceso de innovación a un problema real.">The capstone of the general education program: applying skills from across the curriculum, the UN Sustainable Development Goals and the innovation process to a real-world problem.</p></div></li>
+        </ul>
         <p class="built"><a href="https://catalog.bryant.edu/undergraduate/coursedescriptions/" target="_blank" rel="noopener" data-es="Catálogo académico de Bryant">Bryant's academic catalog</a></p>
       </div>
     </div>
@@ -1219,10 +1235,20 @@ function DOWNCOL() { return '213,94,0'; }                                    /* 
   });
 })();
 
-(function () {
-  var b = document.getElementById('moreCourses'), p = b && b.closest('.coursework'); if (!b) return;
-  b.addEventListener('click', function () { var all = p.classList.toggle('all'); var es = document.documentElement.lang === 'es';
-    b.textContent = all ? (es ? 'Ver menos' : 'Show Fewer') : (es ? 'Ver los 13 cursos' : 'Show All 13 Courses'); });
+(function () {                         /* coursework tabs: one subject at a time, arrow keys move between tabs */
+  var tabs = [].slice.call(document.querySelectorAll('.ctabs [role="tab"]')); if (!tabs.length) return;
+  function pick(t, focus) {
+    tabs.forEach(function (b) { var on = b === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+      document.getElementById(b.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) t.focus();
+  }
+  tabs.forEach(function (b, i) {
+    b.addEventListener('click', function () { pick(b); });
+    b.addEventListener('keydown', function (e) {
+      var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return;
+      e.preventDefault(); pick(tabs[(i + k + tabs.length) % tabs.length], true);
+    });
+  });
 })();
 
 var CONTACT = {
