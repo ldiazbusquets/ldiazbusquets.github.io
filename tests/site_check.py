@@ -24,7 +24,7 @@ from urllib.parse import urlparse, unquote
 HOST = 'ldiazbusquets.github.io'
 BLOCK = re.compile(r'huggingface\.co|hf\.co|cdn-lfs|web-llm|@huggingface/transformers|onnxruntime-web|googletagmanager')
 SKIP_PAGES = {'404.html'}   # GitHub's not-found page uses absolute links to the live site
-SIBLINGS = ('finance/', 'lab/')   # from the main site, these relative links lead to the other two repos
+SIBLINGS = ('finance/', 'lab/', 'health/')   # from the main site, these relative links lead to the sibling repos
 OPTIONAL = {'excel-guide.html'}   # linked only when the file exists (the page checks first)
 
 
